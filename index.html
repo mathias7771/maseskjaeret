@@ -195,8 +195,89 @@ details[open] summary { margin-bottom: 10px; }
 .addrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
 .addrow input { border: 1px solid var(--line); background: var(--surface2); border-radius: 8px; padding: 8px 10px; font-size: 0.92rem; min-width: 0; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-</style>
 
+/* ===== v3 tillegg ===== */
+.todaybar { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 4px 12px; font-size: 0.86rem; font-weight: 500; }
+.todaybar b { font-weight: 700; text-transform: capitalize; }
+.day .wkno { font-size: 0.72rem; color: var(--muted); font-weight: 600; letter-spacing: 0.02em; }
+.day.today { border: 2px solid var(--mine); padding: 6px 9px; }
+.day .todaybadge { display: inline-block; background: var(--mine); color: #1c1606; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em; border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
+.cday.today { border: 2px solid var(--mine); box-shadow: none; }
+.cday.today .cnum > span:first-child { color: var(--ink); }
+.cday .todaybadge { background: var(--mine); color: #1c1606; font-family: var(--f-body); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.05em; border-radius: 4px; padding: 1px 5px; text-transform: uppercase; }
+.todaypill { display: inline-block; margin-left: 8px; padding: 2px 9px; border-radius: 999px; background: var(--mine); color: #1c1606; font-family: var(--f-body); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; }
+.scrollhint { display: none; margin: 0; font-size: 0.78rem; color: var(--muted); }
+@media (max-width: 760px) { .scrollhint { display: block; } #plan { min-width: 640px; } }
+
+.field select { border: 1px solid var(--line); background: var(--surface2); border-radius: 8px; padding: 8px 10px; font-size: 0.92rem; color: var(--ink); min-width: 0; width: 100%; }
+.hint { font-size: 0.8rem; color: var(--muted); margin: 0; }
+.warnbox { background: var(--booked-soft); border-radius: 8px; padding: 8px 10px; font-size: 0.85rem; }
+.sched { display: flex; flex-direction: column; gap: 6px; }
+.schedrow { display: grid; grid-template-columns: 64px minmax(0, 1fr) 12px minmax(0, 1fr); gap: 6px; align-items: center; }
+.schedrow input[type=time] { border: 1px solid var(--line); background: var(--surface2); border-radius: 8px; padding: 6px 8px; font-size: 0.88rem; min-width: 0; width: 100%; color: var(--ink); }
+.schedrow input[type=time]:disabled { opacity: .35; }
+.schedrow .dash { text-align: center; color: var(--muted); }
+.holders { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; }
+.holders li b { font-weight: 600; }
+.notice { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; background: var(--booked-soft); border-radius: 8px; padding: 8px 10px; font-size: 0.86rem; }
+.inirow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.inirow input { width: 70px; text-transform: uppercase; font-family: var(--f-mono); font-weight: 600; text-align: center; border: 1px solid var(--line); background: var(--surface2); border-radius: 8px; padding: 6px 8px; color: var(--ink); }
+.who { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; }
+.who li { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); padding-top: 4px; }
+.who li:first-child { border-top: 0; padding-top: 0; }
+.who .wd { font-family: var(--f-mono); font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+.badge { display: inline-block; font-size: 0.7rem; font-weight: 700; border-radius: 4px; padding: 1px 6px; background: var(--accent-soft); color: var(--accent); margin-left: 4px; vertical-align: middle; }
+.codefield { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.codefield input, .admform input[type=text] { border: 1px solid var(--line); background: var(--surface2); border-radius: 8px; padding: 8px 10px; font-size: 0.92rem; min-width: 0; color: var(--ink); width: 100%; }
+.codefield input { font-family: var(--f-mono); }
+.admform { display: flex; flex-direction: column; gap: 8px; }
+.admlist li { flex-wrap: wrap; }
+.admlist .actions { flex-wrap: wrap; justify-content: flex-end; }
+.figprev { display: flex; align-items: center; gap: 10px; }
+.figprev img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+details.mybk > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); border-radius: 9px; padding: 9px 12px; background: var(--surface2); }
+details.mybk > summary::-webkit-details-marker { display: none; }
+details.mybk > summary::after { content: "▾"; color: var(--muted); }
+details.mybk[open] > summary::after { content: "▴"; }
+details.mybk { border-top: 0; padding-top: 0; }
+.walker { cursor: pointer; }
+.walker .ring { fill: none; stroke: var(--accent); stroke-width: 5; }
+.walker .wname { font-family: var(--f-body); font-size: 22px; font-weight: 600; fill: var(--ink); paint-order: stroke; stroke: var(--planbg); stroke-width: 5px; }
+.walker .whint { font-family: var(--f-body); font-size: 17px; fill: var(--muted); paint-order: stroke; stroke: var(--planbg); stroke-width: 4px; }
+.bubble rect { fill: #ffffff; stroke: var(--wall); stroke-width: 3; }
+.bubble text { font-family: var(--f-display); font-size: 30px; font-weight: 700; fill: #14202a; }
+.bubble .sm { fill: none; stroke: #14202a; stroke-width: 4; stroke-linecap: round; }
+@media (max-width: 600px) {
+  .daylist { grid-template-columns: repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, .5fr)); gap: 4px; }
+  .day { padding: 5px 6px; }
+  .day.today { padding: 4px 5px; }
+  .day .dname { font-size: 0.8rem; }
+  .day .dcount { font-size: 0.68rem; }
+  .day .todaybadge { display: block; margin: 2px 0 0; width: max-content; }
+  .days { gap: 6px; }
+  .jump { width: 100%; }
+  .jump input { flex: 1; }
+  .schedrow { grid-template-columns: 58px minmax(0, 1fr) 10px minmax(0, 1fr); }
+}
+.day .short { display: none; }
+@media (max-width: 600px) { .day .full { display: none; } .day .short { display: inline; text-transform: capitalize; } }
+.inirow { flex-direction: row; }
+.walker:focus { outline: none; }
+.walker:focus-visible .ring { stroke: var(--mine); stroke-width: 8; }
+@media (max-width: 600px) {
+  .days { display: grid; grid-template-columns: 34px minmax(0, 1fr) 34px; align-items: stretch; }
+  .days .iconbtn#prevW, .days .iconbtn#nextW { padding: 0; min-width: 0; }
+  .days .jump { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .daylist { display: flex; overflow-x: auto; scroll-snap-type: x proximity; gap: 5px; padding-bottom: 2px; }
+  .daylist .day { flex: 0 0 76px; scroll-snap-align: start; }
+  .daylist .day.wkend { flex: 0 0 52px; }
+  .day .dcount .pd { display: none; }
+}
+.daylist { position: relative; }
+@media (max-width: 600px) { .cday .todaybadge { display: none; } }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -204,6 +285,7 @@ details[open] summary { margin-bottom: 10px; }
     <div class="brand">
       <h1>Måseskjæret</h1>
       <p>Kontorplasser · 20 pulter · arbeidsdag 08–16</p>
+      <div class="todaybar" id="todaybar"></div>
     </div>
     <div class="topright">
       <nav class="tabs" aria-label="Visning">
@@ -235,12 +317,13 @@ details[open] summary { margin-bottom: 10px; }
             <h2 id="planTitle">–</h2>
             <div class="legend">
               <span><i class="sw" style="background:var(--free)"></i>Ledig</span>
-              <span><i class="sw" style="background:var(--partial)"></i>Delvis booket (klokkeslett vises)</span>
-              <span><i class="sw" style="background:var(--booked)"></i>Opptatt hele dagen</span>
+              <span><i class="sw" style="background:var(--partial)"></i>Delvis booket</span>
+              <span><i class="sw" style="background:var(--booked)"></i>Opptatt</span>
               <span><i class="sw" style="background:var(--fixed)"></i>Fast plass</span>
               <span><i class="sw mineframe"></i>Din</span>
             </div>
           </div>
+          <p class="scrollhint">Sveip sidelengs for å se hele kartet. Du kan også velge plass i listen.</p>
           <div class="planscroll"><svg id="plan" viewBox="-20 -20 2110 1440" role="img" aria-label="Plantegning over kontoret"></svg></div>
         </section>
         <aside>
@@ -269,7 +352,7 @@ details[open] summary { margin-bottom: 10px; }
         <span><i class="sw" style="background:var(--free-soft)"></i>Ledig</span>
         <span><i class="sw" style="background:var(--wkend)"></i>Helg</span>
         <span><i class="sw" style="background:var(--hol);border:1px solid var(--hol-line)"></i>Helligdag</span>
-        <span>Trykk på en dag for å åpne plantegningen</span>
+        <span><i class="sw mineframe"></i>I dag</span>
       </div>
       <div class="calgrid" id="calgrid"></div>
     </section>
@@ -298,29 +381,31 @@ details[open] summary { margin-bottom: 10px; }
   const CW = 30, CH = 20;
   const WD_S = 8 * 60, WD_E = 16 * 60; // arbeidsdag 08–16
   const RUNS = [["#",37,0,11],["g",48,0,6],["#",54,0,6],["g",60,0,7],["#",67,0,2],["#",37,1,1],["g",43,1,1],["g",55,1,1],["#",68,1,1],["#",37,2,1],["g",43,2,1],["g",55,2,1],["#",68,2,1],["#",37,3,1],["g",43,3,1],["g",55,3,1],["l",68,3,1],["#",37,4,1],["g",43,4,1],["g",55,4,1],["l",68,4,1],["#",37,5,1],["g",43,5,1],["g",55,5,1],["l",68,5,1],["#",37,6,1],["g",43,6,1],["g",55,6,1],["l",68,6,1],["#",37,7,1],["g",43,7,1],["g",55,7,1],["l",68,7,1],["#",37,8,1],["g",43,8,1],["g",55,8,1],["l",68,8,1],["#",37,9,1],["g",43,9,1],["g",55,9,1],["#",68,9,1],["#",37,10,1],["g",43,10,1],["g",55,10,1],["#",68,10,1],["#",37,11,1],["g",38,11,18],["#",68,11,1],["#",37,12,1],["g",55,12,1],["#",68,12,1],["#",37,13,1],["g",55,13,13],["#",68,13,1],["g",37,14,1],["#",68,14,1],["g",37,15,1],["#",68,15,1],["g",37,16,1],["w",61,16,7],["#",68,16,1],["g",37,17,1],["w",61,17,7],["#",68,17,1],["g",37,18,1],["w",61,18,7],["#",68,18,1],["#",37,19,1],["w",61,19,7],["#",68,19,1],["#",37,20,1],["w",61,20,7],["#",68,20,1],["#",37,21,21],["w",61,21,7],["#",68,21,1],["#",37,22,1],["l",47,22,1],["#",57,22,1],["w",61,22,7],["#",68,22,1],["#",37,23,1],["l",47,23,1],["#",57,23,1],["w",61,23,7],["#",68,23,1],["#",37,24,1],["l",47,24,1],["#",57,24,1],["w",61,24,7],["#",68,24,1],["#",37,25,1],["c",41,25,3],["l",47,25,1],["#",57,25,1],["w",61,25,7],["#",68,25,1],["#",37,26,1],["c",41,26,3],["l",47,26,1],["#",57,26,1],["w",61,26,7],["#",68,26,1],["#",37,27,1],["c",41,27,3],["G",47,27,1],["l",51,27,7],["w",61,27,7],["#",68,27,1],["#",37,28,1],["c",41,28,3],["G",47,28,1],["G",57,28,1],["w",61,28,7],["#",68,28,1],["#",37,29,1],["c",41,29,3],["G",47,29,1],["G",57,29,1],["w",61,29,7],["#",68,29,1],["#",37,30,1],["c",41,30,3],["#",46,30,1],["l",47,30,1],["G",57,30,1],["w",61,30,7],["#",68,30,1],["#",37,31,1],["c",41,31,3],["G",47,31,1],["G",57,31,1],["w",61,31,7],["#",68,31,1],["#",37,32,1],["c",41,32,3],["l",47,32,1],["l",52,32,6],["w",61,32,7],["#",68,32,1],["#",37,33,1],["c",41,33,3],["l",47,33,1],["#",57,33,1],["w",61,33,7],["#",68,33,1],["#",37,34,1],["c",41,34,3],["l",47,34,1],["#",57,34,1],["w",61,34,7],["#",68,34,1],["#",37,35,1],["c",41,35,3],["l",47,35,1],["#",57,35,1],["w",61,35,7],["#",68,35,1],["#",37,36,1],["l",47,36,1],["#",57,36,1],["w",61,36,7],["#",68,36,1],["#",37,37,1],["l",47,37,1],["#",57,37,1],["w",61,37,7],["#",68,37,1],["#",0,38,58],["w",61,38,7],["l",68,38,1],["#",0,39,1],["#",7,39,1],["#",15,39,1],["#",25,39,1],["#",37,39,1],["#",57,39,1],["l",68,39,1],["#",0,40,1],["#",7,40,1],["#",15,40,1],["#",25,40,1],["#",37,40,1],["#",57,40,1],["l",68,40,1],["#",0,41,1],["#",7,41,1],["#",15,41,1],["#",25,41,1],["#",37,41,1],["y",39,41,16],["l",68,41,1],["#",0,42,8],["#",15,42,1],["#",25,42,1],["#",37,42,1],["y",39,42,16],["l",68,42,1],["#",0,43,1],["#",7,43,1],["#",15,43,1],["#",25,43,1],["#",37,43,1],["y",39,43,16],["l",68,43,1],["#",0,44,1],["#",7,44,1],["#",15,44,1],["#",25,44,1],["#",37,44,1],["y",39,44,16],["l",68,44,1],["#",0,45,1],["#",7,45,1],["#",15,45,1],["#",25,45,1],["#",37,45,1],["#",68,45,1],["#",0,46,1],["#",7,46,1],["#",15,46,1],["#",25,46,1],["#",37,46,1],["#",68,46,1],["#",0,47,1],["#",7,47,1],["#",15,47,1],["#",25,47,1],["k",30,47,5],["#",37,47,1],["#",68,47,1],["#",0,48,1],["#",7,48,1],["#",15,48,1],["#",25,48,1],["k",30,48,5],["#",37,48,1],["#",57,48,1],["l",58,48,1],["g",59,48,3],["l",62,48,6],["#",68,48,1],["#",0,49,1],["#",7,49,1],["#",15,49,1],["#",25,49,1],["k",30,49,5],["#",37,49,1],["#",57,49,1],["#",68,49,1],["#",0,50,1],["#",7,50,1],["D",15,50,1],["l",16,50,1],["G",17,50,3],["l",20,50,7],["G",27,50,3],["l",30,50,7],["#",37,50,1],["l",46,50,11],["#",57,50,1],["#",68,50,1],["#",0,51,1],["#",7,51,1],["D",15,51,1],["G",37,51,1],["l",46,51,1],["#",57,51,1],["#",68,51,1],["#",0,52,1],["#",7,52,1],["D",15,52,1],["G",37,52,1],["l",46,52,1],["#",57,52,1],["#",68,52,1],["#",0,53,1],["#",7,53,1],["D",15,53,1],["G",37,53,1],["l",46,53,1],["#",57,53,1],["#",68,53,1],["#",0,54,1],["#",7,54,1],["w",21,54,12],["G",37,54,1],["G",46,54,1],["c",49,54,6],["#",57,54,1],["#",68,54,1],["#",0,55,8],["w",21,55,12],["G",37,55,1],["G",46,55,1],["c",49,55,6],["#",57,55,1],["#",68,55,1],["#",0,56,1],["#",7,56,1],["w",21,56,12],["G",37,56,1],["v",39,56,5],["G",46,56,1],["c",49,56,6],["#",57,56,1],["#",68,56,1],["#",0,57,1],["#",7,57,1],["w",21,57,12],["#",37,57,1],["v",39,57,5],["l",46,57,1],["#",57,57,1],["#",68,57,1],["#",0,58,1],["#",7,58,1],["#",11,58,5],["w",21,58,12],["#",37,58,1],["v",39,58,5],["l",46,58,1],["#",57,58,1],["#",68,58,1],["#",0,59,1],["#",7,59,1],["#",11,59,5],["w",21,59,12],["#",37,59,1],["v",39,59,5],["l",46,59,1],["#",57,59,1],["#",68,59,1],["#",0,60,1],["#",7,60,1],["D",11,60,5],["w",21,60,12],["#",37,60,1],["v",39,60,5],["l",46,60,1],["#",57,60,1],["#",68,60,1],["#",0,61,19],["g",19,61,3],["#",22,61,3],["l",25,61,5],["#",30,61,2],["l",32,61,1],["G",33,61,3],["l",36,61,1],["b",37,61,20],["#",57,61,1],["g",58,61,10],["#",68,61,1],["#",10,62,1],["#",23,62,1],["#",31,62,1],["g",57,62,1],["w",62,62,6],["#",68,62,1],["#",10,63,1],["l",23,63,1],["l",31,63,1],["g",57,63,1],["w",62,63,6],["#",68,63,1],["#",10,64,1],["l",23,64,1],["l",31,64,1],["g",57,64,1],["w",62,64,6],["#",68,64,1],["#",10,65,1],["l",23,65,1],["l",31,65,1],["l",57,65,1],["#",68,65,1],["#",10,66,1],["l",23,66,1],["l",31,66,1],["l",57,66,1],["#",68,66,1],["#",10,67,1],["l",23,67,1],["l",31,67,1],["l",57,67,1],["#",68,67,1],["#",10,68,1],["l",23,68,1],["l",31,68,1],["l",57,68,1],["#",68,68,1],["#",10,69,5],["l",15,69,5],["#",20,69,4],["#",31,69,7],["l",38,69,3],["#",41,69,9],["l",50,69,3],["#",53,69,8],["l",61,69,3],["#",64,69,5]];
-  // Pulter = de oransje feltene i Excel-tegningen [kol, rad, bredde, høyde]
+  // Pulter [kol, rad, bredde, høyde]
   const DESKS = [
     ["p1",  [40,3,3,5],  "Rom A"],
     ["p2",  [46,2,3,5],  "Rom B"], ["p3", [50,2,3,5], "Rom B"],
     ["p4",  [58,2,3,5],  "Rom C"], ["p5", [62,2,3,5], "Rom C"],
-    ["p6",  [52,24,5,3], "3. byggetrinn"], ["p7", [52,33,5,3], "3. byggetrinn"],
-    ["p8",  [16,41,3,7], "1. byggetrinn, rom D"], ["p9", [22,41,3,7], "1. byggetrinn, rom D"],
-    ["p10", [28,39,3,6], "1. byggetrinn, rom E"], ["p11", [32,39,3,6], "1. byggetrinn, rom E"],
+    ["p6",  [52,24,5,3], "Ved møterommet"], ["p7", [52,33,5,3], "Ved møterommet"],
+    ["p8",  [16,41,3,7], "Rom D"], ["p9", [22,41,3,7], "Rom D"],
+    ["p10", [28,39,3,6], "Rom E"], ["p11", [32,39,3,6], "Rom E"],
     ["p12", [65,49,3,5], "Rom F"], ["p13", [58,54,3,6], "Rom F"],
     ["p14", [13,64,3,5], "Rom G"], ["p15", [18,64,3,5], "Rom G"],
-    ["p16", [36,64,3,5], "Stillesone"], ["p17", [40,64,3,5], "Stillesone"],
-    ["p18", [47,64,3,5], "Stillesone"], ["p19", [51,64,3,5], "Stillesone"],
+    ["p16", [36,64,3,5], "Backoffice"], ["p17", [40,64,3,5], "Backoffice"],
+    ["p18", [47,64,3,5], "Backoffice"], ["p19", [51,64,3,5], "Backoffice"],
     ["p20", [62,66,6,3], "Rom H"],
   ].map(([id, r, room]) => ({ id, num: Number(id.slice(1)), x: r[0], y: r[1], w: r[2], h: r[3], room }));
   const DESK = Object.fromEntries(DESKS.map(d => [d.id, d]));
   const LABELS = [
     ["Støyskjerm", 49.5, 6.5, "v"], ["Sofa", 47, 19.6], ["Stumtjener", 39, 20.6, "s"], ["Møterom", 42.5, 30.5, "big"],
-    ["Møterom", 52, 58.3, "big"], ["3. byggetrinn", 49.5, 30.6], ["1. byggetrinn", 20.5, 39.6], ["Teknisk", 4, 40.6],
+    ["Møterom", 52, 58.3, "big"], ["Teknisk", 4, 40.6],
     ["Kjøkken", 11.5, 43.6, "big"], ["Toaletter", 4, 48.6], ["Handicap", 4, 57.6], ["Skap BoH", 13.5, 59.3],
-    ["Stillesone", 44.5, 63.4, "big"], ["Terrasse", 27.5, 66.2], ["Støyskjerm mellom pultene", 17, 70.7, "s"],
+    ["Backoffice", 44.5, 63.4, "big"], ["Terrasse", 27.5, 66.2], ["Støyskjerm mellom pultene", 17, 70.7, "s"],
   ];
+  // Gangvei for figuren: start ute oppe til venstre → inngang → korridor → pult 10
+  const WALK = [[6, 8], [34, 16], [40, 16], [59, 17], [59, 46], [42, 46], [42, 53], [34, 53], [28.5, 53], [29.5, 47.6]].map(([x, y]) => [x * CW, y * CH]);
 
-  // ---------- dates & times ----------
+  // ---------- dato og tid ----------
   const pad = n => String(n).padStart(2, "0");
   const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
@@ -335,8 +420,13 @@ details[open] summary { margin-bottom: 10px; }
   const fmtLong = s => parse(s).toLocaleDateString("nb-NO", { weekday: "long", day: "numeric", month: "long" });
   const fmtMonth = m => parse(m + "-01").toLocaleDateString("nb-NO", { month: "long", year: "numeric" });
   const TODAY = iso(new Date());
-  const weekdaysBetween = (a, b) => { const out = []; if (b < a) [a, b] = [b, a]; for (let d = a; d <= b && out.length < 270; d = addDays(d, 1)) { const w = dow(d); if (w !== 0 && w !== 6 && !holiday(d)) out.push(d); } return out; };
-  // Norske helligdager – regnes ut for hvert år (påske via Gauss/Meeus), virker for alle år fremover
+  const toMin = t => { const [h, m] = String(t).split(":").map(Number); return h * 60 + (m || 0); };
+  const toHHMM = m => `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
+  const shortT = m => (m % 60 ? toHHMM(m) : pad(m / 60));
+  const span = (s, e) => `${shortT(s)}–${shortT(e)}`;
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // Norske helligdager (påske via Gauss/Meeus) – virker for alle år
   function easter(y) {
     const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
       g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4,
@@ -359,39 +449,52 @@ details[open] summary { margin-bottom: 10px; }
   }
   const holiday = s => holidays(Number(s.slice(0, 4)))[s] || null;
   const isWeekend = s => { const w = dow(s); return w === 0 || w === 6; };
+  const isoWeek = s => { const d = parse(s); d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7)); const w1 = new Date(d.getFullYear(), 0, 4); return 1 + Math.round(((d - w1) / 864e5 - 3 + ((w1.getDay() + 6) % 7)) / 7); };
+  const workdaysBetween = (a, b) => { const out = []; if (b < a) [a, b] = [b, a]; for (let d = a; d <= b && out.length < 270; d = addDays(d, 1)) { if (!isWeekend(d) && !holiday(d)) out.push(d); } return out; };
+
   const WD_NAMES = ["", "man", "tir", "ons", "tor", "fre"];
+  const WD_CAP = ["", "Man", "Tir", "Ons", "Tor", "Fre"];
   const WD_LONG = ["", "mandager", "tirsdager", "onsdager", "torsdager", "fredager"];
-  const allDays = [1, 2, 3, 4, 5];
-  const daysOf = f => (Array.isArray(f?.days) && f.days.length ? f.days : allDays);
+  const ALL_DAYS = [1, 2, 3, 4, 5];
   const joinOg = a => a.length <= 1 ? (a[0] || "") : a.slice(0, -1).join(", ") + " og " + a[a.length - 1];
   const fmtDays = days => { const d = [...days].sort(); return d.length >= 5 ? "alle hverdager" : joinOg(d.map(x => WD_NAMES[x])); };
-  const togglesHTML = (prefix, checked) => `<fieldset class="wdays">${allDays.map(n => `<label class="tog"><input type="checkbox" id="${prefix}${n}" value="${n}" ${checked.includes(n) ? "checked" : ""}><span>${WD_NAMES[n][0].toUpperCase() + WD_NAMES[n].slice(1)}</span></label>`).join("")}</fieldset>`;
-  const readToggles = (root, prefix) => allDays.filter(n => root.querySelector("#" + prefix + n)?.checked);
-  const isoWeek = s => { const d = parse(s); d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7)); const w1 = new Date(d.getFullYear(), 0, 4); return 1 + Math.round(((d - w1) / 864e5 - 3 + ((w1.getDay() + 6) % 7)) / 7); };
-  const toMin = t => { const [h, m] = String(t).split(":").map(Number); return h * 60 + (m || 0); };
-  const toHHMM = m => `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
-  const shortT = m => (m % 60 ? toHHMM(m) : pad(m / 60));
-  const span = (s, e) => `${shortT(s)}–${shortT(e)}`;
-  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // ---------- faste plasser (kan deles: én innehaver per dag/tidsrom) ----------
+  const hDays = h => (Array.isArray(h?.days) && h.days.length ? h.days.map(Number) : ALL_DAYS);
+  function hSpan(h, w) { // [start, slutt] i minutter for ukedag w, eller null
+    if (!hDays(h).includes(w)) return null;
+    const t = h.hours?.[w] || h.hours?.[String(w)];
+    if (Array.isArray(t) && t.length === 2) { const s = toMin(t[0]), e = toMin(t[1]); if (e > s) return [s, e]; }
+    return [WD_S, WD_E];
+  }
+  function fmtSched(h) { // «man–ons 08–16 · fre 08–12»
+    const groups = [];
+    for (const w of ALL_DAYS) {
+      const sp = hSpan(h, w); if (!sp) continue;
+      const last = groups[groups.length - 1];
+      if (last && last.to === w - 1 && last.s === sp[0] && last.e === sp[1]) last.to = w;
+      else groups.push({ from: w, to: w, s: sp[0], e: sp[1] });
+    }
+    return groups.map(g => `${WD_NAMES[g.from]}${g.to > g.from ? (g.to - g.from > 1 ? "–" : ", ") + WD_NAMES[g.to] : ""} ${span(g.s, g.e)}`).join(" · ") || "ingen dager";
+  }
 
   // ---------- state ----------
   const S = {
     view: "plan", date: weekday(TODAY), calMonth: monthOf(TODAY), selected: null,
-    me: null, canWrite: true, admin: false, dbOk: null,
-    fixed: new Map(), bIdx: new Map(), aIdx: new Map(), myBookings: [], myAway: [],
-    loaded: { fixed: false, bookings: false, away: false }, names: {}, msg: null, busy: false,
+    me: null, canWrite: true, admin: false, dbOk: null, auth: "loading", code: "",
+    holders: new Map(), bIdx: new Map(), aIdx: new Map(), myBookings: [], myAway: [], notices: [], codes: [], members: {},
+    loaded: { fixed: false, bookings: false, away: false }, names: {}, inits: {}, msg: null, busy: false, figure: null,
   };
-  let db = null, user = null, rangeUnsubs = [], rangeKey = null;
+  let db = null, auth = null, rangeUnsubs = [], rangeKey = null, subs = [], gateMsg = "", loggingIn = false;
   const ready = () => S.dbOk && S.loaded.fixed && S.loaded.bookings && S.loaded.away;
 
-  // normaliser dokumenter (tåler også gamle halvdags-reservasjoner)
   const HALF = { am: [WD_S, 12 * 60], pm: [12 * 60, WD_E] };
   function norm(id, d) {
     let s, e;
     if (d.start && d.end) { s = toMin(d.start); e = toMin(d.end); }
     else if (d.half && HALF[d.half]) [s, e] = HALF[d.half];
     else [s, e] = [WD_S, WD_E];
-    return { id, desk: d.desk, date: d.date, uid: d.uid, note: d.note || "", s, e };
+    return { id, desk: d.desk, date: d.date, uid: d.uid, by: d.by || d.uid, guest: d.guest || "", note: d.note || "", s, e };
   }
   function index(snap) {
     const m = new Map();
@@ -399,7 +502,7 @@ details[open] summary { margin-bottom: 10px; }
     return m;
   }
 
-  // ---------- occupancy logic ----------
+  // ---------- belegg ----------
   function subtract(base, cuts) {
     let parts = [base];
     for (const [cs, ce] of cuts) {
@@ -409,21 +512,21 @@ details[open] summary { margin-bottom: 10px; }
     }
     return parts;
   }
+  const holdersOf = desk => S.holders.get(desk) || [];
+  function fixedParts(h, date, bks, aways) { // tidsrom innehaveren faktisk har plassen denne dagen
+    const sp = hSpan(h, dow(date)); if (!sp) return [];
+    const mine = aways.filter(a => a.uid === h.uid);
+    return subtract(sp, mine.map(a => [a.s, a.e])).flatMap(p => subtract(p, bks.map(b => [b.s, b.e])));
+  }
   function dayInfo(date, deskId) {
-    if (holiday(date)) return { kind: "closed", ints: [], free: [], aways: [], fixed: S.fixed.get(deskId), mine: false };
-    if (!ready()) return { kind: "unknown", ints: [], mine: false };
+    const hs = holdersOf(deskId);
+    if (holiday(date)) return { kind: "closed", ints: [], free: [], aways: [], holders: hs, mine: false };
+    if (!ready()) return { kind: "unknown", ints: [], free: [], aways: [], holders: hs, mine: false };
     const k = date + "|" + deskId;
-    const f = S.fixed.get(deskId);
     const bks = (S.bIdx.get(k) || []).map(b => ({ ...b, src: "booking" }));
+    const aways = S.aIdx.get(k) || [];
     const ints = [...bks];
-    let aways = [], off = false;
-    if (f) {
-      aways = (S.aIdx.get(k) || []).filter(a => a.uid === f.uid);
-      off = !daysOf(f).includes(dow(date));
-      const free = off ? [] : subtract([WD_S, WD_E], aways.map(a => [a.s, a.e]));
-      const fixedParts = free.flatMap(p => subtract(p, bks.map(b => [b.s, b.e])));
-      for (const [s, e] of fixedParts) ints.push({ s, e, uid: f.uid, note: f.note || "", src: "fixed" });
-    }
+    for (const h of hs) for (const [s, e] of fixedParts(h, date, bks, aways)) ints.push({ s, e, uid: h.uid, note: h.note || "", src: "fixed", hid: h.id });
     ints.sort((a, b) => a.s - b.s);
     const freeLeft = subtract([WD_S, WD_E], ints.map(i => [i.s, i.e]));
     const freeMin = freeLeft.reduce((t, [s, e]) => t + (e - s), 0);
@@ -431,7 +534,7 @@ details[open] summary { margin-bottom: 10px; }
     if (freeMin === WD_E - WD_S) kind = "free";
     else if (freeMin === 0) kind = ints.every(i => i.src === "fixed") ? "fixed" : "booked";
     else kind = "partial";
-    return { kind, ints, free: freeLeft, fixed: f, aways, off, mine: ints.some(i => i.uid === S.me) };
+    return { kind, ints, free: freeLeft, holders: hs, aways, mine: ints.some(i => i.uid === S.me) };
   }
   function dayStats(date) {
     let free = 0, partial = 0, full = 0;
@@ -439,13 +542,12 @@ details[open] summary { margin-bottom: 10px; }
     return { free, partial, full };
   }
   const nameOf = uid => (uid === S.me ? "Deg" : (S.names[uid] || "En kollega"));
-  const initials = uid => {
-    if (uid === S.me && !S.names[uid]) return "DU";
-    const n = S.names[uid]; if (!n) return "•";
-    const p = n.trim().split(/\s+/); return ((p[0]?.[0] || "") + (p.length > 1 ? p[p.length - 1][0] : "")).toUpperCase();
-  };
+  const fullName = uid => S.names[uid] || "En kollega";
+  const who = i => i.guest ? `${i.guest} (gjest)` : nameOf(i.uid);
+  const iniFrom = n => { const p = String(n || "").trim().split(/\s+/).filter(Boolean); if (!p.length) return "•"; return ((p[0][0] || "") + (p.length > 1 ? p[p.length - 1][0] : (p[0][1] || ""))).toUpperCase(); };
+  const initials = i => i.guest ? iniFrom(i.guest) : (S.inits[i.uid] || iniFrom(S.names[i.uid]));
 
-  // ---------- plan drawing ----------
+  // ---------- plantegning ----------
   const svg = document.getElementById("plan");
   const NS = "http://www.w3.org/2000/svg";
   function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
@@ -488,50 +590,132 @@ details[open] summary { margin-bottom: 10px; }
       E.txt.innerHTML = "";
       const lines = [];
       if (info.kind === "booked" || info.kind === "fixed") {
-        const uids = [...new Set(info.ints.map(i => i.uid))];
-        if (uids.length === 1) lines.push(["dini", initials(uids[0])]);
+        const ppl = [...new Set(info.ints.map(i => i.guest ? "g:" + i.guest : i.uid))];
+        if (ppl.length === 1) lines.push(["dini", initials(info.ints[0])]);
         else info.ints.slice(0, 3).forEach(i => lines.push(["dtime", span(i.s, i.e)]));
       } else if (info.kind === "partial") {
-        const shown = info.ints.slice(0, 3);
-        shown.forEach(i => lines.push(["dtime", span(i.s, i.e)]));
+        info.ints.slice(0, 3).forEach(i => lines.push(["dtime", span(i.s, i.e)]));
         if (info.ints.length > 3) lines.push(["dtime", `+${info.ints.length - 3}`]);
       }
       const lh = 22, top = E.y + E.h / 2 - (lines.length - 1) * lh / 2 + (E.h > 70 ? 8 : 6);
       lines.forEach(([cls, t], i) => { el("text", { x: E.x + E.w / 2, y: top + i * lh, "text-anchor": "middle", class: cls }, E.txt).textContent = t; });
       const desc = info.kind === "closed" ? "stengt (helligdag)" : info.kind === "unknown" ? "ukjent" : info.kind === "free" ? "ledig hele dagen" :
-        info.ints.map(i => `${span(i.s, i.e)} ${nameOf(i.uid)}${i.src === "fixed" ? " (fast)" : ""}${i.note ? " – " + i.note : ""}`).join("; ");
+        info.ints.map(i => `${span(i.s, i.e)} ${who(i)}${i.src === "fixed" ? " (fast)" : ""}${i.note ? " – " + i.note : ""}`).join("; ");
       E.title.textContent = `Plass ${d.num}: ${desc}`;
     }
   }
 
-  // ---------- day strip ----------
+  // ---------- Nils ----------
+  let walker = null, walking = false;
+  function setupWalker() {
+    const has = !!S.figure?.img;
+    if (!has) { if (walker) { walker.g.remove(); walker = null; } return; }
+    if (walker && walker.src === S.figure.img) return;
+    if (walker) walker.g.remove();
+    const R = 46;
+    const g = el("g", { class: "walker", tabindex: "0", role: "button", "aria-label": `${S.figure.name || "Figur"} – trykk for å sende ham til pult 10` }, svg);
+    const body = el("g", {}, g);
+    let defs = svg.querySelector("defs") || el("defs", {}, svg);
+    if (!svg.querySelector("#wclip")) { const cp = el("clipPath", { id: "wclip" }, defs); el("circle", { cx: 0, cy: 0, r: R }, cp); }
+    el("circle", { cx: 0, cy: 0, r: R, fill: "#ddd" }, body);
+    const img = el("image", { x: -R, y: -R, width: 2 * R, height: 2 * R, "clip-path": "url(#wclip)", preserveAspectRatio: "xMidYMid slice" }, body);
+    img.setAttribute("href", S.figure.img);
+    el("circle", { cx: 0, cy: 0, r: R, class: "ring" }, body);
+    const name = el("text", { x: 0, y: R + 26, "text-anchor": "middle", class: "wname" }, g); name.textContent = S.figure.name || "";
+    const hint = el("text", { x: 0, y: R + 48, "text-anchor": "middle", class: "whint" }, g); hint.textContent = "trykk på meg";
+    const bub = el("g", { class: "bubble", opacity: 0, "pointer-events": "none" }, g);
+    el("rect", { x: 30, y: -150, width: 180, height: 76, rx: 22 }, bub);
+    el("path", { d: "M70 -76 L52 -50 L95 -76 Z", fill: "#fff", stroke: "none" }, bub);
+    const bt = el("text", { x: 52, y: -101 }, bub); bt.textContent = "Hei!";
+    el("circle", { cx: 172, cy: -112, r: 22, fill: "#ffd84d", stroke: "#14202a", "stroke-width": 3 }, bub);
+    el("circle", { cx: 164, cy: -118, r: 3, fill: "#14202a" }, bub); el("circle", { cx: 180, cy: -118, r: 3, fill: "#14202a" }, bub);
+    el("path", { d: "M161 -107 Q172 -96 183 -107", class: "sm" }, bub);
+    walker = { g, body, name, hint, bub, src: S.figure.img, x: WALK[0][0], y: WALK[0][1] };
+    placeWalker(WALK[0][0], WALK[0][1], 0, 0);
+    const go = () => startWalk();
+    g.addEventListener("click", go);
+    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  }
+  function placeWalker(x, y, rot, bob) {
+    walker.x = x; walker.y = y;
+    walker.g.setAttribute("transform", `translate(${x} ${y})`);
+    walker.body.setAttribute("transform", `translate(0 ${bob}) rotate(${rot})`);
+  }
+  const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function walkPath(pts, speed) {
+    return new Promise(res => {
+      const segs = []; let total = 0;
+      for (let i = 1; i < pts.length; i++) { const L = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push([pts[i - 1], pts[i], L]); total += L; }
+      const t0 = performance.now();
+      const frame = now => {
+        if (!walker) return res();
+        let d = Math.min(total, (now - t0) / 1000 * speed), rest = d;
+        let x = pts[pts.length - 1][0], y = pts[pts.length - 1][1];
+        for (const [a, b, L] of segs) { if (rest <= L) { const f = L ? rest / L : 1; x = a[0] + (b[0] - a[0]) * f; y = a[1] + (b[1] - a[1]) * f; break; } rest -= L; }
+        const ph = d / 16;
+        const rot = reduceMotion() ? 0 : Math.sin(ph) * 10, bob = reduceMotion() ? 0 : -Math.abs(Math.sin(ph)) * 9;
+        placeWalker(x, y, rot, bob);
+        if (d < total) requestAnimationFrame(frame); else { placeWalker(x, y, 0, 0); res(); }
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  async function hop(n) {
+    for (let i = 0; i < n && walker; i++) {
+      const t0 = performance.now();
+      await new Promise(res => { const f = now => { if (!walker) return res(); const p = Math.min(1, (now - t0) / 380); placeWalker(walker.x, walker.y, 0, -Math.sin(p * Math.PI) * 26); p < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
+    }
+  }
+  async function startWalk() {
+    if (walking || !walker) return;
+    walking = true; walker.hint.setAttribute("opacity", 0);
+    await walkPath(WALK, 150);
+    if (walker) walker.bub.setAttribute("opacity", 1);
+    await hop(2); await sleep(1800);
+    if (walker) walker.bub.setAttribute("opacity", 0);
+    await walkPath([...WALK].reverse(), 150);
+    if (walker) walker.hint.setAttribute("opacity", 1);
+    walking = false;
+  }
+
+  // ---------- dagstripe ----------
   const dayList = document.getElementById("daylist");
   function renderDays() {
     const mon = monday(S.date);
     dayList.innerHTML = "";
+    const n = DESKS.length;
     for (let i = 0; i < 7; i++) {
       const date = addDays(mon, i);
+      const isToday = date === TODAY;
+      const dn = `<span class="dname"><span class="full">${esc(fmtShort(date))}</span><span class="short">${esc(parse(date).toLocaleDateString("nb-NO", { weekday: "short" }).replace(".", ""))} ${parse(date).getDate()}</span>${isToday ? '<span class="todaybadge">I DAG</span>' : ""}</span><span class="wkno">Uke ${isoWeek(date)}</span>`;
       if (i >= 5) {
         const w = document.createElement("div");
-        w.className = "day wkend"; w.setAttribute("aria-label", fmtLong(date) + ", helg");
-        w.innerHTML = `<span class="dname">${esc(fmtShort(date))}${date === TODAY ? '<span class="today-tag">i dag</span>' : ""}</span><span class="dcount wkname">${holiday(date) ? esc(holiday(date)) : "Helg"}</span>`;
+        w.className = "day wkend" + (isToday ? " today" : ""); w.setAttribute("aria-label", fmtLong(date) + ", helg");
+        w.innerHTML = `${dn}<span class="dcount wkname">${holiday(date) ? esc(holiday(date)) : "Helg"}</span>`;
         dayList.appendChild(w); continue;
       }
       const st = dayStats(date);
-      const n = DESKS.length;
       const b = document.createElement("button");
-      b.className = "day" + (holiday(date) ? " hol" : ""); b.type = "button"; b.setAttribute("aria-pressed", String(date === S.date));
-      b.innerHTML = `<span class="dname">${esc(fmtShort(date))}${date === TODAY ? '<span class="today-tag">i dag</span>' : ""}</span>
-        <span class="dcount">${holiday(date) ? `<span class="holname">${esc(holiday(date))}</span>` : ready() ? `${st.free} ledige${st.partial ? ` · ${st.partial} delvis` : ""}` : "…"}</span>
+      b.className = "day" + (holiday(date) ? " hol" : "") + (isToday ? " today" : ""); b.type = "button"; b.setAttribute("aria-pressed", String(date === S.date));
+      if (isToday) b.setAttribute("aria-current", "date");
+      b.innerHTML = `${dn}
+        <span class="dcount">${holiday(date) ? `<span class="holname">${esc(holiday(date))}</span>` : ready() ? `${st.free} ledige${st.partial ? `<span class="pd"> · ${st.partial} delvis</span>` : ""}` : "…"}</span>
         <span class="bar">${ready() && !holiday(date) ? `<i class="b1" style="width:${100 * st.full / n}%"></i><i class="b2" style="width:${100 * st.partial / n}%"></i>` : ""}</span>`;
       b.addEventListener("click", () => setDate(date));
       dayList.appendChild(b);
     }
-    document.getElementById("planTitle").innerHTML = esc(fmtLong(S.date) + " · uke " + isoWeek(S.date)) + (holiday(S.date) ? `<span class="holpill">${esc(holiday(S.date))} – stengt</span>` : "");
+    document.getElementById("planTitle").innerHTML = esc(fmtLong(S.date) + " · uke " + isoWeek(S.date)) +
+      (S.date === TODAY ? `<span class="todaypill">I dag</span>` : "") +
+      (holiday(S.date) ? `<span class="holpill">${esc(holiday(S.date))} – stengt</span>` : "");
     document.getElementById("jumpDate").value = S.date;
+    if (dayList.scrollWidth > dayList.clientWidth && dayList._for !== S.date) {
+      const t = dayList.querySelector('[aria-pressed="true"]');
+      if (t) { dayList.scrollLeft = t.offsetLeft - (dayList.clientWidth - t.offsetWidth) / 2; dayList._for = S.date; }
+    }
   }
 
-  // ---------- calendar ----------
+  // ---------- kalender ----------
   const calGrid = document.getElementById("calgrid");
   function renderCal() {
     const m = S.calMonth;
@@ -544,14 +728,15 @@ details[open] summary { margin-bottom: 10px; }
     const n = DESKS.length;
     for (; d <= end; d = addDays(d, 1)) {
       const out = monthOf(d) !== m;
+      const tTag = d === TODAY ? '<span class="todaybadge">I dag</span>' : "";
       if (isWeekend(d)) {
-        html += `<div class="cday wkend${out ? " out" : ""}${d === TODAY ? " today" : ""}"><span class="cnum"><span>${parse(d).getDate()}</span>${d === TODAY ? '<span class="today-tag">i dag</span>' : ""}</span><span class="wkname">${holiday(d) ? esc(holiday(d)) : "Helg"}</span></div>`;
+        html += `<div class="cday wkend${out ? " out" : ""}${d === TODAY ? " today" : ""}"><span class="cnum"><span>${parse(d).getDate()}</span>${tTag}</span><span class="wkname">${holiday(d) ? esc(holiday(d)) : "Helg"}</span></div>`;
         continue;
       }
       const st = dayStats(d);
       const mineHere = ready() && DESKS.some(x => dayInfo(d, x.id).mine);
       html += `<button type="button" class="cday${out ? " out" : ""}${d < TODAY ? " past" : ""}${d === TODAY ? " today" : ""}${holiday(d) ? " hol" : ""}" data-date="${d}">
-        <span class="cnum"><span>${parse(d).getDate()}${dow(d) === 1 ? ` <small class="wk">uke ${isoWeek(d)}</small>` : ""}</span>${d === TODAY ? '<span class="today-tag">i dag</span>' : ""}</span>
+        <span class="cnum"><span>${parse(d).getDate()}${dow(d) === 1 ? ` <small class="wk">uke ${isoWeek(d)}</small>` : ""}</span>${tTag}</span>
         ${holiday(d) ? `<span class="holname">${esc(holiday(d))}</span>` : ready() ? `<span class="cfree">${st.free} <small>av ${n} ledige</small></span>
         <span class="bar"><i class="b1" style="width:${100 * st.full / n}%"></i><i class="b2" style="width:${100 * st.partial / n}%"></i></span>
         ${st.partial ? `<span class="dcount cpart">${st.partial} delvis ledige</span>` : ""}
@@ -560,6 +745,47 @@ details[open] summary { margin-bottom: 10px; }
     }
     calGrid.innerHTML = html;
     calGrid.querySelectorAll("[data-date]").forEach(b => b.addEventListener("click", () => { location.hash = "plan"; setDate(b.dataset.date); }));
+  }
+
+  // ---------- hjelpere for skjemaer ----------
+  function withKeep(root, html) { // bevarer det brukeren har skrevet når kortet tegnes på nytt
+    const keep = {}, open = {};
+    root.querySelectorAll("input[id]:not([type=file]), select[id], textarea[id]").forEach(i => { keep[i.id] = i.type === "checkbox" ? i.checked : i.value; });
+    root.querySelectorAll("details[id]").forEach(d => { open[d.id] = d.open; });
+    root.innerHTML = html;
+    for (const id in keep) { const i = root.querySelector("#" + CSS.escape(id)); if (i && !i.dataset.fresh) { if (i.type === "checkbox") i.checked = keep[id]; else i.value = keep[id]; } }
+    for (const id in open) { const d = root.querySelector("#" + CSS.escape(id)); if (d) d.open = open[id]; }
+  }
+  const togglesHTML = (prefix, checked) => `<fieldset class="wdays">${ALL_DAYS.map(n => `<label class="tog"><input type="checkbox" id="${prefix}${n}" value="${n}" ${checked.includes(n) ? "checked" : ""}><span>${WD_CAP[n]}</span></label>`).join("")}</fieldset>`;
+  const readToggles = (root, prefix) => ALL_DAYS.filter(n => root.querySelector("#" + prefix + n)?.checked);
+  function schedHTML(prefix, h) {
+    return `<div class="sched">${ALL_DAYS.map(w => { const sp = h ? hSpan(h, w) : [WD_S, WD_E]; const on = !!sp; const [s, e] = sp || [WD_S, WD_E];
+      return `<div class="schedrow"><label class="tog"><input type="checkbox" id="${prefix}D${w}" ${on ? "checked" : ""}><span>${WD_CAP[w]}</span></label>
+        <input type="time" id="${prefix}S${w}" step="900" value="${toHHMM(s)}" aria-label="${WD_CAP[w]} fra" ${on ? "" : "disabled"}><span class="dash">–</span>
+        <input type="time" id="${prefix}E${w}" step="900" value="${toHHMM(e)}" aria-label="${WD_CAP[w]} til" ${on ? "" : "disabled"}></div>`; }).join("")}
+      <div class="presets"><button type="button" data-sp="${prefix}|all">Alle dager 08–16</button><button type="button" data-sp="${prefix}|am">Formiddager 08–12</button><button type="button" data-sp="${prefix}|pm">Ettermiddager 12–16</button></div></div>`;
+  }
+  function wireSched(root, prefix) {
+    for (const w of ALL_DAYS) {
+      const cb = root.querySelector(`#${prefix}D${w}`); if (!cb) continue;
+      cb.addEventListener("change", () => { root.querySelector(`#${prefix}S${w}`).disabled = !cb.checked; root.querySelector(`#${prefix}E${w}`).disabled = !cb.checked; });
+    }
+    root.querySelectorAll(`[data-sp^="${prefix}|"]`).forEach(b => b.addEventListener("click", () => {
+      const mode = b.dataset.sp.split("|")[1]; const [s, e] = mode === "am" ? ["08:00", "12:00"] : mode === "pm" ? ["12:00", "16:00"] : ["08:00", "16:00"];
+      for (const w of ALL_DAYS) { if (mode === "all") root.querySelector(`#${prefix}D${w}`).checked = true; const on = root.querySelector(`#${prefix}D${w}`).checked;
+        root.querySelector(`#${prefix}S${w}`).value = s; root.querySelector(`#${prefix}E${w}`).value = e; root.querySelector(`#${prefix}S${w}`).disabled = !on; root.querySelector(`#${prefix}E${w}`).disabled = !on; }
+    }));
+  }
+  function readSched(root, prefix) {
+    const days = [], hours = {};
+    for (const w of ALL_DAYS) {
+      if (!root.querySelector(`#${prefix}D${w}`)?.checked) continue;
+      const s = root.querySelector(`#${prefix}S${w}`).value, e = root.querySelector(`#${prefix}E${w}`).value;
+      if (!s || !e || toMin(e) <= toMin(s)) return { error: `Til-tiden må være etter fra-tiden (${WD_CAP[w]}).` };
+      days.push(w); hours[String(w)] = [s, e];
+    }
+    if (!days.length) return { error: "Velg minst én dag." };
+    return { days, hours };
   }
 
   // ---------- panel ----------
@@ -572,44 +798,58 @@ details[open] summary { margin-bottom: 10px; }
     const ticks = []; for (let h = 8; h <= 16; h += 2) ticks.push(`<span>${pad(h)}</span>`);
     return `<div><div class="timeline" aria-hidden="true">${segs}</div><div class="ticks">${ticks.join("")}</div></div>`;
   }
-  function defaultTimes(info) {
-    const f = info.free?.[0];
-    return f ? [toHHMM(f[0]), toHHMM(f[1])] : ["08:00", "16:00"];
+  function memberOptions() {
+    const list = Object.entries(S.members).filter(([id]) => id !== S.me).sort((a, b) => a[1].localeCompare(b[1], "nb"));
+    return `<option value="">Meg selv</option>${list.map(([id, n]) => `<option value="m:${esc(id)}">${esc(n)}</option>`).join("")}<option value="guest">Annen person / gjest…</option>`;
+  }
+  function whoIsIn(date) {
+    const m = new Map();
+    for (const d of DESKS) for (const i of dayInfo(date, d.id).ints) {
+      const key = i.guest ? "g:" + i.guest : i.uid; if (!m.has(key)) m.set(key, { label: i.guest ? `${i.guest} (gjest)` : fullName(i.uid) + (i.uid === S.me ? " (deg)" : ""), items: [] });
+      m.get(key).items.push(`pl. ${d.num} ${span(i.s, i.e)}`);
+    }
+    return [...m.values()].sort((a, b) => a.label.localeCompare(b.label, "nb"));
   }
   function renderPanel() {
     const sel = S.selected;
     const info = sel ? dayInfo(S.date, sel) : null;
-    const sig = JSON.stringify([sel, S.date, S.me, S.canWrite, S.admin, S.dbOk, S.msg, S.busy, info && [info.kind, info.ints, info.fixed, info.aways], S.loaded, sel ? null : DESKS.map(d => dayInfo(S.date, d.id).kind).join(), S.names]);
+    const sig = JSON.stringify([sel, S.date, S.me, S.admin, S.dbOk, S.msg, S.busy, info && [info.kind, info.ints, info.holders, info.aways], S.loaded, sel ? null : DESKS.map(d => dayInfo(S.date, d.id).ints).flat(), S.names, S.members]);
     if (sig === panelSig) return;
     const sameSel = panelSig && JSON.parse(panelSig)[0] === sel && JSON.parse(panelSig)[1] === S.date;
     panelSig = sig;
-    const keep = {}; if (sameSel) panel.querySelectorAll("input[id]").forEach(i => { keep[i.id] = i.type === "checkbox" ? i.checked : i.value; });
+    if (!sameSel) panel.innerHTML = "";
     const msg = S.msg ? `<div class="msg ${S.msg.err ? "err" : ""}" role="status">${esc(S.msg.text)}</div>` : "";
     const can = S.canWrite && S.me && S.dbOk;
+    let html;
     if (!sel) {
       const free = [], part = [];
       for (const d of DESKS) { const i = dayInfo(S.date, d.id); if (i.kind === "free") free.push(d); else if (i.kind === "partial") part.push([d, i.free.map(([s, e]) => span(s, e)).join(", ")]); }
-      panel.innerHTML = `<div class="eyebrow">Ledig ${esc(fmtLong(S.date))}</div>
+      const people = ready() && !holiday(S.date) ? whoIsIn(S.date) : [];
+      html = `<div class="eyebrow">Ledig ${esc(fmtLong(S.date))}</div>
         ${msg}
-        ${holiday(S.date) ? `<p class="muted"><b>${esc(holiday(S.date))}</b> er helligdag – kontoret er stengt.</p>` : `<p class="muted">Trykk på en pult i tegningen, eller velg en ledig plass under.</p>`}
+        ${holiday(S.date) ? `<p class="muted"><b>${esc(holiday(S.date))}</b> er helligdag – kontoret er stengt.</p>` : `<p class="muted">Trykk på en pult i tegningen, eller velg en plass under.</p>`}
         ${!ready() || holiday(S.date) ? "" : free.length ? `<div class="chips">${free.map(d => `<button class="chip" data-pick="${d.id}">Plass ${d.num}</button>`).join("")}</div>` : `<p class="muted">Ingen pulter er ledige hele dagen.</p>`}
-        ${part.length ? `<div class="eyebrow">Ledig deler av dagen</div><div class="chips">${part.map(([d, t]) => `<button class="chip part" data-pick="${d.id}">Plass ${d.num} · ${esc(t)}</button>`).join("")}</div>` : ""}`;
+        ${part.length ? `<div class="eyebrow">Ledig deler av dagen</div><div class="chips">${part.map(([d, t]) => `<button class="chip part" data-pick="${d.id}">Plass ${d.num} · ${esc(t)}</button>`).join("")}</div>` : ""}
+        ${people.length ? `<div class="eyebrow">På kontoret (${people.length})</div><ul class="who">${people.map(p => `<li><span>${esc(p.label)}</span><span class="wd">${esc(p.items.join(", "))}</span></li>`).join("")}</ul>` : ""}`;
     } else {
       const d = DESK[sel];
-      const f = info.fixed;
-      const iAmFixed = f && f.uid === S.me;
-      let html = `<div class="deskhead"><h3>Plass ${d.num}</h3><span class="room">${esc(d.room)}</span></div>
-        <div class="eyebrow">${esc(fmtLong(S.date))}</div>
+      const myH = info.holders.find(h => h.uid === S.me);
+      const others = info.holders.filter(h => h.uid !== S.me);
+      html = `<div class="deskhead"><h3>Plass ${d.num}</h3><span class="room">${esc(d.room)}</span></div>
+        <div class="eyebrow">${esc(fmtLong(S.date))}${S.date === TODAY ? " · i dag" : ""}</div>
         ${info.kind !== "unknown" && info.kind !== "closed" ? timelineHTML(info) : ""}
         ${info.kind === "free" ? `<p class="muted">Ledig hele dagen.</p>` : info.kind === "closed" ? `<p class="muted">${esc(holiday(S.date))} – helligdag, kontoret er stengt.</p>` : info.kind === "unknown" ? `<p class="muted">Henter…</p>` :
           `<ul class="occ">${info.ints.map(i => `<li><i class="dot" style="background:${tColor(i)}"></i><span class="when">${span(i.s, i.e)}</span>
-            <span class="who">${i.src === "fixed" ? "Fast: " : ""}${esc(nameOf(i.uid))}${i.note ? `<span class="note">«${esc(i.note)}»</span>` : ""}</span>
-            <span>${can && i.src === "booking" && (i.uid === S.me || S.admin) ? `<button class="btn small danger" data-cancel="${i.id}">${i.uid === S.me ? "Avbestill" : "Fjern"}</button>` : ""}</span></li>`).join("")}</ul>`}
+            <span class="who">${i.src === "fixed" ? "Fast: " : ""}${esc(who(i))}${i.src === "booking" && i.by && i.by !== i.uid ? `<span class="note">booket av ${esc(nameOf(i.by))}</span>` : i.src === "booking" && i.guest ? `<span class="note">booket av ${esc(nameOf(i.uid))}</span>` : ""}${i.note ? `<span class="note">«${esc(i.note)}»</span>` : ""}</span>
+            <span>${can && i.src === "booking" && (i.uid === S.me || i.by === S.me || S.admin) ? `<button class="btn small danger" data-cancel="${i.id}">${i.uid === S.me || i.by === S.me ? "Avbestill" : "Fjern"}</button>` : ""}</span></li>`).join("")}</ul>`}
         ${msg}`;
-      if (can && info.free?.length && !iAmFixed) {
-        const [ds, de] = defaultTimes(info);
+      if (can && info.kind !== "closed" && info.kind !== "unknown") {
+        const [ds, de] = info.free?.[0] ? [toHHMM(info.free[0][0]), toHHMM(info.free[0][1])] : ["08:00", "16:00"];
         html += `<form id="bookForm">
           <div class="eyebrow">Book plassen</div>
+          ${info.kind === "booked" || info.kind === "fixed" ? `<p class="warnbox">Plassen er opptatt. Booker du likevel, får du spørsmål om å overta den.</p>` : ""}
+          <label class="field">Hvem booker du for?<select id="bkFor">${memberOptions()}</select></label>
+          <label class="field" id="bkGuestWrap" hidden>Navn på personen<input type="text" id="bkGuest" maxlength="60" placeholder="F.eks. Ola Nordmann"></label>
           <div class="presets">
             <button type="button" data-preset="08:00-16:00">Hele dagen</button>
             <button type="button" data-preset="08:00-12:00">08–12</button>
@@ -619,28 +859,30 @@ details[open] summary { margin-bottom: 10px; }
             <label class="field">Fra kl.<input type="time" id="bkFrom" step="900" value="${ds}"></label>
             <label class="field">Til kl.<input type="time" id="bkTo" step="900" value="${de}"></label>
           </div>
-          <div class="eyebrow">Gjenta</div>
-          <div class="presets">
-            <button type="button" data-until="0">Bare denne dagen</button>
-            <button type="button" data-until="28">4 uker</button>
-            <button type="button" data-until="91">3 mnd</button>
-            <button type="button" data-until="year">Ut året</button>
-          </div>
-          <label class="field">Til og med<input type="date" id="bkUntil" min="${S.date}" value="${S.date}"></label>
-          <div class="field">På disse dagene${togglesHTML("bkD", allDays)}</div>
+          <details id="bkRepeat"><summary>Gjenta (f.eks. hver mandag)</summary>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="presets">
+                <button type="button" data-until="28">4 uker</button>
+                <button type="button" data-until="91">3 mnd</button>
+                <button type="button" data-until="year">Ut året</button>
+              </div>
+              <label class="field">Til og med<input type="date" id="bkUntil" min="${S.date}" value="${S.date}"></label>
+              <div class="field">På disse dagene${togglesHTML("bkD", ALL_DAYS)}</div>
+            </div>
+          </details>
           <label class="field">Notat (valgfritt)<input type="text" id="bkNote" maxlength="120" placeholder="F.eks. «Teams 10–11»"></label>
           <button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Book plass ${d.num}</button>
         </form>`;
       }
-      if (iAmFixed) {
-        const myDays = daysOf(f);
-        html += `<div class="fixedbox mine"><span>Dette er din faste plass${f.note ? ` – «${esc(f.note)}»` : ""}. Den er reservert til deg <b>${esc(fmtDays(myDays))}</b>${myDays.length < 5 ? ". De andre dagene er den ledig for andre" : ""}.</span>
-          ${can ? `<div class="field">Dagene jeg jobber her${togglesHTML("fxD", myDays)}</div>
-          <div class="actions"><button class="btn small" type="button" id="saveDays" ${S.busy ? "disabled" : ""}>Lagre arbeidsdager</button></div>` : ""}
-          ${info.off ? `<span class="muted">Du jobber ikke ${esc(WD_LONG[dow(S.date)])}, så plassen er ledig for andre i dag.</span>` : ""}</div>
-        ${can ? `<details ${keep.awFrom ? "open" : ""}><summary>Jeg sitter ikke her en dag</summary>
+      // faste plasser
+      if (others.length || myH) html += `<div class="fixedbox"><div class="eyebrow">Faste innehavere</div><ul class="holders">${info.holders.map(h => `<li><b>${esc(h.uid === S.me ? "Deg" : fullName(h.uid))}</b> · ${esc(fmtSched(h))}${h.note ? ` – «${esc(h.note)}»` : ""}</li>`).join("")}</ul></div>`;
+      if (can && myH) {
+        html += `<details id="fxEdit"><summary>Endre mine faste dager og tider</summary>
+          <form id="fxForm"><p class="hint">Huk av dagene du sitter her fast, og velg klokkeslett for hver dag. Andre dager og tider er plassen ledig for andre.</p>
+          ${schedHTML("fx", myH)}<button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Lagre</button></form></details>
+          <details id="awDet"><summary>Jeg sitter ikke her en dag (ferie, hjemmekontor)</summary>
           <form id="awayForm">
-            <p class="muted">Plassen blir ledig for andre i tidsrommet du velger.</p>
+            <p class="hint">Plassen blir ledig for andre i tidsrommet du velger.</p>
             <div class="row2">
               <label class="field">Fra dato<input type="date" id="awFrom" value="${S.date}"></label>
               <label class="field">Til og med<input type="date" id="awTo" value="${S.date}"></label>
@@ -653,23 +895,17 @@ details[open] summary { margin-bottom: 10px; }
             <label class="field">Notat (valgfritt)<input type="text" id="awNote" maxlength="120" placeholder="F.eks. «Ferie»"></label>
             <button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Frigi plassen</button>
           </form></details>
-          ${info.aways.length ? `<div class="actions">${info.aways.map(a => `<button class="btn small ghost" data-undoaway="${a.id}">Angre frigitt ${span(a.s, a.e)}</button>`).join("")}</div>` : ""}
-          <div class="actions"><button class="btn danger small" id="releaseFixed">Gi fra meg fast plass</button></div>` : ""}`;
+          ${info.aways.filter(a => a.uid === S.me).length ? `<div class="actions">${info.aways.filter(a => a.uid === S.me).map(a => `<button class="btn small ghost" data-undoaway="${a.id}">Angre frigitt ${span(a.s, a.e)}</button>`).join("")}</div>` : ""}
+          <div class="actions"><button class="btn danger small" type="button" id="releaseFixed" data-hid="${esc(myH.id)}">Gi fra meg fast plass</button></div>`;
       } else if (can) {
-        const myFixed = [...S.fixed.entries()].find(([, v]) => v.uid === S.me);
-        html += `<div class="fixedbox">
-          ${f ? `<span>Fast plass for <b>${esc(nameOf(f.uid))}</b> (${esc(fmtDays(daysOf(f)))})${f.note ? ` – «${esc(f.note)}»` : ""}.${info.off ? ` ${esc(nameOf(f.uid))} jobber ikke ${esc(WD_LONG[dow(S.date)])}, så plassen kan bookes i dag.` : ""} Trykker du under, tar du over plassen, og ${esc(nameOf(f.uid))} mister den.</span>` : `<span>Sitter du her hver dag? Da reserveres plassen til deg til du gir den fra deg.</span>`}
-          ${myFixed && myFixed[0] !== sel ? `<span class="muted">Din nåværende faste plass (plass ${DESK[myFixed[0]].num}) blir ledig.</span>` : ""}
-          <div class="actions"><button class="btn ${f ? "danger" : "ghost"}" id="claimFixed" ${S.busy ? "disabled" : ""}>${f ? "Ta over som min faste plass" : "Jeg sitter her fast"}</button></div>
-        </div>`;
-      } else if (f) {
-        html += `<div class="fixedbox"><span>Fast plass for <b>${esc(nameOf(f.uid))}</b> (${esc(fmtDays(daysOf(f)))})${f.note ? ` – «${esc(f.note)}»` : ""}.</span></div>`;
+        html += `<details id="fxNew"><summary>Gjør til min faste plass</summary>
+          <form id="fxForm"><p class="hint">Velg hvilke dager du sitter her fast, og eventuelt bare fra et klokkeslett til et annet. Plassen er da reservert til deg disse tidene hver uke, og ledig for andre resten av tiden.</p>
+          ${others.length ? `<p class="hint">Plassen deles allerede (se over). Overlapper du med noen, får du spørsmål før noe endres.</p>` : ""}
+          ${schedHTML("fx", null)}<button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Gjør til min faste plass</button></form></details>`;
       }
-      if (!can && S.dbOk) html += `<p class="muted">Du har bare lesetilgang.</p>`;
-      html += `<div class="actions"><button class="btn small ghost" id="closeSel">Lukk</button></div>`;
-      panel.innerHTML = html;
+      html += `<div class="actions"><button class="btn small ghost" type="button" id="closeSel">Lukk</button></div>`;
     }
-    for (const id in keep) { const i = panel.querySelector("#" + CSS.escape(id)); if (i) { if (i.type === "checkbox") i.checked = keep[id]; else i.value = keep[id]; } }
+    withKeep(panel, html);
     wirePanel();
   }
   function wirePanel() {
@@ -678,76 +914,193 @@ details[open] summary { margin-bottom: 10px; }
     q("#closeSel")?.addEventListener("click", () => select(null));
     panel.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => { const [s, e] = b.dataset.preset.split("-"); q("#bkFrom").value = s; q("#bkTo").value = e; }));
     panel.querySelectorAll("[data-apreset]").forEach(b => b.addEventListener("click", () => { const [s, e] = b.dataset.apreset.split("-"); q("#awS").value = s; q("#awE").value = e; }));
+    panel.querySelectorAll("[data-until]").forEach(b => b.addEventListener("click", () => { const v = b.dataset.until; q("#bkUntil").value = v === "year" ? S.date.slice(0, 4) + "-12-31" : addDays(S.date, Number(v)); }));
+    const forSel = q("#bkFor");
+    if (forSel) { const upd = () => { q("#bkGuestWrap").hidden = forSel.value !== "guest"; }; forSel.addEventListener("change", upd); upd(); }
     q("#bookForm")?.addEventListener("submit", e => {
       e.preventDefault();
-      const until = q("#bkUntil").value || S.date;
-      const days = readToggles(panel, "bkD");
+      const rep = q("#bkRepeat").open;
+      let until = rep ? (q("#bkUntil").value || S.date) : S.date; if (until < S.date) until = S.date;
+      const days = rep ? readToggles(panel, "bkD") : ALL_DAYS;
       if (!days.length) { flash("Velg minst én dag i uka.", true); return; }
-      book(S.selected, q("#bkFrom").value, q("#bkTo").value, S.date, until < S.date ? S.date : until, q("#bkNote").value.trim(), until > S.date ? days : allDays);
+      const f = forSel.value;
+      let target = { uid: S.me, guest: "" };
+      if (f.startsWith("m:")) target = { uid: f.slice(2), guest: "" };
+      else if (f === "guest") { const g = q("#bkGuest").value.trim(); if (!g) { flash("Skriv navnet på personen du booker for.", true); return; } target = { uid: S.me, guest: g }; }
+      book(S.selected, q("#bkFrom").value, q("#bkTo").value, S.date, until, q("#bkNote").value.trim(), days, target);
     });
-    panel.querySelectorAll("[data-until]").forEach(b => b.addEventListener("click", () => {
-      const v = b.dataset.until;
-      q("#bkUntil").value = v === "year" ? S.date.slice(0, 4) + "-12-31" : addDays(S.date, Number(v));
-    }));
-    q("#saveDays")?.addEventListener("click", () => {
-      const days = readToggles(panel, "fxD");
-      if (!days.length) { flash("Velg minst én dag. Vil du ikke ha plassen lenger, trykk «Gi fra meg fast plass».", true); return; }
-      saveDays(S.selected, days);
-    });
+    if (q("#fxForm")) {
+      wireSched(panel, "fx");
+      q("#fxForm").addEventListener("submit", e => { e.preventDefault(); const r = readSched(panel, "fx"); if (r.error) { flash(r.error, true); return; } saveFixed(S.selected, r); });
+    }
     panel.querySelectorAll("[data-cancel]").forEach(b => b.addEventListener("click", () => cancel(b.dataset.cancel)));
     panel.querySelectorAll("[data-undoaway]").forEach(b => b.addEventListener("click", () => undoAway(b.dataset.undoaway)));
     q("#awayForm")?.addEventListener("submit", e => { e.preventDefault(); markAway(S.selected, q("#awFrom").value || S.date, q("#awTo").value || S.date, q("#awS").value, q("#awE").value, q("#awNote").value.trim()); });
-    q("#claimFixed")?.addEventListener("click", () => claimFixed(S.selected));
-    q("#releaseFixed")?.addEventListener("click", () => releaseFixed(S.selected));
+    q("#releaseFixed")?.addEventListener("click", ev => releaseFixed(ev.currentTarget.dataset.hid));
   }
 
-  // ---------- "mine" ----------
+  // ---------- mine ----------
   const mineEl = document.getElementById("mine");
   let mineSig = "";
   function renderMine() {
-    const myFixed = [...S.fixed.entries()].filter(([, v]) => v.uid === S.me);
-    const sig = JSON.stringify([S.me, S.myBookings, S.myAway, myFixed, S.dbOk]);
+    const myFixed = [...S.holders.values()].flat().filter(h => h.uid === S.me);
+    const sig = JSON.stringify([S.me, S.myBookings, S.myAway, myFixed, S.dbOk, S.notices, S.inits[S.me], S.names[S.me], S.busy]);
     if (sig === mineSig) return; mineSig = sig;
     if (!S.me || !S.dbOk) { mineEl.hidden = true; return; }
     mineEl.hidden = false;
-    const bk = [...S.myBookings].sort((a, b) => a.date.localeCompare(b.date) || a.s - b.s).slice(0, 40);
-    const aw = [...S.myAway].sort((a, b) => a.date.localeCompare(b.date) || a.s - b.s).slice(0, 40);
-    mineEl.innerHTML = `<h3>Mine plasser</h3>
-      ${myFixed.length ? myFixed.map(([id]) => `<div class="fixedbox mine"><span>Fast plass: <b>Plass ${DESK[id]?.num}</b> · ${esc(DESK[id]?.room)} · ${esc(fmtDays(daysOf(S.fixed.get(id))))}</span><div class="actions"><button class="btn small ghost" data-pick="${id}">Vis i tegningen</button></div></div>`).join("") : `<p class="muted">Du har ingen fast plass.</p>`}
-      <div class="eyebrow">Kommende bookinger</div>
-      ${bk.length ? `<ul class="list">${bk.map(b => `<li><span class="lt"><b>${esc(fmtShort(b.date))}</b> · Plass ${DESK[b.desk]?.num} · ${span(b.s, b.e)}${b.note ? `<span class="note">«${esc(b.note)}»</span>` : ""}</span><button class="btn small danger" data-cancel="${b.id}">Avbestill</button></li>`).join("")}</ul>` : `<p class="muted">Ingen bookinger fremover.</p>`}
-      ${aw.length ? `<div class="eyebrow">Dager du har frigitt fast plass</div>
-      <ul class="list">${aw.map(a => `<li><span class="lt"><b>${esc(fmtShort(a.date))}</b> · Plass ${DESK[a.desk]?.num} · ${span(a.s, a.e)}${a.note ? `<span class="note">«${esc(a.note)}»</span>` : ""}</span><button class="btn small ghost" data-undoaway="${a.id}">Angre</button></li>`).join("")}</ul>` : ""}`;
+    const bk = [...S.myBookings].sort((a, b) => a.date.localeCompare(b.date) || a.s - b.s);
+    const aw = [...S.myAway].sort((a, b) => a.date.localeCompare(b.date) || a.s - b.s);
+    const next = bk[0];
+    const myIni = S.inits[S.me] || iniFrom(S.names[S.me]);
+    const html = `<h3>Mine plasser</h3>
+      ${S.notices.map(n => `<div class="notice"><span>${esc(n.text)}</span><button class="btn small ghost" data-dismiss="${esc(n.id)}">OK</button></div>`).join("")}
+      ${myFixed.length ? myFixed.map(h => `<div class="fixedbox mine"><span>Fast plass: <b>Plass ${DESK[h.desk]?.num}</b> · ${esc(DESK[h.desk]?.room || "")}<br>${esc(fmtSched(h))}</span><div class="actions"><button class="btn small ghost" data-pick="${h.desk}">Vis / endre</button></div></div>`).join("") : `<p class="muted">Du har ingen fast plass.</p>`}
+      <p class="muted" style="margin:0">${next ? `Neste booking: <b>${esc(fmtShort(next.date))}</b> · plass ${DESK[next.desk]?.num} · ${span(next.s, next.e)}${next.guest ? ` (for ${esc(next.guest)})` : ""}` : "Ingen bookinger fremover."}</p>
+      ${bk.length ? `<details class="mybk" id="myBk"><summary>Mine bookinger (${bk.length})</summary>
+        <ul class="list">${bk.slice(0, 120).map(b => `<li><span class="lt"><b>${esc(fmtShort(b.date))}</b> · Plass ${DESK[b.desk]?.num} · ${span(b.s, b.e)}${b.guest ? `<span class="note">for ${esc(b.guest)}</span>` : ""}${b.by && b.by !== S.me ? `<span class="note">booket av ${esc(nameOf(b.by))}</span>` : ""}${b.note ? `<span class="note">«${esc(b.note)}»</span>` : ""}</span><button class="btn small danger" data-cancel="${b.id}">Avbestill</button></li>`).join("")}</ul>
+        <div class="actions"><button class="btn small ghost" id="icsBtn">Legg i kalender (Outlook/Google)</button></div></details>` : ""}
+      ${aw.length ? `<details class="mybk" id="myAw"><summary>Dager jeg har frigitt fast plass (${aw.length})</summary>
+      <ul class="list">${aw.map(a => `<li><span class="lt"><b>${esc(fmtShort(a.date))}</b> · Plass ${DESK[a.desk]?.num} · ${span(a.s, a.e)}${a.by && a.by !== S.me ? `<span class="note">overtatt av ${esc(nameOf(a.by))}</span>` : ""}${a.note ? `<span class="note">«${esc(a.note)}»</span>` : ""}</span><button class="btn small ghost" data-undoaway="${a.id}">Angre</button></li>`).join("")}</ul></details>` : ""}
+      <div class="field">Initialene dine på kartet
+        <form class="inirow" id="iniForm"><input id="iniIn" maxlength="3" value="${esc(myIni)}" aria-label="Initialer" data-fresh="1"><button class="btn small" type="submit">Lagre</button></form></div>`;
+    withKeep(mineEl, html);
     mineEl.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => { location.hash = "plan"; select(b.dataset.pick); }));
     mineEl.querySelectorAll("[data-cancel]").forEach(b => b.addEventListener("click", () => cancel(b.dataset.cancel)));
     mineEl.querySelectorAll("[data-undoaway]").forEach(b => b.addEventListener("click", () => undoAway(b.dataset.undoaway)));
+    mineEl.querySelectorAll("[data-dismiss]").forEach(b => b.addEventListener("click", () => db.collection("notices").doc(b.dataset.dismiss).delete().catch(() => {})));
+    mineEl.querySelector("#icsBtn")?.addEventListener("click", downloadIcs);
+    mineEl.querySelector("#iniForm").addEventListener("submit", e => { e.preventDefault(); saveInitials(mineEl.querySelector("#iniIn").value); });
+  }
+  function downloadIcs() {
+    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    const dt = (d, m) => d.replace(/-/g, "") + "T" + toHHMM(m).replace(":", "") + "00";
+    const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Maseskjaeret//Kontorplasser//NO", "CALSCALE:GREGORIAN"];
+    for (const b of S.myBookings) lines.push("BEGIN:VEVENT", `UID:${b.id}@maseskjaeret`, `DTSTAMP:${stamp}`, `DTSTART:${dt(b.date, b.s)}`, `DTEND:${dt(b.date, b.e)}`,
+      `SUMMARY:Kontorplass ${DESK[b.desk]?.num} – Måseskjæret${b.guest ? " (" + b.guest.replace(/[,;\\]/g, " ") + ")" : ""}`, `LOCATION:Måseskjæret\\, ${DESK[b.desk]?.room || ""}`, "END:VEVENT");
+    lines.push("END:VCALENDAR");
+    const blob = new Blob([lines.join("\r\n")], { type: "text/calendar" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "mine-kontorplasser.ics"; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
 
-  // ---------- names (fra members-samlingen) ----------
-  function resolveNames() {}
+  // ---------- admin ----------
+  const adminEl = document.getElementById("admin");
+  let adminSig = "";
+  const ALPHA = "abcdefghjkmnpqrstuvwxyz23456789";
+  const rand = n => [...crypto.getRandomValues(new Uint8Array(n))].map(x => ALPHA[x % ALPHA.length]).join("");
+  const slug = s => (String(s).toLowerCase().replace(/æ/g, "ae").replace(/ø/g, "o").replace(/å/g, "a")
+    .normalize("NFD").replace(/[̀-ͯ]/g, "").split(/\s+/)[0].replace(/[^a-z0-9]/g, "").slice(0, 12)) || "bruker";
+  const normCode = c => String(c || "").trim().toLowerCase().replace(/\s+/g, "");
+  const CODE_RE = /^[a-z0-9-]{4,40}$/;
+  async function copy(text) { try { await navigator.clipboard.writeText(text); flash(`Kopiert: ${text}`); } catch (e) { prompt("Kopier koden:", text); } }
+  function renderAdmin() {
+    const sig = JSON.stringify([S.admin, S.codes, S.code, S.figure?.at, S.figure?.name]);
+    if (sig === adminSig) return; adminSig = sig;
+    adminEl.hidden = !S.admin;
+    if (!S.admin) return;
+    const html = `<h3>Tilgang (admin)</h3>
+      <p class="muted">Lag en bruker til hver person. Koden er det eneste de trenger for å logge inn.</p>
+      <form class="admform" id="addForm">
+        <input type="text" id="addName" placeholder="Navn, f.eks. Kari Nordmann" maxlength="60" required aria-label="Navn">
+        <div class="codefield"><input type="text" id="addCode" placeholder="Kode/passord (tomt = tilfeldig)" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Kode"><button class="btn small ghost" type="button" id="genCode">Generer</button></div>
+        <p class="hint">Små bokstaver, tall og bindestrek, minst 4 tegn (ikke æ, ø, å).</p>
+        <button class="btn" type="submit">Lag bruker</button>
+      </form>
+      ${S.codes.length ? `<ul class="list admlist">${S.codes.map(c => `<li><span class="lt">${esc(c.name || "Uten navn")}${c.admin ? `<span class="badge">admin</span>` : ""}<span class="note" style="font-family:var(--f-mono);font-style:normal">${esc(c.code)}</span></span>
+        <span class="actions"><button class="btn small ghost" data-copy="${esc(c.code)}">Kopier</button>${c.code === S.code ? "" : `<button class="btn small ghost" data-adm="${esc(c.code)}">${c.admin ? "Fjern admin" : "Gjør til admin"}</button><button class="btn small ghost" data-renew="${esc(c.code)}">Ny kode</button><button class="btn small danger" data-revoke="${esc(c.code)}">Slett</button>`}</span></li>`).join("")}</ul>` : `<p class="muted">Ingen brukere ennå.</p>`}
+      <details id="figDet"><summary>Figur på kartet</summary>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <p class="hint">Last opp et bilde (f.eks. et ansikt). Figuren står ute oppe til venstre på kartet og går til pult 10 når noen trykker på den. Bildet lagres i databasen bak innloggingen, ikke i den offentlige koden.</p>
+          ${S.figure?.img ? `<div class="figprev"><img src="${esc(S.figure.img)}" alt=""><span>${esc(S.figure.name || "")}</span></div>` : ""}
+          <label class="field">Navn under figuren<input type="text" id="figName" maxlength="30" value="${esc(S.figure?.name || "Nils")}"></label>
+          <label class="field">Velg bilde (lagres med en gang)<input type="file" id="figFile" accept="image/*"></label>
+          <div class="actions"><button class="btn small" type="button" id="figSave">Lagre navn</button>${S.figure?.img ? `<button class="btn small danger" type="button" id="figDel">Fjern figur</button>` : ""}</div>
+        </div></details>`;
+    withKeep(adminEl, html);
+    const q = s => adminEl.querySelector(s);
+    q("#genCode").addEventListener("click", () => { const n = q("#addName").value.trim(); q("#addCode").value = (n ? slug(n) + "-" : "") + rand(6); });
+    q("#addForm").addEventListener("submit", ev => {
+      ev.preventDefault();
+      const name = q("#addName").value.trim(); if (!name) return;
+      let code = normCode(q("#addCode").value) || slug(name) + "-" + rand(6);
+      if (!CODE_RE.test(code)) { flash("Koden kan bare ha små bokstaver, tall og bindestrek, og må være 4–40 tegn.", true); return; }
+      const member = "m" + rand(12);
+      guard(async () => {
+        const ex = await db.collection("codes").doc(code).get();
+        if (ex.exists) { flash("Den koden er allerede i bruk. Velg en annen.", true); return; }
+        await db.collection("members").doc(member).set({ name, at: Date.now() });
+        await db.collection("codes").doc(code).set({ name, member, admin: false, at: Date.now() });
+        q("#addName").value = ""; q("#addCode").value = "";
+        flash(`Bruker laget for ${name}. Kode: ${code} – send den sammen med lenken.`);
+      });
+    });
+    adminEl.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => copy(b.dataset.copy)));
+    adminEl.querySelectorAll("[data-adm]").forEach(b => b.addEventListener("click", () => {
+      const c = S.codes.find(x => x.code === b.dataset.adm); if (!c) return;
+      if (!confirm(c.admin ? `Fjerne admin-rettighetene til ${c.name}?` : `Gi ${c.name} admin-rettigheter? De kan da lage, endre og slette brukere.`)) return;
+      guard(async () => { await db.collection("codes").doc(c.code).set({ name: c.name, member: c.member, admin: !c.admin, at: Date.now() }); flash(c.admin ? `${c.name} er ikke lenger admin.` : `${c.name} er nå admin.`); });
+    }));
+    adminEl.querySelectorAll("[data-renew]").forEach(b => b.addEventListener("click", () => {
+      const old = S.codes.find(c => c.code === b.dataset.renew); if (!old) return;
+      const custom = prompt(`Ny kode for ${old.name}. Skriv en kode, eller la feltet stå tomt for en tilfeldig:`, "");
+      if (custom === null) return;
+      const code = normCode(custom) || slug(old.name) + "-" + rand(6);
+      if (!CODE_RE.test(code)) { flash("Koden kan bare ha små bokstaver, tall og bindestrek, og må være 4–40 tegn.", true); return; }
+      guard(async () => {
+        const ex = await db.collection("codes").doc(code).get(); if (ex.exists) { flash("Den koden er allerede i bruk.", true); return; }
+        await db.collection("codes").doc(code).set({ name: old.name, member: old.member, admin: old.admin === true, at: Date.now() });
+        await db.collection("codes").doc(old.code).delete();
+        flash(`Ny kode for ${old.name}: ${code}`);
+      });
+    }));
+    adminEl.querySelectorAll("[data-revoke]").forEach(b => b.addEventListener("click", () => {
+      const c = S.codes.find(x => x.code === b.dataset.revoke); if (!c) return;
+      if (!confirm(`Slette brukeren til ${c.name}? De mister tilgangen med en gang. Bookingene deres blir liggende.`)) return;
+      guard(async () => { await db.collection("codes").doc(c.code).delete(); flash(`${c.name} har ikke lenger tilgang.`); });
+    }));
+    const saveFig = file => {
+      const name = q("#figName").value.trim().slice(0, 30);
+      guard(async () => {
+        let img = S.figure?.img || "";
+        if (file) img = await toThumb(file);
+        if (!img) { flash("Velg et bilde først.", true); return; }
+        await db.collection("assets").doc("figure").set({ img, name, at: Date.now() });
+        flash(file ? "Figuren er lagret og står nå på kartet." : "Navnet er lagret.");
+      });
+    };
+    q("#figFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) saveFig(f); });
+    q("#figSave").addEventListener("click", () => saveFig(null));
+    q("#figDel")?.addEventListener("click", () => { if (confirm("Fjerne figuren fra kartet?")) guard(async () => { await db.collection("assets").doc("figure").delete(); flash("Figuren er fjernet."); }); });
+  }
+  async function toThumb(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+      const side = Math.min(im.naturalWidth, im.naturalHeight), sx = (im.naturalWidth - side) / 2, sy = (im.naturalHeight - side) / 2;
+      const c = document.createElement("canvas"); c.width = c.height = 200;
+      c.getContext("2d").drawImage(im, sx, sy, side, side, 0, 0, 200, 200);
+      return c.toDataURL("image/jpeg", 0.85);
+    } finally { URL.revokeObjectURL(url); }
+  }
 
-  // ---------- render & routing ----------
+  // ---------- render og navigasjon ----------
   function render() {
     const inside = S.auth === "in";
     renderGate();
     document.querySelector(".tabs").hidden = !inside;
     document.getElementById("viewPlan").hidden = !inside || S.view !== "plan";
     document.getElementById("viewCal").hidden = !inside || S.view !== "cal";
+    document.getElementById("todaybar").innerHTML = `I dag: <b>${esc(fmtLong(TODAY))}</b> · uke ${isoWeek(TODAY)}`;
     if (!inside) return;
     renderAdmin();
-    document.getElementById("tabPlan").toggleAttribute("aria-current", false);
-    document.getElementById("tabCal").toggleAttribute("aria-current", false);
-    document.getElementById(S.view === "cal" ? "tabCal" : "tabPlan").setAttribute("aria-current", "page");
     if (S.view === "plan") { renderDays(); renderPlan(); renderPanel(); renderMine(); }
     else renderCal();
-    resolveNames();
   }
   function ensureRange() {
     if (!db || S.auth !== "in") return;
     const m = S.view === "cal" ? S.calMonth : monthOf(S.date);
-    // dekk hele uker i måneden, også uka til valgt dato
-    let from = monday(m + "-01"), to = addDays(monday(monthEnd(m)), 4);
-    if (S.view === "plan") { const mon = monday(S.date); if (mon < from) from = mon; const fri = addDays(mon, 4); if (fri > to) to = fri; }
+    let from = monday(m + "-01"), to = addDays(monday(monthEnd(m)), 6);
+    if (S.view === "plan") { const mon = monday(S.date); if (mon < from) from = mon; const sun = addDays(mon, 6); if (sun > to) to = sun; }
     const key = from + "|" + to;
     if (key === rangeKey) return;
     rangeKey = key;
@@ -765,80 +1118,102 @@ details[open] summary { margin-bottom: 10px; }
   }
   function select(id) { S.selected = id; S.msg = null; render(); if (id && window.matchMedia("(max-width: 980px)").matches) panel.scrollIntoView({ behavior: "smooth", block: "start" }); }
   function setDate(date) { S.date = weekday(date); S.calMonth = monthOf(S.date); S.msg = null; ensureRange(); render(); }
-  function flash(text, err) { S.msg = { text, err: !!err }; render(); }
+  function flash(text, err) { S.msg = { text, err: !!err }; render(); if (window.matchMedia("(max-width: 980px)").matches) panel.querySelector(".msg")?.scrollIntoView({ behavior: "smooth", block: "center" }); }
 
-  // ---------- data ops ----------
+  // ---------- dataoperasjoner ----------
   async function guard(fn) {
     if (S.busy) return; S.busy = true; S.msg = null; render();
     try { await fn(); }
     catch (e) {
+      console.error(e);
       if (e?.code === "permission-denied") flash("Du har ikke tilgang til å gjøre dette. Kontakt den som administrerer siden.", true);
       else if (e?.code === "resource-exhausted") flash("Dagens gratiskvote i Firebase er brukt opp. Prøv igjen i morgen.", true);
       else flash("Noe gikk galt under lagringen. Prøv igjen om litt.", true);
     } finally { S.busy = false; render(); }
   }
-  async function fetchDay(desk, date) {
-    const [b, a, f] = await Promise.all([
-      db.collection("bookings").where("desk", "==", desk).where("date", "==", date).get(),
-      db.collection("away").where("desk", "==", desk).where("date", "==", date).get(),
-      db.collection("fixed").doc(desk).get(),
+  const ovl = (s, e, a, b) => s < b && e > a;
+  async function deskData(desk) {
+    const [bq, aq] = await Promise.all([
+      db.collection("bookings").where("desk", "==", desk).get(),
+      db.collection("away").where("desk", "==", desk).get(),
     ]);
-    return { bks: b.docs.map(x => norm(x.id, x.data())), aws: a.docs.map(x => norm(x.id, x.data())), fixed: f.exists ? f.data() : null };
+    return { bks: bq.docs.map(x => norm(x.id, x.data())), aws: aq.docs.map(x => norm(x.id, x.data())), hs: holdersOf(desk) };
   }
-  const overlaps = (s, e, list) => list.some(i => s < i.e && e > i.s);
-  function book(desk, from, to, d1, d2, note, days = allDays) {
+  const sendNotice = (to, text) => to && to !== S.me ? db.collection("notices").add({ to, from: S.me, text: text.replace(/\.\.$/, ".").slice(0, 280), at: Date.now() }) : Promise.resolve();
+  const listDates = ds => ds.length > 6 ? `${ds.slice(0, 5).map(fmtShort).join(", ")} og ${ds.length - 5} dager til` : ds.map(fmtShort).join(", ");
+  function book(desk, from, to, d1, d2, note, days, target) {
     const s = toMin(from), e = toMin(to);
     if (!from || !to || e <= s) { flash("Til-klokkeslettet må være etter fra-klokkeslettet.", true); return; }
     guard(async () => {
-      const dates = weekdaysBetween(d1, d2).filter(d => days.includes(dow(d)));
+      const dates = workdaysBetween(d1, d2).filter(d => days.includes(dow(d)));
       if (!dates.length) { flash("Ingen arbeidsdager i det valgte tidsrommet.", true); return; }
-      // Hent alt for pulten én gang i stedet for dag for dag
-      const [bq, aq, fq] = await Promise.all([
-        db.collection("bookings").where("desk", "==", desk).get(),
-        db.collection("away").where("desk", "==", desk).get(),
-        db.collection("fixed").doc(desk).get(),
-      ]);
-      const allB = bq.docs.map(x => norm(x.id, x.data())), allA = aq.docs.map(x => norm(x.id, x.data()));
-      const fixed = fq.exists ? fq.data() : null;
-      let made = 0; const skipped = [];
-      for (const date of dates) {
-        const others = allB.filter(b => b.date === date && b.uid !== S.me);
-        let blocked = overlaps(s, e, others);
-        if (!blocked && fixed && fixed.uid !== S.me && daysOf(fixed).includes(dow(date))) {
-          const awayParts = allA.filter(a => a.date === date && a.uid === fixed.uid);
-          const fixedBusy = subtract([WD_S, WD_E], awayParts.map(a => [a.s, a.e])).map(([fs, fe]) => ({ s: fs, e: fe }));
-          blocked = overlaps(s, e, fixedBusy);
+      const { bks, aws, hs } = await deskData(desk);
+      const sameAsTarget = b => b.uid === target.uid && (b.guest || "") === (target.guest || "");
+      const plan = dates.map(date => {
+        const dayB = bks.filter(b => b.date === date);
+        const cB = dayB.filter(b => !sameAsTarget(b) && ovl(s, e, b.s, b.e));
+        const own = dayB.filter(b => sameAsTarget(b) && ovl(s, e, b.s, b.e));
+        const dayA = aws.filter(a => a.date === date);
+        const cF = [];
+        for (const h of hs) { if (h.uid === target.uid && !target.guest) continue;
+          for (const [fs, fe] of fixedParts(h, date, dayB, dayA)) if (ovl(s, e, fs, fe)) cF.push({ h, s: Math.max(s, fs), e: Math.min(e, fe) }); }
+        return { date, cB, cF, dup: own.length > 0 };
+      }).filter(p => !p.dup);
+      if (!plan.length) { flash("Dette er allerede booket.", true); return; }
+      const conflicts = plan.filter(p => p.cB.length || p.cF.length);
+      let take = plan;
+      if (conflicts.length) {
+        const byPerson = new Map();
+        for (const p of conflicts) {
+          for (const b of p.cB) { const k = b.guest ? `${b.guest} (gjest)` : fullName(b.uid); if (!byPerson.has(k)) byPerson.set(k, new Set()); byPerson.get(k).add(p.date); }
+          for (const c of p.cF) { const k = fullName(c.h.uid) + " (fast plass)"; if (!byPerson.has(k)) byPerson.set(k, new Set()); byPerson.get(k).add(p.date); }
         }
-        if (blocked) { skipped.push(date); continue; }
-        await db.collection("bookings").add({ desk, date, start: toHHMM(s), end: toHHMM(e), uid: S.me, note, at: Date.now() });
-        made++;
-        if (dates.length > 10 && made % 10 === 0) flash(`Booker … ${made} av ${dates.length}`);
+        const lines = [...byPerson].map(([k, set]) => `• ${k}: ${listDates([...set].sort())}`).join("\n");
+        const ok = confirm(`Plass ${DESK[desk].num} er allerede booket ${span(s, e)}:\n\n${lines}\n\nEr du sikker på at du vil booke likevel? Dette fjerner bookingen til personene over på disse dagene. De får beskjed når de logger inn.`);
+        if (!ok) {
+          take = plan.filter(p => !p.cB.length && !p.cF.length);
+          if (!take.length || !confirm(`Vil du heller bare booke dagene som er ledige (${take.length} ${take.length === 1 ? "dag" : "dager"})?`)) { flash("Ingenting ble booket."); return; }
+        }
       }
-      const skipTxt = skipped.length ? ` Hoppet over ${skipped.length > 6 ? skipped.length + " dager" : skipped.map(fmtShort).join(", ")} fordi plassen var opptatt.` : "";
-      if (!made) flash(`Plassen er opptatt ${span(s, e)} på de valgte dagene.`, true);
-      else flash(`Booket plass ${DESK[desk].num} ${span(s, e)}${made > 1 ? ` på ${made} dager` : ""}${days.length < 5 && made > 1 ? ` (${fmtDays(days)})` : ""}.${skipTxt}`);
-    });
-  }
-  function saveDays(desk, days) {
-    guard(async () => {
-      const ref = db.collection("fixed").doc(desk); const cur = await ref.get();
-      if (!cur.exists || cur.data().uid !== S.me) return;
-      await ref.set({ desk, uid: S.me, note: cur.data().note || "", at: Date.now(), days: [...days].sort() });
-      flash(`Lagret. Plass ${DESK[desk].num} er din ${fmtDays(days)}${days.length < 5 ? ", og ledig for andre de andre dagene" : ""}.`);
+      const me = fullName(S.me);
+      const victims = new Map(); // uid -> datoer
+      let made = 0;
+      for (const p of take) {
+        for (const b of p.cB) {
+          await db.collection("bookings").doc(b.id).delete();
+          if (b.uid !== S.me) { if (!victims.has(b.uid)) victims.set(b.uid, []); victims.get(b.uid).push(p.date); }
+          if (b.by && b.by !== b.uid && b.by !== S.me) { if (!victims.has(b.by)) victims.set(b.by, []); victims.get(b.by).push(p.date); }
+        }
+        for (const c of p.cF) {
+          await db.collection("away").add({ desk, date: p.date, start: toHHMM(c.s), end: toHHMM(c.e), uid: c.h.uid, by: S.me, note: `Overtatt av ${me}`.slice(0, 120), at: Date.now() });
+          if (!victims.has(c.h.uid)) victims.set(c.h.uid, []); victims.get(c.h.uid).push(p.date);
+        }
+        const doc = { desk, date: p.date, start: toHHMM(s), end: toHHMM(e), uid: target.uid, by: S.me, note, at: Date.now() };
+        if (target.guest) doc.guest = target.guest.slice(0, 60);
+        await db.collection("bookings").add(doc);
+        made++;
+        if (take.length > 10 && made % 10 === 0) flash(`Booker … ${made} av ${take.length}`);
+      }
+      for (const [uid, ds] of victims) await sendNotice(uid, `${me} har overtatt plass ${DESK[desk].num} (${span(s, e)}) ${listDates([...new Set(ds)].sort())}.`);
+      if (target.uid !== S.me && !target.guest) await sendNotice(target.uid, `${me} har booket plass ${DESK[desk].num} til deg ${span(s, e)} ${listDates(take.map(p => p.date))}.`);
+      const forTxt = target.guest ? ` for ${target.guest}` : target.uid !== S.me ? ` for ${fullName(target.uid)}` : "";
+      flash(`Booket plass ${DESK[desk].num}${forTxt} ${span(s, e)}${made > 1 ? ` på ${made} dager` : ""}${days.length < 5 && made > 1 ? ` (${fmtDays(days)})` : ""}.${victims.size ? " De som mistet plassen, har fått beskjed." : ""}`);
     });
   }
   function cancel(id) {
     guard(async () => {
       const ref = db.collection("bookings").doc(id); const cur = await ref.get();
-      if (cur.exists && (cur.data().uid === S.me || S.admin)) { await ref.delete(); flash("Bookingen er avbestilt."); }
+      if (!cur.exists) return;
+      const b = cur.data();
+      if (b.uid === S.me || b.by === S.me || S.admin) { await ref.delete(); flash("Bookingen er avbestilt."); }
     });
   }
   function markAway(desk, d1, d2, from, to, note) {
     const s = toMin(from), e = toMin(to);
     if (!from || !to || e <= s) { flash("Til-klokkeslettet må være etter fra-klokkeslettet.", true); return; }
     guard(async () => {
-      const days = weekdaysBetween(d1, d2);
-      for (const date of days) await db.collection("away").add({ desk, date, start: toHHMM(s), end: toHHMM(e), uid: S.me, note, at: Date.now() });
+      const days = workdaysBetween(d1, d2);
+      for (const date of days) await db.collection("away").add({ desk, date, start: toHHMM(s), end: toHHMM(e), uid: S.me, by: S.me, note, at: Date.now() });
       flash(days.length ? `Plass ${DESK[desk].num} er ledig for andre ${span(s, e)} ${days.length === 1 ? fmtShort(days[0]) : `på ${days.length} dager (${fmtShort(days[0])} – ${fmtShort(days[days.length - 1])})`}.` : "Ingen arbeidsdager i det valgte tidsrommet.", !days.length);
     });
   }
@@ -847,46 +1222,69 @@ details[open] summary { margin-bottom: 10px; }
       const ref = db.collection("away").doc(id); const cur = await ref.get();
       if (!cur.exists) return;
       const a = norm(id, cur.data());
-      const day = await fetchDay(a.desk, a.date);
-      const clash = day.bks.filter(b => b.uid !== S.me && b.s < a.e && b.e > a.s);
+      const { bks } = await deskData(a.desk);
+      const clash = bks.filter(b => b.date === a.date && b.uid !== S.me && b.s < a.e && b.e > a.s);
       await ref.delete();
-      flash(clash.length ? `Plassen er din igjen, men ${clash.map(b => nameOf(b.uid)).join(", ")} har allerede booket den ${clash.map(b => span(b.s, b.e)).join(", ")}. Den bookingen gjelder fortsatt.` : `Du sitter på plassen igjen ${fmtShort(a.date)}.`, !!clash.length);
+      flash(clash.length ? `Plassen er din igjen, men ${clash.map(b => who(b)).join(", ")} har allerede booket den ${clash.map(b => span(b.s, b.e)).join(", ")}. Den bookingen gjelder fortsatt.` : `Du sitter på plassen igjen ${fmtShort(a.date)}.`, !!clash.length);
     });
   }
-  function claimFixed(desk) {
+  function saveFixed(desk, sched) {
     guard(async () => {
-      for (const [id, v] of S.fixed) if (v.uid === S.me && id !== desk) await db.collection("fixed").doc(id).delete();
-      await db.collection("fixed").doc(desk).set({ desk, uid: S.me, note: "", at: Date.now() });
-      flash(`Plass ${DESK[desk].num} er nå din faste plass.`);
+      const mine = { days: sched.days, hours: sched.hours };
+      const all = [...S.holders.values()].flat();
+      // Andre på samme pult som overlapper → de mister de dagene
+      const changes = []; // {h, removeDays}
+      for (const h of all) {
+        if (h.desk !== desk && h.uid !== S.me) continue;
+        if (h.desk === desk && h.uid === S.me) continue;
+        const rm = sched.days.filter(w => { const a = hSpan(h, w), b = hSpan(mine, w); return a && b && ovl(a[0], a[1], b[0], b[1]); });
+        if (rm.length) changes.push({ h, rm });
+      }
+      const others = changes.filter(c => c.h.uid !== S.me);
+      const myOther = changes.filter(c => c.h.uid === S.me);
+      if (others.length || myOther.length) {
+        const lines = [
+          ...others.map(c => `• ${fullName(c.h.uid)} mister sin faste plass på ${joinOg(c.rm.map(w => WD_LONG[w]))}`),
+          ...myOther.map(c => `• Din faste plass ${DESK[c.h.desk]?.num} blir ledig på ${joinOg(c.rm.map(w => WD_LONG[w]))}`),
+        ].join("\n");
+        if (!confirm(`Dette overlapper med andre faste plasser:\n\n${lines}\n\nVil du fortsette?`)) { flash("Ingenting ble endret."); return; }
+      }
+      for (const { h, rm } of changes) {
+        const left = hDays(h).filter(w => !rm.includes(w));
+        const ref = db.collection("fixed").doc(h.id);
+        if (!left.length) await ref.delete();
+        else {
+          const hours = {}; for (const w of left) { const sp = hSpan(h, w); hours[String(w)] = [toHHMM(sp[0]), toHHMM(sp[1])]; }
+          await ref.set({ desk: h.desk, uid: h.uid, note: h.note || "", at: Date.now(), days: left, hours });
+        }
+        if (h.uid !== S.me) await sendNotice(h.uid, `${fullName(S.me)} har tatt over plass ${DESK[h.desk]?.num} som fast plass på ${joinOg(rm.map(w => WD_LONG[w]))}.${left.length ? ` Du har den fortsatt på ${joinOg(left.map(w => WD_LONG[w]))}.` : " Du har ikke lenger fast plass der."}`);
+      }
+      const myId = `${desk}__${S.me}`;
+      const legacy = holdersOf(desk).find(h => h.uid === S.me && h.id !== myId);
+      await db.collection("fixed").doc(myId).set({ desk, uid: S.me, note: legacy?.note || "", at: Date.now(), days: mine.days, hours: mine.hours });
+      if (legacy) await db.collection("fixed").doc(legacy.id).delete();
+      flash(`Plass ${DESK[desk].num} er din faste plass: ${fmtSched(mine)}.`);
     });
   }
-  function releaseFixed(desk) {
-    guard(async () => {
-      const ref = db.collection("fixed").doc(desk); const cur = await ref.get();
-      if (cur.exists && (cur.data().uid === S.me || S.admin)) await ref.delete();
-      flash(`Plass ${DESK[desk].num} er ikke lenger fast plass.`);
-    });
+  function releaseFixed(hid) {
+    if (!confirm("Gi fra deg den faste plassen?")) return;
+    guard(async () => { await db.collection("fixed").doc(hid).delete(); flash("Du har ikke lenger denne faste plassen."); });
+  }
+  function saveInitials(v) {
+    const ini = String(v || "").trim().toUpperCase().replace(/[^A-ZÆØÅ0-9]/g, "").slice(0, 3);
+    if (!ini) { flash("Skriv 1–3 bokstaver.", true); return; }
+    guard(async () => { await db.collection("members").doc(S.me).update({ initials: ini }); flash(`Initialene dine er nå ${ini}.`); });
   }
 
-  // ---------- subscriptions ----------
+  // ---------- banner og abonnementer ----------
   const banner = document.getElementById("banner");
   let fresh = false, slowTimer = null;
   function setBanner(text, warn) { banner.hidden = !text; banner.textContent = text || ""; banner.classList.toggle("warn", !!warn); }
-  function markFresh() { if (fresh) return; if (S.loaded.fixed && S.loaded.bookings && S.loaded.away) { fresh = true; clearTimeout(slowTimer); setBanner(S.canWrite || !S.me ? "" : "Du har bare lesetilgang til denne siden."); } }
+  function markFresh() { if (fresh) return; if (S.loaded.fixed && S.loaded.bookings && S.loaded.away) { fresh = true; clearTimeout(slowTimer); setBanner(""); } }
   function onErr(e) { clearTimeout(slowTimer); setBanner(e?.code === "permission-denied" ? "Du har ikke (lenger) tilgang. Last inn siden på nytt." : "Kunne ikke hente bookinger. Last inn siden på nytt.", true); }
-  // ---------- innlogging med personlig kode ----------
-  // Hver person får en kode (f.eks. «kari-7k3m9q») som administratoren lager på siden.
-  // Teknisk: anonym Firebase-innlogging + et «sessions»-dokument som peker på koden.
-  // Sikkerhetsreglene sjekker at koden finnes, så en slettet kode stenger personen ute med en gang.
-  let auth = null, subs = [], gateMsg = "", loggingIn = false;
-  S.auth = "loading"; S.code = ""; S.codes = [];
-  const gate = document.getElementById("gate");
-  const normCode = c => String(c || "").trim().toLowerCase().replace(/\s+/g, "");
-  const ALPHA = "abcdefghjkmnpqrstuvwxyz23456789";
-  const rand = n => [...crypto.getRandomValues(new Uint8Array(n))].map(x => ALPHA[x % ALPHA.length]).join("");
-  const slug = s => (String(s).toLowerCase().replace(/æ/g, "ae").replace(/ø/g, "o").replace(/å/g, "a")
-    .normalize("NFD").replace(/[̀-ͯ]/g, "").split(/\s+/)[0].replace(/[^a-z0-9]/g, "").slice(0, 12)) || "bruker";
 
+  // ---------- innlogging med personlig kode ----------
+  const gate = document.getElementById("gate");
   function renderGate() {
     const st = S.auth;
     gate.hidden = st === "in";
@@ -894,21 +1292,21 @@ details[open] summary { margin-bottom: 10px; }
     const err = gateMsg ? `<div class="msg err" role="status">${esc(gateMsg)}</div>` : "";
     if (st === "config") { gate.innerHTML = `<h2>Firebase er ikke satt opp</h2><p>Lim inn firebaseConfig øverst i index.html (se README).</p>`; return; }
     if (st === "loading") { gate.innerHTML = `<p>Logger inn…</p>`; return; }
+    if (gate.querySelector("#codeForm")) { const m = gate.querySelector(".msg"); if (m) m.remove(); if (err) gate.querySelector("#codeForm").insertAdjacentHTML("beforebegin", err); return; }
     gate.innerHTML = `<h2>Logg inn</h2>
       <p>Skriv inn den personlige koden du har fått.</p>
       ${err}
       <form id="codeForm" style="width:100%"><div class="addrow">
-        <input id="codeIn" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="f.eks. kari-7k3m9q" aria-label="Kode" required>
+        <input id="codeIn" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Din kode" aria-label="Kode" required>
         <button class="btn" type="submit">Logg inn</button></div></form>`;
     gate.querySelector("#codeForm").addEventListener("submit", ev => { ev.preventDefault(); loginCode(gate.querySelector("#codeIn").value); });
     gate.querySelector("#codeIn").focus();
   }
-
   async function loginCode(raw) {
     const code = normCode(raw);
     if (!code) return;
-    if (!/^[a-z0-9-]{4,40}$/.test(code)) { gateMsg = "Ukjent kode. Sjekk at du har skrevet den riktig."; render(); return; }
-    gateMsg = ""; loggingIn = true; stopAll(); S.auth = "loading"; render();
+    if (!CODE_RE.test(code)) { gateMsg = "Ukjent kode. Sjekk at du har skrevet den riktig."; render(); return; }
+    gateMsg = ""; loggingIn = true; stopAll(); S.auth = "loading"; gate.innerHTML = ""; render();
     try {
       if (!auth.currentUser) await auth.signInAnonymously();
       await db.collection("sessions").doc(auth.currentUser.uid).set({ code, at: Date.now() });
@@ -924,18 +1322,17 @@ details[open] summary { margin-bottom: 10px; }
   }
   async function logout() {
     try { if (auth.currentUser) await db.collection("sessions").doc(auth.currentUser.uid).delete(); } catch (e) {}
-    gateMsg = ""; stopAll(); S.auth = "out"; render();
+    gateMsg = ""; stopAll(); S.auth = "out"; gate.innerHTML = ""; render();
   }
-
   function stopAll() {
     subs.forEach(u => u()); subs = [];
     rangeUnsubs.forEach(u => u()); rangeUnsubs = []; rangeKey = null;
-    S.fixed = new Map(); S.bIdx = new Map(); S.aIdx = new Map(); S.myBookings = []; S.myAway = []; S.codes = [];
+    S.holders = new Map(); S.bIdx = new Map(); S.aIdx = new Map(); S.myBookings = []; S.myAway = []; S.codes = []; S.notices = []; S.members = {}; S.figure = null;
     S.loaded = { fixed: false, bookings: false, away: false }; S.me = null; S.admin = false; S.dbOk = null; S.selected = null; S.code = "";
     fresh = false; panelSig = ""; mineSig = ""; adminSig = "";
+    setupWalker();
     const chip = document.getElementById("me"); chip.hidden = true; chip.innerHTML = "";
   }
-
   async function enter(u) {
     if (loggingIn) return;
     stopAll();
@@ -949,7 +1346,7 @@ details[open] summary { margin-bottom: 10px; }
     } catch (e) { console.warn(e); }
     if (!info) {
       if (code) gateMsg = "Koden din er ikke gyldig lenger. Be om en ny kode.";
-      S.auth = "out"; setBanner(""); render(); return;
+      S.auth = "out"; setBanner(""); gate.innerHTML = ""; render(); return;
     }
     S.auth = "in"; S.me = info.member; S.code = code; S.admin = info.admin === true; S.dbOk = true; S.canWrite = true;
     S.names[S.me] = info.name || "Deg";
@@ -963,11 +1360,20 @@ details[open] summary { margin-bottom: 10px; }
     setBanner("Henter reservasjoner…");
     clearTimeout(slowTimer);
     slowTimer = setTimeout(() => { if (!fresh) setBanner("Får ikke kontakt med databasen ennå. Det som vises kan være utdatert.", true); }, 10000);
-    subs.push(db.collection("fixed").onSnapshot(snap => { const m = new Map(); snap.docs.forEach(d => m.set(d.id, d.data())); S.fixed = m; S.loaded.fixed = true; if (!snap.metadata.fromCache) markFresh(); render(); }, onErr));
-    subs.push(db.collection("members").onSnapshot(snap => { snap.docs.forEach(d => { S.names[d.id] = d.data().name || "En kollega"; }); render(); }, () => {}));
-    // Henter alle egne og filtrerer på dato i nettleseren (slipper å lage indekser i Firebase)
+    subs.push(db.collection("fixed").onSnapshot(snap => {
+      const m = new Map();
+      snap.docs.forEach(d => { const v = d.data(); const desk = v.desk || d.id; if (!DESK[desk]) return; if (!m.has(desk)) m.set(desk, []); m.get(desk).push({ id: d.id, desk, uid: v.uid, note: v.note || "", days: v.days, hours: v.hours || null }); });
+      S.holders = m; S.loaded.fixed = true; if (!snap.metadata.fromCache) markFresh(); render();
+    }, onErr));
+    subs.push(db.collection("members").onSnapshot(snap => {
+      const mem = {};
+      snap.docs.forEach(d => { const v = d.data(); S.names[d.id] = v.name || "En kollega"; mem[d.id] = v.name || "En kollega"; if (v.initials) S.inits[d.id] = v.initials; else delete S.inits[d.id]; });
+      S.members = mem; render();
+    }, () => {}));
     subs.push(db.collection("bookings").where("uid", "==", S.me).onSnapshot(snap => { S.myBookings = snap.docs.map(d => norm(d.id, d.data())).filter(b => b.date >= TODAY); render(); }, () => {}));
     subs.push(db.collection("away").where("uid", "==", S.me).onSnapshot(snap => { S.myAway = snap.docs.map(d => norm(d.id, d.data())).filter(b => b.date >= TODAY); render(); }, () => {}));
+    subs.push(db.collection("notices").where("to", "==", S.me).onSnapshot(snap => { S.notices = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.at || 0) - (a.at || 0)); render(); }, () => {}));
+    subs.push(db.collection("assets").doc("figure").onSnapshot(d => { S.figure = d.exists ? d.data() : null; setupWalker(); render(); }, () => {}));
     if (S.admin) subs.push(db.collection("codes").onSnapshot(snap => {
       S.codes = snap.docs.map(d => ({ code: d.id, ...d.data() })).sort((a, b) => String(a.name).localeCompare(String(b.name), "nb"));
       render();
@@ -976,61 +1382,7 @@ details[open] summary { margin-bottom: 10px; }
     render();
   }
 
-  // ---------- admin: personlige koder ----------
-  const adminEl = document.getElementById("admin");
-  let adminSig = "";
-  async function copy(text) { try { await navigator.clipboard.writeText(text); flash(`Kopiert: ${text}`); } catch (e) { prompt("Kopier koden:", text); } }
-  function renderAdmin() {
-    const sig = JSON.stringify([S.admin, S.codes, S.code]);
-    if (sig === adminSig) return; adminSig = sig;
-    adminEl.hidden = !S.admin;
-    if (!S.admin) return;
-    adminEl.innerHTML = `<h3>Tilgang</h3>
-      <p class="muted">Lag en personlig kode til hver person og send den til dem. Koden er det eneste de trenger for å logge inn. Sletter du koden, mister de tilgangen med en gang.</p>
-      <form id="addForm"><div class="addrow"><input type="text" id="addName" placeholder="Navn, f.eks. Kari Nordmann" required maxlength="60" aria-label="Navn"><button class="btn" type="submit">Lag kode</button></div></form>
-      ${S.codes.length ? `<ul class="list">${S.codes.map(c => `<li><span class="lt">${esc(c.name || "Uten navn")}${c.admin ? ` <small class="muted">(admin)</small>` : ""}<span class="note" style="font-family:var(--f-mono);font-style:normal">${esc(c.code)}</span></span>
-        <span class="actions" style="flex-wrap:nowrap"><button class="btn small ghost" data-copy="${esc(c.code)}">Kopier</button>${c.code === S.code ? "" : `<button class="btn small ghost" data-renew="${esc(c.code)}" title="Lag ny kode og slett den gamle">Ny kode</button><button class="btn small danger" data-revoke="${esc(c.code)}">Slett</button>`}</span></li>`).join("")}</ul>` : `<p class="muted">Ingen koder ennå.</p>`}`;
-    adminEl.querySelector("#addForm").addEventListener("submit", ev => {
-      ev.preventDefault();
-      const name = adminEl.querySelector("#addName").value.trim();
-      if (!name) return;
-      const member = "m" + rand(12), code = slug(name) + "-" + rand(6);
-      guard(async () => {
-        await db.collection("members").doc(member).set({ name, at: Date.now() });
-        await db.collection("codes").doc(code).set({ name, member, admin: false, at: Date.now() });
-        flash(`Kode for ${name}: ${code}  –  send den til personen sammen med lenken.`);
-      });
-    });
-    adminEl.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => copy(b.dataset.copy)));
-    adminEl.querySelectorAll("[data-renew]").forEach(b => b.addEventListener("click", () => {
-      const old = S.codes.find(c => c.code === b.dataset.renew); if (!old) return;
-      if (!confirm(`Lage ny kode for ${old.name}? Den gamle koden slutter å virke.`)) return;
-      const code = slug(old.name) + "-" + rand(6);
-      guard(async () => {
-        await db.collection("codes").doc(code).set({ name: old.name, member: old.member, admin: old.admin === true, at: Date.now() });
-        await db.collection("codes").doc(old.code).delete();
-        flash(`Ny kode for ${old.name}: ${code}`);
-      });
-    }));
-    adminEl.querySelectorAll("[data-revoke]").forEach(b => b.addEventListener("click", () => {
-      const c = S.codes.find(x => x.code === b.dataset.revoke); if (!c) return;
-      if (!confirm(`Slette koden til ${c.name}? Personen mister tilgangen med en gang. Bookingene deres blir liggende.`)) return;
-      guard(async () => { await db.collection("codes").doc(c.code).delete(); flash(`${c.name} har ikke lenger tilgang.`); });
-    }));
-  }
-
-  function start() {
-    route();
-    const cfg = FIREBASE_CONFIG;
-    if (!window.firebase || !cfg.apiKey || cfg.apiKey === "LIM-INN") { S.auth = "config"; setBanner(""); render(); return; }
-    firebase.initializeApp(cfg);
-    auth = firebase.auth();
-    db = firebase.firestore();
-    auth.onAuthStateChanged(u => { enter(u).catch(e => { console.error(e); setBanner("Noe gikk galt ved innlogging. Last inn siden på nytt.", true); }); });
-    render();
-  }
-
-  // ---------- controls ----------
+  // ---------- kontroller ----------
   document.getElementById("prevW").addEventListener("click", () => setDate(addDays(monday(S.date), -7)));
   document.getElementById("nextW").addEventListener("click", () => setDate(addDays(monday(S.date), 7)));
   document.getElementById("todayBtn").addEventListener("click", () => setDate(TODAY));
@@ -1041,8 +1393,21 @@ details[open] summary { margin-bottom: 10px; }
   window.addEventListener("hashchange", route);
 
   drawBase(); drawDesks();
-  start();
+  // På mobil: start kartet midt på i stedet for helt til venstre
+  let centered = false;
+  const centerPlan = () => { const sc = document.querySelector(".planscroll"); if (!centered && sc && sc.scrollWidth > sc.clientWidth && sc.clientWidth > 0) { sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) * 0.6; centered = true; } };
+  new MutationObserver(centerPlan).observe(document.getElementById("viewPlan"), { attributes: true });
+  (function start() {
+    route();
+    const cfg = FIREBASE_CONFIG;
+    if (!window.firebase || !cfg.apiKey || cfg.apiKey === "LIM-INN") { S.auth = "config"; setBanner(""); render(); return; }
+    firebase.initializeApp(cfg);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    auth.onAuthStateChanged(u => { enter(u).catch(e => { console.error(e); setBanner("Noe gikk galt ved innlogging. Last inn siden på nytt.", true); }); });
+    render();
+  })();
 })();
 </script>
-
-</body></html>
+</body>
+</html>
