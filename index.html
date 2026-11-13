@@ -297,6 +297,66 @@ details.mybk { border-top: 0; padding-top: 0; }
 .credit b { font-family: var(--f-display); font-weight: 600; color: var(--ink); letter-spacing: 0.02em; }
 .credit svg { color: var(--accent); }
 @media (max-width: 600px) { .cfree { padding: 0 6px; } .cfree small { display: none; } .cday .cnum { font-size: 1.05rem; } }
+/* v5: fra–til-velger */
+.rangebtn { display: grid; grid-template-columns: 1fr 1fr auto; align-items: center; gap: 0; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface2); color: var(--ink); text-align: left; overflow: hidden; }
+.rangebtn:hover { border-color: var(--accent); }
+.rangebtn .rb { display: flex; flex-direction: column; padding: 7px 11px; min-width: 0; }
+.rangebtn .rb + .rb { border-left: 1px solid var(--line); }
+.rangebtn .rb small { font-size: 0.7rem; color: var(--muted); }
+.rangebtn .rb b { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rangebtn .rbi { padding: 0 11px; color: var(--accent); display: flex; }
+body.pk-lock { overflow: hidden; }
+.pk-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(10, 18, 24, .45); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.pk { background: var(--surface); color: var(--ink); border-radius: 16px; width: min(760px, 100%); max-height: calc(100vh - 32px); overflow: auto; box-shadow: 0 20px 60px rgba(0,0,0,.25); display: flex; flex-direction: column; }
+.pk-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px 10px; }
+.pk-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; max-width: 420px; }
+.pk-box { border: 1px solid var(--line); border-radius: 10px; padding: 6px 12px; display: flex; flex-direction: column; }
+.pk-box.act { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.pk-box small { font-size: 0.72rem; color: var(--muted); }
+.pk-box b { font-weight: 600; text-transform: capitalize; }
+.pk-x { border: 0; background: transparent; font-size: 1.7rem; line-height: 1; color: var(--muted); padding: 4px 8px; }
+.pk-strip { display: flex; gap: 2px; overflow-x: auto; padding: 4px 16px 8px; border-bottom: 1px solid var(--line); }
+.pk-strip button { border: 0; background: transparent; color: var(--muted); font-size: 0.8rem; padding: 4px 10px; border-radius: 999px; white-space: nowrap; text-transform: capitalize; }
+.pk-strip button.on { background: var(--surface2); color: var(--ink); font-weight: 600; }
+.pk-strip button small { font-size: 0.68rem; color: var(--muted); }
+.pk-body { display: grid; grid-template-columns: 32px 1fr 32px; align-items: start; gap: 4px; padding: 12px 8px; }
+.pk-nav { border: 0; background: transparent; color: var(--accent); font-size: 1.6rem; line-height: 1; padding: 0; margin-top: 2px; }
+.pk-nav:disabled { color: var(--line); cursor: default; }
+.pk-months { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.pk-mtitle { text-align: center; font-family: var(--f-display); font-weight: 600; text-transform: capitalize; margin-bottom: 8px; }
+.pk-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px 0; }
+.pk-wd { text-align: center; font-size: 0.72rem; color: var(--muted); padding-bottom: 4px; }
+.pk-wd.we { color: var(--wkend-ink); }
+.pk-d { position: relative; height: 38px; border: 0; background: transparent; color: var(--ink); font-size: 0.9rem; font-variant-numeric: tabular-nums; display: flex; align-items: center; justify-content: center; border-radius: 0; }
+button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8px; }
+.pk-d.dis { color: var(--muted); opacity: .45; cursor: default; }
+.pk-d.we.dis, .pk-d.hol.dis { opacity: 1; color: var(--wkend-ink); background: var(--wkend); }
+.pk-d.hol.dis { background: var(--hol); color: var(--danger); }
+.pk-d.today { font-weight: 700; text-decoration: underline; text-decoration-color: var(--mine); text-decoration-thickness: 3px; text-underline-offset: 4px; }
+.pk-d.inr { background: var(--accent-soft); }
+.pk-d.inr.dis { background: color-mix(in srgb, var(--accent-soft) 55%, var(--wkend)); }
+.pk-d.s, .pk-d.e, .pk-d.only { background: var(--accent); color: var(--accent-ink); font-weight: 700; border-radius: 8px; }
+.pk-d.b-full::after, .pk-d.b-part::after { content: ""; position: absolute; bottom: 4px; left: 50%; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--booked); }
+.pk-d.b-part::after { background: var(--partial); }
+.pk-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 12px 16px 14px; border-top: 1px solid var(--line); }
+.pk-legend { display: flex; gap: 12px; font-size: 0.76rem; color: var(--muted); flex-wrap: wrap; }
+.pk-legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.pk-legend .lg-b { background: var(--booked); } .pk-legend .lg-p { background: var(--partial); } .pk-legend .lg-w { background: var(--wkend); border-radius: 2px; }
+.pk-sum { font-size: 0.88rem; flex: 1; min-width: 200px; text-align: right; }
+.pk-btns { display: flex; gap: 8px; }
+.pk-done { min-width: 96px; border-radius: 999px; }
+@media (max-width: 640px) {
+  .pk-overlay { align-items: flex-end; padding: 0; }
+  .pk { border-radius: 16px 16px 0 0; max-height: 92vh; }
+  .pk-months { grid-template-columns: 1fr; }
+  .pk-months .pk-month:nth-child(2) { display: none; }
+  .pk-sum { text-align: left; min-width: 0; flex-basis: 100%; }
+  .pk-btns { width: 100%; justify-content: flex-end; }
+}
+/* signatur på plantegningen */
+.plancredit .pc-gull { stroke: var(--accent); opacity: .7; }
+.plancredit .pc-t { font-family: var(--f-body); font-size: 22px; fill: var(--muted); letter-spacing: 0.06em; }
+.plancredit .pc-n { font-family: var(--f-display); font-size: 30px; font-weight: 600; fill: var(--muted); letter-spacing: 0.02em; }
 </style>
 </head>
 <body>
@@ -407,11 +467,6 @@ details.mybk { border-top: 0; padding-top: 0; }
   const WD_S = 7 * 60, WD_E = 18 * 60;     // åpningstid 07–18 (tidligst/senest man kan booke)
   const CORE_S = 9 * 60, CORE_E = 15 * 60; // kjernetid 09–15
   const STD = ["08:00", "16:00"];          // vanlig dag (forslag når ingenting annet er valgt)
-  // Hurtigvalg for tid – få og tydelige
-  const TIME_PRESETS = [["Vanlig dag", "08:00", "16:00"], ["Tidlig", "07:00", "15:00"], ["Sen", "10:00", "18:00"], ["Formiddag", "08:00", "12:00"], ["Ettermiddag", "12:00", "16:00"]];
-  const prefKey = "mase.tid";
-  const getPref = () => { try { const v = localStorage.getItem(prefKey); if (v && /^\d\d:\d\d-\d\d:\d\d$/.test(v)) return v.split("-"); } catch (e) {} return STD; };
-  const setPref = (a, b) => { try { localStorage.setItem(prefKey, a + "-" + b); } catch (e) {} };
   const RUNS = [["#",37,0,11],["g",48,0,6],["#",54,0,6],["g",60,0,7],["#",67,0,2],["#",37,1,1],["g",43,1,1],["g",55,1,1],["#",68,1,1],["#",37,2,1],["g",43,2,1],["g",55,2,1],["#",68,2,1],["#",37,3,1],["g",43,3,1],["g",55,3,1],["l",68,3,1],["#",37,4,1],["g",43,4,1],["g",55,4,1],["l",68,4,1],["#",37,5,1],["g",43,5,1],["g",55,5,1],["l",68,5,1],["#",37,6,1],["g",43,6,1],["g",55,6,1],["l",68,6,1],["#",37,7,1],["g",43,7,1],["g",55,7,1],["l",68,7,1],["#",37,8,1],["g",43,8,1],["g",55,8,1],["l",68,8,1],["#",37,9,1],["g",43,9,1],["g",55,9,1],["#",68,9,1],["#",37,10,1],["g",43,10,1],["g",55,10,1],["#",68,10,1],["#",37,11,1],["g",38,11,18],["#",68,11,1],["#",37,12,1],["g",55,12,1],["#",68,12,1],["#",37,13,1],["g",55,13,13],["#",68,13,1],["g",37,14,1],["#",68,14,1],["g",37,15,1],["#",68,15,1],["g",37,16,1],["w",61,16,7],["#",68,16,1],["g",37,17,1],["w",61,17,7],["#",68,17,1],["g",37,18,1],["w",61,18,7],["#",68,18,1],["#",37,19,1],["w",61,19,7],["#",68,19,1],["#",37,20,1],["w",61,20,7],["#",68,20,1],["#",37,21,21],["w",61,21,7],["#",68,21,1],["#",37,22,1],["l",47,22,1],["#",57,22,1],["w",61,22,7],["#",68,22,1],["#",37,23,1],["l",47,23,1],["#",57,23,1],["w",61,23,7],["#",68,23,1],["#",37,24,1],["l",47,24,1],["#",57,24,1],["w",61,24,7],["#",68,24,1],["#",37,25,1],["c",41,25,3],["l",47,25,1],["#",57,25,1],["w",61,25,7],["#",68,25,1],["#",37,26,1],["c",41,26,3],["l",47,26,1],["#",57,26,1],["w",61,26,7],["#",68,26,1],["#",37,27,1],["c",41,27,3],["G",47,27,1],["l",51,27,7],["w",61,27,7],["#",68,27,1],["#",37,28,1],["c",41,28,3],["G",47,28,1],["G",57,28,1],["w",61,28,7],["#",68,28,1],["#",37,29,1],["c",41,29,3],["G",47,29,1],["G",57,29,1],["w",61,29,7],["#",68,29,1],["#",37,30,1],["c",41,30,3],["#",46,30,1],["l",47,30,1],["G",57,30,1],["w",61,30,7],["#",68,30,1],["#",37,31,1],["c",41,31,3],["G",47,31,1],["G",57,31,1],["w",61,31,7],["#",68,31,1],["#",37,32,1],["c",41,32,3],["l",47,32,1],["l",52,32,6],["w",61,32,7],["#",68,32,1],["#",37,33,1],["c",41,33,3],["l",47,33,1],["#",57,33,1],["w",61,33,7],["#",68,33,1],["#",37,34,1],["c",41,34,3],["l",47,34,1],["#",57,34,1],["w",61,34,7],["#",68,34,1],["#",37,35,1],["c",41,35,3],["l",47,35,1],["#",57,35,1],["w",61,35,7],["#",68,35,1],["#",37,36,1],["l",47,36,1],["#",57,36,1],["w",61,36,7],["#",68,36,1],["#",37,37,1],["l",47,37,1],["#",57,37,1],["w",61,37,7],["#",68,37,1],["#",0,38,58],["w",61,38,7],["l",68,38,1],["#",0,39,1],["#",7,39,1],["#",15,39,1],["#",25,39,1],["#",37,39,1],["#",57,39,1],["l",68,39,1],["#",0,40,1],["#",7,40,1],["#",15,40,1],["#",25,40,1],["#",37,40,1],["#",57,40,1],["l",68,40,1],["#",0,41,1],["#",7,41,1],["#",15,41,1],["#",25,41,1],["#",37,41,1],["y",39,41,16],["l",68,41,1],["#",0,42,8],["#",15,42,1],["#",25,42,1],["#",37,42,1],["y",39,42,16],["l",68,42,1],["#",0,43,1],["#",7,43,1],["#",15,43,1],["#",25,43,1],["#",37,43,1],["y",39,43,16],["l",68,43,1],["#",0,44,1],["#",7,44,1],["#",15,44,1],["#",25,44,1],["#",37,44,1],["y",39,44,16],["l",68,44,1],["#",0,45,1],["#",7,45,1],["#",15,45,1],["#",25,45,1],["#",37,45,1],["#",68,45,1],["#",0,46,1],["#",7,46,1],["#",15,46,1],["#",25,46,1],["#",37,46,1],["#",68,46,1],["#",0,47,1],["#",7,47,1],["#",15,47,1],["#",25,47,1],["k",30,47,5],["#",37,47,1],["#",68,47,1],["#",0,48,1],["#",7,48,1],["#",15,48,1],["#",25,48,1],["k",30,48,5],["#",37,48,1],["#",57,48,1],["l",58,48,1],["g",59,48,3],["l",62,48,6],["#",68,48,1],["#",0,49,1],["#",7,49,1],["#",15,49,1],["#",25,49,1],["k",30,49,5],["#",37,49,1],["#",57,49,1],["#",68,49,1],["#",0,50,1],["#",7,50,1],["D",15,50,1],["l",16,50,1],["G",17,50,3],["l",20,50,7],["G",27,50,3],["l",30,50,7],["#",37,50,1],["l",46,50,11],["#",57,50,1],["#",68,50,1],["#",0,51,1],["#",7,51,1],["D",15,51,1],["G",37,51,1],["l",46,51,1],["#",57,51,1],["#",68,51,1],["#",0,52,1],["#",7,52,1],["D",15,52,1],["G",37,52,1],["l",46,52,1],["#",57,52,1],["#",68,52,1],["#",0,53,1],["#",7,53,1],["D",15,53,1],["G",37,53,1],["l",46,53,1],["#",57,53,1],["#",68,53,1],["#",0,54,1],["#",7,54,1],["w",21,54,12],["G",37,54,1],["G",46,54,1],["c",49,54,6],["#",57,54,1],["#",68,54,1],["#",0,55,8],["w",21,55,12],["G",37,55,1],["G",46,55,1],["c",49,55,6],["#",57,55,1],["#",68,55,1],["#",0,56,1],["#",7,56,1],["w",21,56,12],["G",37,56,1],["v",39,56,5],["G",46,56,1],["c",49,56,6],["#",57,56,1],["#",68,56,1],["#",0,57,1],["#",7,57,1],["w",21,57,12],["#",37,57,1],["v",39,57,5],["l",46,57,1],["#",57,57,1],["#",68,57,1],["#",0,58,1],["#",7,58,1],["#",11,58,5],["w",21,58,12],["#",37,58,1],["v",39,58,5],["l",46,58,1],["#",57,58,1],["#",68,58,1],["#",0,59,1],["#",7,59,1],["#",11,59,5],["w",21,59,12],["#",37,59,1],["v",39,59,5],["l",46,59,1],["#",57,59,1],["#",68,59,1],["#",0,60,1],["#",7,60,1],["D",11,60,5],["w",21,60,12],["#",37,60,1],["v",39,60,5],["l",46,60,1],["#",57,60,1],["#",68,60,1],["#",0,61,19],["g",19,61,3],["#",22,61,3],["l",25,61,5],["#",30,61,2],["l",32,61,1],["G",33,61,3],["l",36,61,1],["b",37,61,20],["#",57,61,1],["g",58,61,10],["#",68,61,1],["#",10,62,1],["#",23,62,1],["#",31,62,1],["g",57,62,1],["w",62,62,6],["#",68,62,1],["#",10,63,1],["l",23,63,1],["l",31,63,1],["g",57,63,1],["w",62,63,6],["#",68,63,1],["#",10,64,1],["l",23,64,1],["l",31,64,1],["g",57,64,1],["w",62,64,6],["#",68,64,1],["#",10,65,1],["l",23,65,1],["l",31,65,1],["l",57,65,1],["#",68,65,1],["#",10,66,1],["l",23,66,1],["l",31,66,1],["l",57,66,1],["#",68,66,1],["#",10,67,1],["l",23,67,1],["l",31,67,1],["l",57,67,1],["#",68,67,1],["#",10,68,1],["l",23,68,1],["l",31,68,1],["l",57,68,1],["#",68,68,1],["#",10,69,5],["l",15,69,5],["#",20,69,4],["#",31,69,7],["l",38,69,3],["#",41,69,9],["l",50,69,3],["#",53,69,8],["l",61,69,3],["#",64,69,5]];
   // Pulter [kol, rad, bredde, høyde]
   const DESKS = [
@@ -595,6 +650,11 @@ details.mybk { border-top: 0; padding-top: 0; }
       if (kind === "v") { attrs.transform = `rotate(90 ${cx * CW} ${cy * CH})`; attrs.style = "font-size:20px"; }
       el("text", attrs, g).textContent = txt;
     }
+    // Signatur nede til venstre, utenfor bygget
+    const cr = el("g", { class: "plancredit", transform: `translate(${0.6 * CW} ${66.6 * CH})` }, g);
+    el("path", { d: "M0 10 Q12 -2 24 8 Q36 -2 48 10", fill: "none", "stroke-width": 3.5, "stroke-linecap": "round", class: "pc-gull" }, cr);
+    const t1 = el("text", { x: 0, y: 44, class: "pc-t" }, cr); t1.textContent = "Laget av";
+    const t2 = el("text", { x: 0, y: 78, class: "pc-n" }, cr); t2.textContent = "Mathias";
   }
   const deskEls = {};
   function drawDesks() {
@@ -820,6 +880,120 @@ details.mybk { border-top: 0; padding-top: 0; }
     return { days, hours };
   }
 
+  // ---------- datovelger fra–til (inspirert av flybooking) ----------
+  const CAL_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+  const fmtBox = d => parse(d).toLocaleDateString("nb-NO", { weekday: "short", day: "numeric", month: "short" });
+  function rangeFieldHTML(p, label) {
+    return `<div class="field">${label}
+      <button type="button" class="rangebtn" id="${p}Range">
+        <span class="rb"><small>Fra</small><b id="${p}FromTxt">${esc(fmtBox(S.date))}</b></span>
+        <span class="rb"><small>Til og med</small><b id="${p}ToTxt">${esc(fmtBox(S.date))}</b></span>
+        <span class="rbi">${CAL_ICON}</span>
+      </button>
+      <input type="hidden" id="${p}FromD" value="${S.date}"><input type="hidden" id="${p}ToD" value="${S.date}">
+      <span class="hint" id="${p}Sum"></span></div>`;
+  }
+  function syncRange(root, p) {
+    const f = root.querySelector(`#${p}FromD`)?.value, t = root.querySelector(`#${p}ToD`)?.value;
+    if (!f) return;
+    root.querySelector(`#${p}FromTxt`).textContent = fmtBox(f);
+    root.querySelector(`#${p}ToTxt`).textContent = fmtBox(t || f);
+    const n = workdaysBetween(f, t || f).length;
+    root.querySelector(`#${p}Sum`).textContent = (t && t !== f) ? `${n} ${n === 1 ? "arbeidsdag" : "arbeidsdager"} (helg og helligdager hoppes over)` : "";
+    const dw = root.querySelector(`#${p}DaysWrap`); if (dw) dw.hidden = n <= 1;
+  }
+  function wireRange(root, p, desk) {
+    const btn = root.querySelector(`#${p}Range`); if (!btn) return;
+    syncRange(root, p);
+    btn.addEventListener("click", () => openPicker(desk, root.querySelector(`#${p}FromD`).value, root.querySelector(`#${p}ToD`).value, (a, b) => {
+      root.querySelector(`#${p}FromD`).value = a; root.querySelector(`#${p}ToD`).value = b; syncRange(root, p);
+    }));
+  }
+  const PK = { start: null, end: null, hover: null, view: null, desk: null, data: null, onDone: null };
+  const pkEl = document.createElement("div"); pkEl.className = "pk-overlay"; pkEl.hidden = true;
+  pkEl.setAttribute("role", "dialog"); pkEl.setAttribute("aria-modal", "true"); pkEl.setAttribute("aria-label", "Velg datoer");
+  document.body.appendChild(pkEl);
+  const bookable = d => d >= TODAY && !isWeekend(d) && !holiday(d);
+  const pkKey = e => { if (e.key === "Escape") closePicker(false); };
+  function openPicker(desk, start, end, onDone) {
+    Object.assign(PK, { start, end: end && end !== start ? end : null, hover: null, view: monthOf(start), desk, data: null, onDone, fresh: true });
+    pkEl.hidden = false; document.body.classList.add("pk-lock"); renderPicker();
+    document.addEventListener("keydown", pkKey);
+    if (desk) deskData(desk).then(d => { if (PK.desk === desk && !pkEl.hidden) { PK.data = d; renderPicker(); } }).catch(() => {});
+    pkEl.querySelector(".pk-done")?.focus();
+  }
+  function closePicker(commit) {
+    if (commit && PK.start && PK.onDone) PK.onDone(PK.start, PK.end || PK.start);
+    pkEl.hidden = true; document.body.classList.remove("pk-lock"); document.removeEventListener("keydown", pkKey);
+  }
+  function busyOf(d) {
+    if (!PK.data || !bookable(d)) return "";
+    const bks = PK.data.bks.filter(b => b.date === d), aws = PK.data.aws.filter(a => a.date === d);
+    const ints = bks.map(b => [b.s, b.e]);
+    for (const h of PK.data.hs) for (const p of fixedParts(h, d, bks, aws)) ints.push(p);
+    if (!ints.length) return "";
+    return subtract([CORE_S, CORE_E], ints).reduce((t, [a, b]) => t + b - a, 0) === 0 ? "full" : "part";
+  }
+  function pkMonth(m) {
+    const wd = ["M", "T", "O", "T", "F", "L", "S"];
+    let html = `<div class="pk-month"><div class="pk-mtitle">${esc(fmtMonth(m))}</div><div class="pk-grid">${wd.map((w, i) => `<span class="pk-wd${i >= 5 ? " we" : ""}">${w}</span>`).join("")}`;
+    const lo = PK.start, hi = PK.end || (PK.hover && PK.start && PK.hover > PK.start ? PK.hover : null);
+    for (let d = monday(m + "-01"), end = addDays(monday(monthEnd(m)), 6); d <= end; d = addDays(d, 1)) {
+      if (monthOf(d) !== m) { html += `<span></span>`; continue; }
+      const ok = bookable(d), b = busyOf(d);
+      const cls = ["pk-d", ok ? "" : "dis", isWeekend(d) ? "we" : "", holiday(d) ? "hol" : "", d === TODAY ? "today" : "",
+        lo && hi && d > lo && d < hi ? "inr" : "", d === lo ? "s" : "", d === hi ? "e" : "", lo && d === lo && !hi ? "only" : "", b ? "b-" + b : ""].filter(Boolean).join(" ");
+      const tip = holiday(d) ? holiday(d) : isWeekend(d) ? "Helg" : d < TODAY ? "Passert" : b === "full" ? "Plassen er opptatt" : b === "part" ? "Plassen er delvis opptatt" : "";
+      html += ok ? `<button type="button" class="${cls}" data-pd="${d}" title="${esc(tip)}">${parse(d).getDate()}</button>` : `<span class="${cls}" title="${esc(tip)}">${parse(d).getDate()}</span>`;
+    }
+    return html + `</div></div>`;
+  }
+  function renderPicker() {
+    const first = monthOf(TODAY), v = PK.view < first ? first : PK.view; PK.view = v;
+    const months = []; for (let i = 0; i < 12; i++) months.push(addMonths(first, i));
+    const shown = [v, addMonths(v, 1)];
+    const end = PK.end || PK.start, n = PK.start ? workdaysBetween(PK.start, end).length : 0;
+    const sum = PK.fresh && PK.start ? `${fmtBox(PK.start)}${PK.end ? " – " + fmtBox(PK.end) : ""} · trykk på en dato for å velge på nytt` : !PK.start ? "Velg første dag" : !PK.end ? `${fmtBox(PK.start)} · velg siste dag, eller trykk Ferdig for bare én dag` : `${fmtBox(PK.start)} – ${fmtBox(PK.end)} · ${n} ${n === 1 ? "arbeidsdag" : "arbeidsdager"}`;
+    pkEl.innerHTML = `<div class="pk">
+      <div class="pk-head">
+        <div class="pk-boxes"><div class="pk-box${!PK.start || PK.end ? " act" : ""}"><small>Fra</small><b>${PK.start ? esc(fmtBox(PK.start)) : "–"}</b></div><div class="pk-box${PK.start && !PK.end ? " act" : ""}"><small>Til og med</small><b>${PK.end ? esc(fmtBox(PK.end)) : "–"}</b></div></div>
+        <button type="button" class="pk-x" data-act="cancel" aria-label="Lukk">×</button>
+      </div>
+      <div class="pk-strip">${months.map(m => `<button type="button" data-pm="${m}" class="${shown.includes(m) ? "on" : ""}">${esc(parse(m + "-01").toLocaleDateString("nb-NO", { month: "short" }).replace(".", ""))}${m.endsWith("-01") ? ` <small>${m.slice(0, 4)}</small>` : ""}</button>`).join("")}</div>
+      <div class="pk-body">
+        <button type="button" class="pk-nav" data-nav="-1" aria-label="Forrige måned" ${v <= first ? "disabled" : ""}>‹</button>
+        <div class="pk-months">${shown.map(pkMonth).join("")}</div>
+        <button type="button" class="pk-nav" data-nav="1" aria-label="Neste måned">›</button>
+      </div>
+      <div class="pk-foot">
+        <div class="pk-legend"><span><i class="lg-b"></i>Opptatt</span><span><i class="lg-p"></i>Delvis opptatt</span><span><i class="lg-w"></i>Helg/helligdag</span></div>
+        <div class="pk-sum">${esc(sum)}</div>
+        <div class="pk-btns"><button type="button" class="btn ghost small" data-act="reset">Nullstill</button><button type="button" class="btn pk-done" data-act="done" ${PK.start ? "" : "disabled"}>Ferdig</button></div>
+      </div></div>`;
+  }
+  pkEl.addEventListener("click", e => {
+    if (e.target === pkEl) return closePicker(false);
+    const t = e.target.closest("[data-pd],[data-pm],[data-nav],[data-act]"); if (!t) return;
+    if (t.dataset.pd) {
+      const d = t.dataset.pd;
+      if (!PK.start || PK.end || PK.fresh) { PK.start = d; PK.end = null; PK.fresh = false; }
+      else if (d < PK.start) PK.start = d;
+      else if (d === PK.start) PK.end = null;
+      else PK.end = d;
+      PK.hover = null;
+    } else if (t.dataset.pm) PK.view = t.dataset.pm;
+    else if (t.dataset.nav) PK.view = addMonths(PK.view, Number(t.dataset.nav));
+    else if (t.dataset.act === "cancel") return closePicker(false);
+    else if (t.dataset.act === "done") return closePicker(true);
+    else if (t.dataset.act === "reset") { PK.start = null; PK.end = null; PK.fresh = false; }
+    renderPicker();
+  });
+  pkEl.addEventListener("mouseover", e => {
+    const t = e.target.closest("[data-pd]");
+    const h = t ? t.dataset.pd : null;
+    if (PK.start && !PK.end && !PK.fresh && h !== PK.hover) { PK.hover = h; renderPicker(); }
+  });
+
   // ---------- panel ----------
   const panel = document.getElementById("panel");
   let panelSig = "";
@@ -877,32 +1051,18 @@ details.mybk { border-top: 0; padding-top: 0; }
             <span>${can && i.src === "booking" && (i.uid === S.me || i.by === S.me || S.admin) ? `<button class="btn small danger" data-cancel="${i.id}">${i.uid === S.me || i.by === S.me ? "Avbestill" : "Fjern"}</button>` : ""}</span></li>`).join("")}</ul>`}
         ${msg}`;
       if (can && info.kind !== "closed" && info.kind !== "unknown") {
-        const pref = getPref();
-        const [ds, de] = info.kind === "free" ? pref : info.free?.[0] ? [toHHMM(Math.max(info.free[0][0], toMin(pref[0]))), toHHMM(Math.min(info.free[0][1], Math.max(toMin(pref[1]), info.free[0][0] + 60)))] : pref;
+        const [ds, de] = STD;
         html += `<form id="bookForm">
           <div class="eyebrow">Book plassen</div>
           ${info.kind === "booked" || info.kind === "fixed" ? `<p class="warnbox">Plassen er opptatt. Booker du likevel, får du spørsmål om å overta den.</p>` : ""}
-          <div class="row2">
-            <label class="field">Dato<input type="date" id="bkDate" value="${S.date}"></label>
-            <label class="field">For hvem?<select id="bkFor">${memberOptions()}</select></label>
-          </div>
+          ${rangeFieldHTML("bk", "Når?")}
+          <div class="field" id="bkDaysWrap" hidden>Hvilke ukedager?${togglesHTML("bkD", ALL_DAYS)}</div>
+          <label class="field">For hvem?<select id="bkFor">${memberOptions()}</select></label>
           <label class="field" id="bkGuestWrap" hidden>Navn på personen<input type="text" id="bkGuest" maxlength="60" placeholder="F.eks. Ola Nordmann"></label>
-          <div class="presets tp">${TIME_PRESETS.map(([l, a, b]) => `<button type="button" data-preset="${a}-${b}"><b>${l}</b> ${a.slice(0, 2)}–${b.slice(0, 2)}</button>`).join("")}</div>
           <div class="row2">
             <label class="field">Fra kl.<input type="time" id="bkFrom" step="900" min="07:00" max="18:00" value="${ds}"></label>
             <label class="field">Til kl.<input type="time" id="bkTo" step="900" min="07:00" max="18:00" value="${de}"></label>
           </div>
-          <details id="bkRepeat"><summary>Gjenta (f.eks. hver mandag)</summary>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <div class="presets">
-                <button type="button" data-until="28">4 uker</button>
-                <button type="button" data-until="91">3 mnd</button>
-                <button type="button" data-until="year">Ut året</button>
-              </div>
-              <label class="field">Gjenta til og med<input type="date" id="bkUntil" value="${S.date}"></label>
-              <div class="field">På disse dagene${togglesHTML("bkD", ALL_DAYS)}</div>
-            </div>
-          </details>
           <label class="field">Notat (valgfritt)<input type="text" id="bkNote" maxlength="120" placeholder="F.eks. «Teams 10–11»"></label>
           <button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Book plass ${d.num}</button>
         </form>`;
@@ -916,11 +1076,7 @@ details.mybk { border-top: 0; padding-top: 0; }
           <details id="awDet"><summary>Jeg sitter ikke her en dag (ferie, hjemmekontor)</summary>
           <form id="awayForm">
             <p class="hint">Plassen blir ledig for andre i tidsrommet du velger.</p>
-            <div class="row2">
-              <label class="field">Fra dato<input type="date" id="awFrom" value="${S.date}"></label>
-              <label class="field">Til og med<input type="date" id="awTo" value="${S.date}"></label>
-            </div>
-            <div class="presets"><button type="button" data-apreset="07:00-18:00">Hele dagen</button><button type="button" data-apreset="07:00-12:00">Formiddag</button><button type="button" data-apreset="12:00-18:00">Ettermiddag</button></div>
+            ${rangeFieldHTML("aw", "Hvilke dager?")}
             <div class="row2">
               <label class="field">Fra kl.<input type="time" id="awS" step="900" min="07:00" max="18:00" value="07:00"></label>
               <label class="field">Til kl.<input type="time" id="awE" step="900" min="07:00" max="18:00" value="18:00"></label>
@@ -945,26 +1101,22 @@ details.mybk { border-top: 0; padding-top: 0; }
     const q = s => panel.querySelector(s);
     panel.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => select(b.dataset.pick)));
     q("#closeSel")?.addEventListener("click", () => select(null));
-    panel.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => { const [s, e] = b.dataset.preset.split("-"); q("#bkFrom").value = s; q("#bkTo").value = e; }));
-    panel.querySelectorAll("[data-apreset]").forEach(b => b.addEventListener("click", () => { const [s, e] = b.dataset.apreset.split("-"); q("#awS").value = s; q("#awE").value = e; }));
-    panel.querySelectorAll("[data-until]").forEach(b => b.addEventListener("click", () => { const st = q("#bkDate")?.value || S.date; const v = b.dataset.until; q("#bkUntil").value = v === "year" ? st.slice(0, 4) + "-12-31" : addDays(st, Number(v)); }));
-    q("#bkDate")?.addEventListener("change", () => { const st = q("#bkDate").value; if (st && q("#bkUntil").value < st) q("#bkUntil").value = st; });
+    wireRange(panel, "bk", S.selected); wireRange(panel, "aw", null);
     const forSel = q("#bkFor");
     if (forSel) { const upd = () => { q("#bkGuestWrap").hidden = forSel.value !== "guest"; }; forSel.addEventListener("change", upd); upd(); }
     q("#bookForm")?.addEventListener("submit", e => {
       e.preventDefault();
-      const rep = q("#bkRepeat").open;
-      const start = q("#bkDate").value || S.date;
-      let until = rep ? (q("#bkUntil").value || start) : start; if (until < start) until = start;
+      const start = q("#bkFromD").value || S.date;
+      let until = q("#bkToD").value || start; if (until < start) until = start;
+      const multi = workdaysBetween(start, until).length > 1;
       const fr = q("#bkFrom").value, to = q("#bkTo").value;
       if (fr && to && (fr < "07:00" || to > "18:00")) { flash("Du kan booke mellom 07 og 18.", true); return; }
-      const days = rep ? readToggles(panel, "bkD") : ALL_DAYS;
+      const days = multi ? readToggles(panel, "bkD") : ALL_DAYS;
       if (!days.length) { flash("Velg minst én dag i uka.", true); return; }
       const f = forSel.value;
       let target = { uid: S.me, guest: "" };
       if (f.startsWith("m:")) target = { uid: f.slice(2), guest: "" };
       else if (f === "guest") { const g = q("#bkGuest").value.trim(); if (!g) { flash("Skriv navnet på personen du booker for.", true); return; } target = { uid: S.me, guest: g }; }
-      if (fr && to && fr < to) setPref(fr, to);
       book(S.selected, fr, to, start, until, q("#bkNote").value.trim(), days, target);
     });
     if (q("#fxForm")) {
@@ -973,7 +1125,7 @@ details.mybk { border-top: 0; padding-top: 0; }
     }
     panel.querySelectorAll("[data-cancel]").forEach(b => b.addEventListener("click", () => cancel(b.dataset.cancel)));
     panel.querySelectorAll("[data-undoaway]").forEach(b => b.addEventListener("click", () => undoAway(b.dataset.undoaway)));
-    q("#awayForm")?.addEventListener("submit", e => { e.preventDefault(); markAway(S.selected, q("#awFrom").value || S.date, q("#awTo").value || S.date, q("#awS").value, q("#awE").value, q("#awNote").value.trim()); });
+    q("#awayForm")?.addEventListener("submit", e => { e.preventDefault(); markAway(S.selected, q("#awFromD").value || S.date, q("#awToD").value || q("#awFromD").value || S.date, q("#awS").value, q("#awE").value, q("#awNote").value.trim()); });
     q("#releaseFixed")?.addEventListener("click", ev => releaseFixed(ev.currentTarget.dataset.hid));
   }
 
