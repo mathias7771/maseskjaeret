@@ -277,6 +277,26 @@ details.mybk { border-top: 0; padding-top: 0; }
 }
 .daylist { position: relative; }
 @media (max-width: 600px) { .cday .todaybadge { display: none; } }
+/* v4: kalender, tidslinje, signatur */
+.cday .cnum { font-size: 1.35rem; }
+.cfree { display: inline-flex; align-items: baseline; gap: 3px; align-self: flex-start; background: var(--free-soft); color: var(--ink); border-radius: 999px; padding: 1px 9px; font-family: var(--f-body); font-size: 0.78rem; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.5; }
+.cfree b { font-weight: 700; font-size: 0.86rem; }
+.cfree small { color: var(--muted); font-size: 0.74rem; font-weight: 500; }
+.cfree.none { background: var(--booked-soft); }
+.legend .cfree.demo { margin-right: 2px; }
+.cday .cfree { font-size: 0.78rem; }
+.timeline .t-core { background: repeating-linear-gradient(135deg, transparent 0 5px, color-mix(in srgb, var(--accent) 18%, transparent) 5px 8px); }
+.ticks.abs { position: relative; display: block; height: 15px; }
+.ticks.abs span { position: absolute; transform: translateX(-50%); }
+.ticks.abs span:first-child { transform: none; }
+.ticks.abs span:last-child { transform: translateX(-100%); }
+.presets.tp button { font-size: 0.8rem; padding: 5px 9px; }
+.presets.tp button b { font-weight: 600; }
+.credit { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; letter-spacing: 0.04em; opacity: .75; transition: opacity .2s; }
+.credit:hover { opacity: 1; }
+.credit b { font-family: var(--f-display); font-weight: 600; color: var(--ink); letter-spacing: 0.02em; }
+.credit svg { color: var(--accent); }
+@media (max-width: 600px) { .cfree { padding: 0 6px; } .cfree small { display: none; } .cday .cnum { font-size: 1.05rem; } }
 </style>
 </head>
 <body>
@@ -284,7 +304,7 @@ details.mybk { border-top: 0; padding-top: 0; }
   <header class="top">
     <div class="brand">
       <h1>Måseskjæret</h1>
-      <p>Kontorplasser · 20 pulter · arbeidsdag 08–16</p>
+      <p>Kontorplasser · 20 pulter · kjernetid 09–15 · åpent 07–18</p>
       <div class="todaybar" id="todaybar"></div>
     </div>
     <div class="topright">
@@ -346,7 +366,7 @@ details.mybk { border-top: 0; padding-top: 0; }
         </div>
       </div>
       <div class="legend">
-        <span><b>Tallet</b> = pulter som er helt ledige</span>
+        <span><span class="cfree demo"><b>12</b> ledige</span> = pulter som er helt ledige</span>
         <span><i class="sw" style="background:var(--booked)"></i>Opptatt</span>
         <span><i class="sw" style="background:var(--partial)"></i>Delvis</span>
         <span><i class="sw" style="background:var(--free-soft)"></i>Ledig</span>
@@ -357,6 +377,11 @@ details.mybk { border-top: 0; padding-top: 0; }
       <div class="calgrid" id="calgrid"></div>
     </section>
   </div>
+
+  <footer class="credit">
+    <svg viewBox="0 0 40 16" width="26" height="11" aria-hidden="true"><path d="M2 11 Q10 2 20 9 Q30 2 38 11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Laget av <b>Mathias</b></span>
+  </footer>
 </div>
 
 <!-- Firebase (gratis Spark-plan) -->
@@ -379,7 +404,14 @@ details.mybk { border-top: 0; padding-top: 0; }
 <script>
 (() => {
   const CW = 30, CH = 20;
-  const WD_S = 8 * 60, WD_E = 16 * 60; // arbeidsdag 08–16
+  const WD_S = 7 * 60, WD_E = 18 * 60;     // åpningstid 07–18 (tidligst/senest man kan booke)
+  const CORE_S = 9 * 60, CORE_E = 15 * 60; // kjernetid 09–15
+  const STD = ["08:00", "16:00"];          // vanlig dag (forslag når ingenting annet er valgt)
+  // Hurtigvalg for tid – få og tydelige
+  const TIME_PRESETS = [["Vanlig dag", "08:00", "16:00"], ["Tidlig", "07:00", "15:00"], ["Sen", "10:00", "18:00"], ["Formiddag", "08:00", "12:00"], ["Ettermiddag", "12:00", "16:00"]];
+  const prefKey = "mase.tid";
+  const getPref = () => { try { const v = localStorage.getItem(prefKey); if (v && /^\d\d:\d\d-\d\d:\d\d$/.test(v)) return v.split("-"); } catch (e) {} return STD; };
+  const setPref = (a, b) => { try { localStorage.setItem(prefKey, a + "-" + b); } catch (e) {} };
   const RUNS = [["#",37,0,11],["g",48,0,6],["#",54,0,6],["g",60,0,7],["#",67,0,2],["#",37,1,1],["g",43,1,1],["g",55,1,1],["#",68,1,1],["#",37,2,1],["g",43,2,1],["g",55,2,1],["#",68,2,1],["#",37,3,1],["g",43,3,1],["g",55,3,1],["l",68,3,1],["#",37,4,1],["g",43,4,1],["g",55,4,1],["l",68,4,1],["#",37,5,1],["g",43,5,1],["g",55,5,1],["l",68,5,1],["#",37,6,1],["g",43,6,1],["g",55,6,1],["l",68,6,1],["#",37,7,1],["g",43,7,1],["g",55,7,1],["l",68,7,1],["#",37,8,1],["g",43,8,1],["g",55,8,1],["l",68,8,1],["#",37,9,1],["g",43,9,1],["g",55,9,1],["#",68,9,1],["#",37,10,1],["g",43,10,1],["g",55,10,1],["#",68,10,1],["#",37,11,1],["g",38,11,18],["#",68,11,1],["#",37,12,1],["g",55,12,1],["#",68,12,1],["#",37,13,1],["g",55,13,13],["#",68,13,1],["g",37,14,1],["#",68,14,1],["g",37,15,1],["#",68,15,1],["g",37,16,1],["w",61,16,7],["#",68,16,1],["g",37,17,1],["w",61,17,7],["#",68,17,1],["g",37,18,1],["w",61,18,7],["#",68,18,1],["#",37,19,1],["w",61,19,7],["#",68,19,1],["#",37,20,1],["w",61,20,7],["#",68,20,1],["#",37,21,21],["w",61,21,7],["#",68,21,1],["#",37,22,1],["l",47,22,1],["#",57,22,1],["w",61,22,7],["#",68,22,1],["#",37,23,1],["l",47,23,1],["#",57,23,1],["w",61,23,7],["#",68,23,1],["#",37,24,1],["l",47,24,1],["#",57,24,1],["w",61,24,7],["#",68,24,1],["#",37,25,1],["c",41,25,3],["l",47,25,1],["#",57,25,1],["w",61,25,7],["#",68,25,1],["#",37,26,1],["c",41,26,3],["l",47,26,1],["#",57,26,1],["w",61,26,7],["#",68,26,1],["#",37,27,1],["c",41,27,3],["G",47,27,1],["l",51,27,7],["w",61,27,7],["#",68,27,1],["#",37,28,1],["c",41,28,3],["G",47,28,1],["G",57,28,1],["w",61,28,7],["#",68,28,1],["#",37,29,1],["c",41,29,3],["G",47,29,1],["G",57,29,1],["w",61,29,7],["#",68,29,1],["#",37,30,1],["c",41,30,3],["#",46,30,1],["l",47,30,1],["G",57,30,1],["w",61,30,7],["#",68,30,1],["#",37,31,1],["c",41,31,3],["G",47,31,1],["G",57,31,1],["w",61,31,7],["#",68,31,1],["#",37,32,1],["c",41,32,3],["l",47,32,1],["l",52,32,6],["w",61,32,7],["#",68,32,1],["#",37,33,1],["c",41,33,3],["l",47,33,1],["#",57,33,1],["w",61,33,7],["#",68,33,1],["#",37,34,1],["c",41,34,3],["l",47,34,1],["#",57,34,1],["w",61,34,7],["#",68,34,1],["#",37,35,1],["c",41,35,3],["l",47,35,1],["#",57,35,1],["w",61,35,7],["#",68,35,1],["#",37,36,1],["l",47,36,1],["#",57,36,1],["w",61,36,7],["#",68,36,1],["#",37,37,1],["l",47,37,1],["#",57,37,1],["w",61,37,7],["#",68,37,1],["#",0,38,58],["w",61,38,7],["l",68,38,1],["#",0,39,1],["#",7,39,1],["#",15,39,1],["#",25,39,1],["#",37,39,1],["#",57,39,1],["l",68,39,1],["#",0,40,1],["#",7,40,1],["#",15,40,1],["#",25,40,1],["#",37,40,1],["#",57,40,1],["l",68,40,1],["#",0,41,1],["#",7,41,1],["#",15,41,1],["#",25,41,1],["#",37,41,1],["y",39,41,16],["l",68,41,1],["#",0,42,8],["#",15,42,1],["#",25,42,1],["#",37,42,1],["y",39,42,16],["l",68,42,1],["#",0,43,1],["#",7,43,1],["#",15,43,1],["#",25,43,1],["#",37,43,1],["y",39,43,16],["l",68,43,1],["#",0,44,1],["#",7,44,1],["#",15,44,1],["#",25,44,1],["#",37,44,1],["y",39,44,16],["l",68,44,1],["#",0,45,1],["#",7,45,1],["#",15,45,1],["#",25,45,1],["#",37,45,1],["#",68,45,1],["#",0,46,1],["#",7,46,1],["#",15,46,1],["#",25,46,1],["#",37,46,1],["#",68,46,1],["#",0,47,1],["#",7,47,1],["#",15,47,1],["#",25,47,1],["k",30,47,5],["#",37,47,1],["#",68,47,1],["#",0,48,1],["#",7,48,1],["#",15,48,1],["#",25,48,1],["k",30,48,5],["#",37,48,1],["#",57,48,1],["l",58,48,1],["g",59,48,3],["l",62,48,6],["#",68,48,1],["#",0,49,1],["#",7,49,1],["#",15,49,1],["#",25,49,1],["k",30,49,5],["#",37,49,1],["#",57,49,1],["#",68,49,1],["#",0,50,1],["#",7,50,1],["D",15,50,1],["l",16,50,1],["G",17,50,3],["l",20,50,7],["G",27,50,3],["l",30,50,7],["#",37,50,1],["l",46,50,11],["#",57,50,1],["#",68,50,1],["#",0,51,1],["#",7,51,1],["D",15,51,1],["G",37,51,1],["l",46,51,1],["#",57,51,1],["#",68,51,1],["#",0,52,1],["#",7,52,1],["D",15,52,1],["G",37,52,1],["l",46,52,1],["#",57,52,1],["#",68,52,1],["#",0,53,1],["#",7,53,1],["D",15,53,1],["G",37,53,1],["l",46,53,1],["#",57,53,1],["#",68,53,1],["#",0,54,1],["#",7,54,1],["w",21,54,12],["G",37,54,1],["G",46,54,1],["c",49,54,6],["#",57,54,1],["#",68,54,1],["#",0,55,8],["w",21,55,12],["G",37,55,1],["G",46,55,1],["c",49,55,6],["#",57,55,1],["#",68,55,1],["#",0,56,1],["#",7,56,1],["w",21,56,12],["G",37,56,1],["v",39,56,5],["G",46,56,1],["c",49,56,6],["#",57,56,1],["#",68,56,1],["#",0,57,1],["#",7,57,1],["w",21,57,12],["#",37,57,1],["v",39,57,5],["l",46,57,1],["#",57,57,1],["#",68,57,1],["#",0,58,1],["#",7,58,1],["#",11,58,5],["w",21,58,12],["#",37,58,1],["v",39,58,5],["l",46,58,1],["#",57,58,1],["#",68,58,1],["#",0,59,1],["#",7,59,1],["#",11,59,5],["w",21,59,12],["#",37,59,1],["v",39,59,5],["l",46,59,1],["#",57,59,1],["#",68,59,1],["#",0,60,1],["#",7,60,1],["D",11,60,5],["w",21,60,12],["#",37,60,1],["v",39,60,5],["l",46,60,1],["#",57,60,1],["#",68,60,1],["#",0,61,19],["g",19,61,3],["#",22,61,3],["l",25,61,5],["#",30,61,2],["l",32,61,1],["G",33,61,3],["l",36,61,1],["b",37,61,20],["#",57,61,1],["g",58,61,10],["#",68,61,1],["#",10,62,1],["#",23,62,1],["#",31,62,1],["g",57,62,1],["w",62,62,6],["#",68,62,1],["#",10,63,1],["l",23,63,1],["l",31,63,1],["g",57,63,1],["w",62,63,6],["#",68,63,1],["#",10,64,1],["l",23,64,1],["l",31,64,1],["g",57,64,1],["w",62,64,6],["#",68,64,1],["#",10,65,1],["l",23,65,1],["l",31,65,1],["l",57,65,1],["#",68,65,1],["#",10,66,1],["l",23,66,1],["l",31,66,1],["l",57,66,1],["#",68,66,1],["#",10,67,1],["l",23,67,1],["l",31,67,1],["l",57,67,1],["#",68,67,1],["#",10,68,1],["l",23,68,1],["l",31,68,1],["l",57,68,1],["#",68,68,1],["#",10,69,5],["l",15,69,5],["#",20,69,4],["#",31,69,7],["l",38,69,3],["#",41,69,9],["l",50,69,3],["#",53,69,8],["l",61,69,3],["#",64,69,5]];
   // Pulter [kol, rad, bredde, høyde]
   const DESKS = [
@@ -488,12 +520,12 @@ details.mybk { border-top: 0; padding-top: 0; }
   let db = null, auth = null, rangeUnsubs = [], rangeKey = null, subs = [], gateMsg = "", loggingIn = false;
   const ready = () => S.dbOk && S.loaded.fixed && S.loaded.bookings && S.loaded.away;
 
-  const HALF = { am: [WD_S, 12 * 60], pm: [12 * 60, WD_E] };
+  const HALF = { am: [8 * 60, 12 * 60], pm: [12 * 60, 16 * 60] };
   function norm(id, d) {
     let s, e;
     if (d.start && d.end) { s = toMin(d.start); e = toMin(d.end); }
     else if (d.half && HALF[d.half]) [s, e] = HALF[d.half];
-    else [s, e] = [WD_S, WD_E];
+    else [s, e] = [8 * 60, 16 * 60];
     return { id, desk: d.desk, date: d.date, uid: d.uid, by: d.by || d.uid, guest: d.guest || "", note: d.note || "", s, e };
   }
   function index(snap) {
@@ -529,10 +561,10 @@ details.mybk { border-top: 0; padding-top: 0; }
     for (const h of hs) for (const [s, e] of fixedParts(h, date, bks, aways)) ints.push({ s, e, uid: h.uid, note: h.note || "", src: "fixed", hid: h.id });
     ints.sort((a, b) => a.s - b.s);
     const freeLeft = subtract([WD_S, WD_E], ints.map(i => [i.s, i.e]));
-    const freeMin = freeLeft.reduce((t, [s, e]) => t + (e - s), 0);
+    const coreFree = subtract([CORE_S, CORE_E], ints.map(i => [i.s, i.e])).reduce((t, [s, e]) => t + (e - s), 0);
     let kind;
-    if (freeMin === WD_E - WD_S) kind = "free";
-    else if (freeMin === 0) kind = ints.every(i => i.src === "fixed") ? "fixed" : "booked";
+    if (!ints.length) kind = "free";                       // ingen har plassen i dag
+    else if (coreFree === 0) kind = ints.every(i => i.src === "fixed") ? "fixed" : "booked"; // hele kjernetiden er tatt
     else kind = "partial";
     return { kind, ints, free: freeLeft, holders: hs, aways, mine: ints.some(i => i.uid === S.me) };
   }
@@ -737,7 +769,7 @@ details.mybk { border-top: 0; padding-top: 0; }
       const mineHere = ready() && DESKS.some(x => dayInfo(d, x.id).mine);
       html += `<button type="button" class="cday${out ? " out" : ""}${d < TODAY ? " past" : ""}${d === TODAY ? " today" : ""}${holiday(d) ? " hol" : ""}" data-date="${d}">
         <span class="cnum"><span>${parse(d).getDate()}${dow(d) === 1 ? ` <small class="wk">uke ${isoWeek(d)}</small>` : ""}</span>${tTag}</span>
-        ${holiday(d) ? `<span class="holname">${esc(holiday(d))}</span>` : ready() ? `<span class="cfree">${st.free} <small>av ${n} ledige</small></span>
+        ${holiday(d) ? `<span class="holname">${esc(holiday(d))}</span>` : ready() ? `<span class="cfree${st.free === 0 ? " none" : ""}" title="${st.free} av ${n} pulter er helt ledige"><b>${st.free}</b><small> ledige</small></span>
         <span class="bar"><i class="b1" style="width:${100 * st.full / n}%"></i><i class="b2" style="width:${100 * st.partial / n}%"></i></span>
         ${st.partial ? `<span class="dcount cpart">${st.partial} delvis ledige</span>` : ""}
         ${mineHere ? `<span class="cmine">Du har plass</span>` : ""}` : `<span class="dcount">…</span>`}
@@ -761,9 +793,9 @@ details.mybk { border-top: 0; padding-top: 0; }
   function schedHTML(prefix, h) {
     return `<div class="sched">${ALL_DAYS.map(w => { const sp = h ? hSpan(h, w) : [WD_S, WD_E]; const on = !!sp; const [s, e] = sp || [WD_S, WD_E];
       return `<div class="schedrow"><label class="tog"><input type="checkbox" id="${prefix}D${w}" ${on ? "checked" : ""}><span>${WD_CAP[w]}</span></label>
-        <input type="time" id="${prefix}S${w}" step="900" value="${toHHMM(s)}" aria-label="${WD_CAP[w]} fra" ${on ? "" : "disabled"}><span class="dash">–</span>
-        <input type="time" id="${prefix}E${w}" step="900" value="${toHHMM(e)}" aria-label="${WD_CAP[w]} til" ${on ? "" : "disabled"}></div>`; }).join("")}
-      <div class="presets"><button type="button" data-sp="${prefix}|all">Alle dager 08–16</button><button type="button" data-sp="${prefix}|am">Formiddager 08–12</button><button type="button" data-sp="${prefix}|pm">Ettermiddager 12–16</button></div></div>`;
+        <input type="time" id="${prefix}S${w}" step="900" min="07:00" max="18:00" value="${toHHMM(s)}" aria-label="${WD_CAP[w]} fra" ${on ? "" : "disabled"}><span class="dash">–</span>
+        <input type="time" id="${prefix}E${w}" step="900" min="07:00" max="18:00" value="${toHHMM(e)}" aria-label="${WD_CAP[w]} til" ${on ? "" : "disabled"}></div>`; }).join("")}
+      <div class="presets"><button type="button" data-sp="${prefix}|all">Alle dager, hele dagen</button><button type="button" data-sp="${prefix}|am">Formiddager 07–12</button><button type="button" data-sp="${prefix}|pm">Ettermiddager 12–18</button></div></div>`;
   }
   function wireSched(root, prefix) {
     for (const w of ALL_DAYS) {
@@ -771,7 +803,7 @@ details.mybk { border-top: 0; padding-top: 0; }
       cb.addEventListener("change", () => { root.querySelector(`#${prefix}S${w}`).disabled = !cb.checked; root.querySelector(`#${prefix}E${w}`).disabled = !cb.checked; });
     }
     root.querySelectorAll(`[data-sp^="${prefix}|"]`).forEach(b => b.addEventListener("click", () => {
-      const mode = b.dataset.sp.split("|")[1]; const [s, e] = mode === "am" ? ["08:00", "12:00"] : mode === "pm" ? ["12:00", "16:00"] : ["08:00", "16:00"];
+      const mode = b.dataset.sp.split("|")[1]; const [s, e] = mode === "am" ? ["07:00", "12:00"] : mode === "pm" ? ["12:00", "18:00"] : ["07:00", "18:00"];
       for (const w of ALL_DAYS) { if (mode === "all") root.querySelector(`#${prefix}D${w}`).checked = true; const on = root.querySelector(`#${prefix}D${w}`).checked;
         root.querySelector(`#${prefix}S${w}`).value = s; root.querySelector(`#${prefix}E${w}`).value = e; root.querySelector(`#${prefix}S${w}`).disabled = !on; root.querySelector(`#${prefix}E${w}`).disabled = !on; }
     }));
@@ -793,10 +825,11 @@ details.mybk { border-top: 0; padding-top: 0; }
   let panelSig = "";
   const tColor = i => i.uid === S.me ? "var(--mine)" : i.src === "fixed" ? "var(--fixed)" : "var(--booked)";
   function timelineHTML(info) {
-    const W = WD_E - WD_S;
-    const segs = info.ints.map(i => { const s = Math.max(i.s, WD_S), e = Math.min(i.e, WD_E); if (e <= s) return ""; return `<i class="${i.uid === S.me ? "t-mine" : i.src === "fixed" ? "t-fixed" : "t-booked"}" style="left:${100 * (s - WD_S) / W}%;width:${100 * (e - s) / W}%" title="${esc(span(i.s, i.e))}"></i>`; }).join("");
-    const ticks = []; for (let h = 8; h <= 16; h += 2) ticks.push(`<span>${pad(h)}</span>`);
-    return `<div><div class="timeline" aria-hidden="true">${segs}</div><div class="ticks">${ticks.join("")}</div></div>`;
+    const W = WD_E - WD_S, pct = m => 100 * (m - WD_S) / W;
+    const core = `<i class="t-core" style="left:${pct(CORE_S)}%;width:${pct(CORE_E) - pct(CORE_S)}%"></i>`;
+    const segs = info.ints.map(i => { const s = Math.max(i.s, WD_S), e = Math.min(i.e, WD_E); if (e <= s) return ""; return `<i class="${i.uid === S.me ? "t-mine" : i.src === "fixed" ? "t-fixed" : "t-booked"}" style="left:${pct(s)}%;width:${pct(e) - pct(s)}%" title="${esc(span(i.s, i.e))}"></i>`; }).join("");
+    const ticks = [7, 9, 12, 15, 18].map(h => `<span style="left:${pct(h * 60)}%">${pad(h)}</span>`).join("");
+    return `<div><div class="timeline" aria-hidden="true">${core}${segs}</div><div class="ticks abs">${ticks}</div><p class="hint" style="margin-top:2px">Kjernetid 09–15 er markert.</p></div>`;
   }
   function memberOptions() {
     const list = Object.entries(S.members).filter(([id]) => id !== S.me).sort((a, b) => a[1].localeCompare(b[1], "nb"));
@@ -844,20 +877,20 @@ details.mybk { border-top: 0; padding-top: 0; }
             <span>${can && i.src === "booking" && (i.uid === S.me || i.by === S.me || S.admin) ? `<button class="btn small danger" data-cancel="${i.id}">${i.uid === S.me || i.by === S.me ? "Avbestill" : "Fjern"}</button>` : ""}</span></li>`).join("")}</ul>`}
         ${msg}`;
       if (can && info.kind !== "closed" && info.kind !== "unknown") {
-        const [ds, de] = info.free?.[0] ? [toHHMM(info.free[0][0]), toHHMM(info.free[0][1])] : ["08:00", "16:00"];
+        const pref = getPref();
+        const [ds, de] = info.kind === "free" ? pref : info.free?.[0] ? [toHHMM(Math.max(info.free[0][0], toMin(pref[0]))), toHHMM(Math.min(info.free[0][1], Math.max(toMin(pref[1]), info.free[0][0] + 60)))] : pref;
         html += `<form id="bookForm">
           <div class="eyebrow">Book plassen</div>
           ${info.kind === "booked" || info.kind === "fixed" ? `<p class="warnbox">Plassen er opptatt. Booker du likevel, får du spørsmål om å overta den.</p>` : ""}
-          <label class="field">Hvem booker du for?<select id="bkFor">${memberOptions()}</select></label>
-          <label class="field" id="bkGuestWrap" hidden>Navn på personen<input type="text" id="bkGuest" maxlength="60" placeholder="F.eks. Ola Nordmann"></label>
-          <div class="presets">
-            <button type="button" data-preset="08:00-16:00">Hele dagen</button>
-            <button type="button" data-preset="08:00-12:00">08–12</button>
-            <button type="button" data-preset="12:00-16:00">12–16</button>
-          </div>
           <div class="row2">
-            <label class="field">Fra kl.<input type="time" id="bkFrom" step="900" value="${ds}"></label>
-            <label class="field">Til kl.<input type="time" id="bkTo" step="900" value="${de}"></label>
+            <label class="field">Dato<input type="date" id="bkDate" value="${S.date}"></label>
+            <label class="field">For hvem?<select id="bkFor">${memberOptions()}</select></label>
+          </div>
+          <label class="field" id="bkGuestWrap" hidden>Navn på personen<input type="text" id="bkGuest" maxlength="60" placeholder="F.eks. Ola Nordmann"></label>
+          <div class="presets tp">${TIME_PRESETS.map(([l, a, b]) => `<button type="button" data-preset="${a}-${b}"><b>${l}</b> ${a.slice(0, 2)}–${b.slice(0, 2)}</button>`).join("")}</div>
+          <div class="row2">
+            <label class="field">Fra kl.<input type="time" id="bkFrom" step="900" min="07:00" max="18:00" value="${ds}"></label>
+            <label class="field">Til kl.<input type="time" id="bkTo" step="900" min="07:00" max="18:00" value="${de}"></label>
           </div>
           <details id="bkRepeat"><summary>Gjenta (f.eks. hver mandag)</summary>
             <div style="display:flex;flex-direction:column;gap:8px">
@@ -866,7 +899,7 @@ details.mybk { border-top: 0; padding-top: 0; }
                 <button type="button" data-until="91">3 mnd</button>
                 <button type="button" data-until="year">Ut året</button>
               </div>
-              <label class="field">Til og med<input type="date" id="bkUntil" min="${S.date}" value="${S.date}"></label>
+              <label class="field">Gjenta til og med<input type="date" id="bkUntil" value="${S.date}"></label>
               <div class="field">På disse dagene${togglesHTML("bkD", ALL_DAYS)}</div>
             </div>
           </details>
@@ -887,10 +920,10 @@ details.mybk { border-top: 0; padding-top: 0; }
               <label class="field">Fra dato<input type="date" id="awFrom" value="${S.date}"></label>
               <label class="field">Til og med<input type="date" id="awTo" value="${S.date}"></label>
             </div>
-            <div class="presets"><button type="button" data-apreset="08:00-16:00">Hele dagen</button><button type="button" data-apreset="08:00-12:00">08–12</button><button type="button" data-apreset="12:00-16:00">12–16</button></div>
+            <div class="presets"><button type="button" data-apreset="07:00-18:00">Hele dagen</button><button type="button" data-apreset="07:00-12:00">Formiddag</button><button type="button" data-apreset="12:00-18:00">Ettermiddag</button></div>
             <div class="row2">
-              <label class="field">Fra kl.<input type="time" id="awS" step="900" value="08:00"></label>
-              <label class="field">Til kl.<input type="time" id="awE" step="900" value="16:00"></label>
+              <label class="field">Fra kl.<input type="time" id="awS" step="900" min="07:00" max="18:00" value="07:00"></label>
+              <label class="field">Til kl.<input type="time" id="awE" step="900" min="07:00" max="18:00" value="18:00"></label>
             </div>
             <label class="field">Notat (valgfritt)<input type="text" id="awNote" maxlength="120" placeholder="F.eks. «Ferie»"></label>
             <button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Frigi plassen</button>
@@ -914,20 +947,25 @@ details.mybk { border-top: 0; padding-top: 0; }
     q("#closeSel")?.addEventListener("click", () => select(null));
     panel.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => { const [s, e] = b.dataset.preset.split("-"); q("#bkFrom").value = s; q("#bkTo").value = e; }));
     panel.querySelectorAll("[data-apreset]").forEach(b => b.addEventListener("click", () => { const [s, e] = b.dataset.apreset.split("-"); q("#awS").value = s; q("#awE").value = e; }));
-    panel.querySelectorAll("[data-until]").forEach(b => b.addEventListener("click", () => { const v = b.dataset.until; q("#bkUntil").value = v === "year" ? S.date.slice(0, 4) + "-12-31" : addDays(S.date, Number(v)); }));
+    panel.querySelectorAll("[data-until]").forEach(b => b.addEventListener("click", () => { const st = q("#bkDate")?.value || S.date; const v = b.dataset.until; q("#bkUntil").value = v === "year" ? st.slice(0, 4) + "-12-31" : addDays(st, Number(v)); }));
+    q("#bkDate")?.addEventListener("change", () => { const st = q("#bkDate").value; if (st && q("#bkUntil").value < st) q("#bkUntil").value = st; });
     const forSel = q("#bkFor");
     if (forSel) { const upd = () => { q("#bkGuestWrap").hidden = forSel.value !== "guest"; }; forSel.addEventListener("change", upd); upd(); }
     q("#bookForm")?.addEventListener("submit", e => {
       e.preventDefault();
       const rep = q("#bkRepeat").open;
-      let until = rep ? (q("#bkUntil").value || S.date) : S.date; if (until < S.date) until = S.date;
+      const start = q("#bkDate").value || S.date;
+      let until = rep ? (q("#bkUntil").value || start) : start; if (until < start) until = start;
+      const fr = q("#bkFrom").value, to = q("#bkTo").value;
+      if (fr && to && (fr < "07:00" || to > "18:00")) { flash("Du kan booke mellom 07 og 18.", true); return; }
       const days = rep ? readToggles(panel, "bkD") : ALL_DAYS;
       if (!days.length) { flash("Velg minst én dag i uka.", true); return; }
       const f = forSel.value;
       let target = { uid: S.me, guest: "" };
       if (f.startsWith("m:")) target = { uid: f.slice(2), guest: "" };
       else if (f === "guest") { const g = q("#bkGuest").value.trim(); if (!g) { flash("Skriv navnet på personen du booker for.", true); return; } target = { uid: S.me, guest: g }; }
-      book(S.selected, q("#bkFrom").value, q("#bkTo").value, S.date, until, q("#bkNote").value.trim(), days, target);
+      if (fr && to && fr < to) setPref(fr, to);
+      book(S.selected, fr, to, start, until, q("#bkNote").value.trim(), days, target);
     });
     if (q("#fxForm")) {
       wireSched(panel, "fx");
