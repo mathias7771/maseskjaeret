@@ -436,6 +436,31 @@ button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8p
 .dpill { border: 1px solid var(--line); background: var(--surface2); border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
 .dpill:hover { border-color: var(--accent); color: var(--accent); }
 .badge.g { background: var(--partial-soft); color: var(--partial); }
+/* v7: mine bookinger på en plass */
+.mybox { border: 1px solid color-mix(in srgb, var(--mine) 55%, var(--line)); background: var(--mine-soft); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.mybox-h { display: flex; gap: 10px; align-items: center; }
+.mybox-h b { display: block; font-size: 0.95rem; }
+.mybox-h small { color: var(--muted); font-size: 0.8rem; }
+.mybox-ic { flex: 0 0 32px; height: 32px; border-radius: 50%; background: var(--mine); color: #1c1606; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.mybox-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.mybox .btn { align-self: flex-start; }
+.mk-title { font-size: 1.3rem; margin: 2px 0 0; }
+.mk-title small { font-family: var(--f-body); font-size: 0.85rem; color: var(--muted); font-weight: 400; margin-left: 6px; }
+.mkp .pk-head { align-items: flex-start; }
+.mk-cnt { display: inline-block; min-width: 18px; padding: 0 5px; border-radius: 999px; background: var(--mine); color: #1c1606; font-size: 0.68rem; font-weight: 700; margin-left: 2px; }
+.pk-d.mk { flex-direction: column; gap: 0; height: 46px; border-radius: 9px; margin: 1px; cursor: pointer; }
+.pk-d.mk .mk-n { font-weight: 700; line-height: 1.1; }
+.pk-d.mk .mk-t { font-family: var(--f-mono); font-size: 0.6rem; line-height: 1.1; opacity: .85; }
+.pk-d.mk.on { background: var(--mine); color: #1c1606; }
+.pk-d.mk.off { background: var(--surface); color: var(--danger); box-shadow: inset 0 0 0 2px var(--danger); }
+.pk-d.mk.off .mk-n, .pk-d.mk.off .mk-t { text-decoration: line-through; }
+button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
+.pk-d.mk.off:hover { box-shadow: inset 0 0 0 2px var(--danger); }
+.pk-legend .lg-on { background: var(--mine); border-radius: 3px; }
+.pk-legend .lg-off { background: transparent; border: 2px solid var(--danger); border-radius: 3px; width: 6px; height: 6px; }
+.pk-sum b { color: var(--danger); }
+.pk-d.dis.we, .pk-d.dis.hol { opacity: .6; }
+.pk > * { flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -1107,6 +1132,87 @@ button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8p
     if (PK.start && !PK.end && !PK.fresh && h !== PK.hover) { PK.hover = h; renderPicker(); }
   });
 
+  // ---------- mine bookinger på én plass: kalender der du huker vekk dager ----------
+  const MK = { desk: null, view: null, removed: new Set() };
+  const mkEl = document.createElement("div"); mkEl.className = "pk-overlay"; mkEl.hidden = true;
+  mkEl.setAttribute("role", "dialog"); mkEl.setAttribute("aria-modal", "true"); mkEl.setAttribute("aria-label", "Mine bookinger på plassen");
+  document.body.appendChild(mkEl);
+  const myOnDesk = desk => S.myBookings.filter(b => b.desk === desk).sort((a, b) => a.date.localeCompare(b.date) || a.s - b.s);
+  const byDate = list => { const m = new Map(); for (const b of list) { if (!m.has(b.date)) m.set(b.date, []); m.get(b.date).push(b); } return m; };
+  const mkKey = e => { if (e.key === "Escape") closeMine(); };
+  function openMine(desk) {
+    const list = myOnDesk(desk); if (!list.length) return;
+    Object.assign(MK, { desk, view: monthOf(list[0].date), removed: new Set() });
+    mkEl.hidden = false; document.body.classList.add("pk-lock"); document.addEventListener("keydown", mkKey); renderMine2();
+  }
+  function closeMine() { mkEl.hidden = true; document.body.classList.remove("pk-lock"); document.removeEventListener("keydown", mkKey); }
+  function mkMonth(m, map) {
+    const wd = ["M", "T", "O", "T", "F", "L", "S"];
+    let html = `<div class="pk-month"><div class="pk-mtitle">${esc(fmtMonth(m))}</div><div class="pk-grid">${wd.map((w, i) => `<span class="pk-wd${i >= 5 ? " we" : ""}">${w}</span>`).join("")}`;
+    for (let d = monday(m + "-01"), end = addDays(monday(monthEnd(m)), 6); d <= end; d = addDays(d, 1)) {
+      if (monthOf(d) !== m) { html += `<span></span>`; continue; }
+      const bs = map.get(d);
+      const base = ["pk-d", isWeekend(d) ? "we" : "", holiday(d) ? "hol" : "", d === TODAY ? "today" : ""];
+      if (bs) {
+        const off = MK.removed.has(d);
+        const t = bs.length > 1 ? `${bs.length}×` : `${shortT(bs[0].s)}–${shortT(bs[0].e)}`;
+        const tip = `${fmtShort(d)}: ${bs.map(b => span(b.s, b.e) + (b.guest ? " (" + b.guest + ")" : "")).join(", ")} – ${off ? "trykk for å beholde" : "trykk for å fjerne"}`;
+        html += `<button type="button" class="${[...base, "mk", off ? "off" : "on"].join(" ")}" data-md="${d}" title="${esc(tip)}" aria-pressed="${!off}"><span class="mk-n">${parse(d).getDate()}</span><span class="mk-t">${esc(t)}</span></button>`;
+      } else html += `<span class="${[...base, "dis"].join(" ")}">${parse(d).getDate()}</span>`;
+    }
+    return html + `</div></div>`;
+  }
+  function renderMine2() {
+    const list = myOnDesk(MK.desk), map = byDate(list);
+    if (!list.length) { closeMine(); return; }
+    const months = [...new Set(list.map(b => monthOf(b.date)))].sort();
+    if (!months.includes(MK.view) && !months.includes(addMonths(MK.view, -1))) MK.view = months[0];
+    const shown = [MK.view, addMonths(MK.view, 1)];
+    const nDays = map.size, nOff = [...MK.removed].filter(d => map.has(d)).length;
+    const counts = Object.fromEntries(months.map(m => [m, list.filter(b => monthOf(b.date) === m).length]));
+    mkEl.innerHTML = `<div class="pk mkp">
+      <div class="pk-head">
+        <div><div class="eyebrow">Mine bookinger</div><h3 class="mk-title">Plass ${DESK[MK.desk].num} <small>${esc(DESK[MK.desk].room)}</small></h3>
+          <p class="hint" style="margin:2px 0 0">Du har denne plassen <b>${nDays} ${nDays === 1 ? "dag" : "dager"}</b> fremover. Trykk på en dag for å huke den vekk, og trykk igjen for å angre.</p></div>
+        <button type="button" class="pk-x" data-mk="close" aria-label="Lukk">×</button>
+      </div>
+      <div class="pk-strip">${months.map(m => `<button type="button" data-mm="${m}" class="${shown.includes(m) ? "on" : ""}">${esc(parse(m + "-01").toLocaleDateString("nb-NO", { month: "short" }).replace(".", ""))}${m.slice(0, 4) !== TODAY.slice(0, 4) ? ` <small>${m.slice(0, 4)}</small>` : ""} <span class="mk-cnt">${counts[m]}</span></button>`).join("")}</div>
+      <div class="pk-body">
+        <button type="button" class="pk-nav" data-mn="-1" aria-label="Forrige måned" ${MK.view <= months[0] ? "disabled" : ""}>‹</button>
+        <div class="pk-months">${shown.map(m => mkMonth(m, map)).join("")}</div>
+        <button type="button" class="pk-nav" data-mn="1" aria-label="Neste måned" ${addMonths(MK.view, 1) >= months[months.length - 1] ? "disabled" : ""}>›</button>
+      </div>
+      <div class="pk-foot">
+        <div class="pk-legend"><span><i class="lg-on"></i>Booket</span><span><i class="lg-off"></i>Hukes vekk</span></div>
+        <div class="pk-sum">${nOff ? `<b>${nOff} ${nOff === 1 ? "dag" : "dager"}</b> blir fjernet` : "Ingen endringer ennå"}</div>
+        <div class="pk-btns">
+          <button type="button" class="btn ghost small" data-mk="all">${nOff === nDays ? "Behold alle" : "Huk vekk alle"}</button>
+          <button type="button" class="btn ghost small" data-mk="close">Lukk</button>
+          <button type="button" class="btn danger-solid pk-done" data-mk="save" ${nOff ? "" : "disabled"}>Fjern ${nOff || ""} ${nOff === 1 ? "booking" : "bookinger"}</button>
+        </div>
+      </div></div>`;
+  }
+  mkEl.addEventListener("click", e => {
+    if (e.target === mkEl) return closeMine();
+    const t = e.target.closest("[data-md],[data-mm],[data-mn],[data-mk]"); if (!t) return;
+    const map = byDate(myOnDesk(MK.desk));
+    if (t.dataset.md) { const d = t.dataset.md; MK.removed.has(d) ? MK.removed.delete(d) : MK.removed.add(d); }
+    else if (t.dataset.mm) MK.view = t.dataset.mm;
+    else if (t.dataset.mn) MK.view = addMonths(MK.view, Number(t.dataset.mn));
+    else if (t.dataset.mk === "close") return closeMine();
+    else if (t.dataset.mk === "all") { const all = [...map.keys()]; if (all.every(d => MK.removed.has(d))) MK.removed.clear(); else all.forEach(d => MK.removed.add(d)); }
+    else if (t.dataset.mk === "save") {
+      const ids = [...MK.removed].flatMap(d => (map.get(d) || []).map(b => b.id)), n = [...MK.removed].filter(d => map.has(d)).length, desk = MK.desk;
+      closeMine();
+      guard(async () => {
+        for (const id of ids) await db.collection("bookings").doc(id).delete();
+        flash(`Fjernet ${n === 1 ? "1 dag" : `${n} dager`} fra bookingene dine på plass ${DESK[desk].num}.`);
+      });
+      return;
+    }
+    renderMine2();
+  });
+
   // ---------- panel ----------
   const panel = document.getElementById("panel");
   let panelSig = "";
@@ -1134,7 +1240,7 @@ button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8p
   function renderPanel() {
     const sel = S.selected;
     const info = sel ? dayInfo(S.date, sel) : null;
-    const sig = JSON.stringify([sel, S.date, S.me, S.admin, S.dbOk, S.msg, S.busy, info && [info.kind, info.ints, info.holders, info.aways], S.loaded, sel ? null : DESKS.map(d => dayInfo(S.date, d.id).ints).flat(), S.names, S.members]);
+    const sig = JSON.stringify([sel, S.date, S.me, S.admin, S.dbOk, S.msg, S.busy, info && [info.kind, info.ints, info.holders, info.aways], sel ? myOnDesk(sel) : null, S.loaded, sel ? null : DESKS.map(d => dayInfo(S.date, d.id).ints).flat(), S.names, S.members]);
     if (sig === panelSig) return;
     const sameSel = panelSig && JSON.parse(panelSig)[0] === sel && JSON.parse(panelSig)[1] === S.date;
     panelSig = sig;
@@ -1170,6 +1276,15 @@ button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8p
             <span class="who">${i.src === "fixed" ? "Fast: " : ""}${esc(who(i))}${i.src === "booking" && i.by && i.by !== i.uid ? `<span class="note">booket av ${esc(nameOf(i.by))}</span>` : i.src === "booking" && i.guest ? `<span class="note">booket av ${esc(nameOf(i.uid))}</span>` : ""}${i.note ? `<span class="note">«${esc(i.note)}»</span>` : ""}</span>
             <span>${can && i.src === "booking" && (i.uid === S.me || i.by === S.me || S.admin) ? `<button class="btn small danger" data-cancel="${i.id}">${i.uid === S.me || i.by === S.me ? "Avbestill" : "Fjern"}</button>` : ""}</span></li>`).join("")}</ul>`}
         ${msg}`;
+      const mineHere = myOnDesk(sel);
+      if (mineHere.length) {
+        const dm = byDate(mineHere), dates = [...dm.keys()];
+        html += `<div class="mybox">
+          <div class="mybox-h"><span class="mybox-ic" aria-hidden="true">★</span><div><b>Du har denne plassen ${dates.length} ${dates.length === 1 ? "dag" : "dager"} fremover</b><small>${dates.length > 1 ? `${esc(fmtShort(dates[0]))} – ${esc(fmtShort(dates[dates.length - 1]))}` : esc(fmtShort(dates[0]))}</small></div></div>
+          <div class="mybox-chips">${dates.slice(0, 4).map(d => `<span class="md-chip">${esc(fmtShort(d))} · ${dm.get(d).map(b => span(b.s, b.e)).join(", ")}</span>`).join("")}${dates.length > 4 ? `<span class="md-chip more">+${dates.length - 4} til</span>` : ""}</div>
+          <button type="button" class="btn small" id="openMine">Se og endre dagene i kalender</button>
+        </div>`;
+      }
       if (can && info.kind !== "closed" && info.kind !== "unknown") {
         const [ds, de] = STD;
         html += `<form id="bookForm">
@@ -1221,6 +1336,7 @@ button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8p
     const q = s => panel.querySelector(s);
     panel.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => select(b.dataset.pick)));
     q("#closeSel")?.addEventListener("click", () => select(null));
+    q("#openMine")?.addEventListener("click", () => openMine(S.selected));
     wireRange(panel, "bk", S.selected); wireRange(panel, "aw", null);
     const forSel = q("#bkFor");
     if (forSel) { const upd = () => { q("#bkGuestWrap").hidden = forSel.value !== "guest"; }; forSel.addEventListener("change", upd); upd(); }
@@ -1268,7 +1384,7 @@ button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8p
       <p class="muted" style="margin:0">${next ? `Neste booking: <b>${esc(fmtShort(next.date))}</b> · plass ${DESK[next.desk]?.num} · ${span(next.s, next.e)}${next.guest ? ` (for ${esc(next.guest)})` : ""}` : "Ingen bookinger fremover."}</p>
       ${bk.length ? `<details class="mybk" id="myBk"><summary>Mine bookinger (${bk.length})</summary>
         <ul class="list">${bk.slice(0, 120).map(b => `<li><span class="lt"><b>${esc(fmtShort(b.date))}</b> · Plass ${DESK[b.desk]?.num} · ${span(b.s, b.e)}${b.guest ? `<span class="note">for ${esc(b.guest)}</span>` : ""}${b.by && b.by !== S.me ? `<span class="note">booket av ${esc(nameOf(b.by))}</span>` : ""}${b.note ? `<span class="note">«${esc(b.note)}»</span>` : ""}</span><button class="btn small danger" data-cancel="${b.id}">Avbestill</button></li>`).join("")}</ul>
-        <div class="actions"><button class="btn small ghost" id="icsBtn">Legg i kalender (Outlook/Google)</button></div></details>` : ""}
+        <div class="actions">${[...new Set(bk.map(b => b.desk))].map(dk => `<button class="btn small ghost" data-mydesk="${dk}">Endre plass ${DESK[dk]?.num} i kalender</button>`).join("")}<button class="btn small ghost" id="icsBtn">Legg i kalender (Outlook/Google)</button></div></details>` : ""}
       ${aw.length ? `<details class="mybk" id="myAw"><summary>Dager jeg har frigitt fast plass (${aw.length})</summary>
       <ul class="list">${aw.map(a => `<li><span class="lt"><b>${esc(fmtShort(a.date))}</b> · Plass ${DESK[a.desk]?.num} · ${span(a.s, a.e)}${a.by && a.by !== S.me ? `<span class="note">overtatt av ${esc(nameOf(a.by))}</span>` : ""}${a.note ? `<span class="note">«${esc(a.note)}»</span>` : ""}</span><button class="btn small ghost" data-undoaway="${a.id}">Angre</button></li>`).join("")}</ul></details>` : ""}
       <div class="field">Initialene dine på kartet
@@ -1279,6 +1395,7 @@ button.pk-d:hover { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 8p
     mineEl.querySelectorAll("[data-undoaway]").forEach(b => b.addEventListener("click", () => undoAway(b.dataset.undoaway)));
     mineEl.querySelectorAll("[data-dismiss]").forEach(b => b.addEventListener("click", () => db.collection("notices").doc(b.dataset.dismiss).delete().catch(() => {})));
     mineEl.querySelector("#icsBtn")?.addEventListener("click", downloadIcs);
+    mineEl.querySelectorAll("[data-mydesk]").forEach(b => b.addEventListener("click", () => openMine(b.dataset.mydesk)));
     mineEl.querySelector("#iniForm").addEventListener("submit", e => { e.preventDefault(); saveInitials(mineEl.querySelector("#iniIn").value); });
   }
   function downloadIcs() {
