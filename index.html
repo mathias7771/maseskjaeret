@@ -924,12 +924,12 @@ details.cta[open] > summary { margin-bottom: 10px; }
       }
     }));
   }
-  function hearts(x, y, n = 9) {
+  function hearts(x, y, n = 9, spread = 160, size = 1) {
     const g = el("g", { "pointer-events": "none" }, svg);
     const parts = [];
     for (let i = 0; i < n; i++) {
       const h = el("path", { d: "M0 6 C0 -3 -12 -3 -12 6 C-12 13 0 19 0 24 C0 19 12 13 12 6 C12 -3 0 -3 0 6 Z", class: "heart" }, g);
-      parts.push({ h, dx: (Math.random() - 0.5) * 160, delay: i * 140, sc: 0.9 + Math.random() * 0.9, rot: (Math.random() - 0.5) * 40 });
+      parts.push({ h, dx: (Math.random() - 0.5) * spread, x0: (Math.random() - 0.5) * spread * 0.5, delay: i * 110 + Math.random() * 120, sc: size * (0.7 + Math.random() * 0.8), rot: (Math.random() - 0.5) * 40 });
     }
     const t0 = performance.now(), dur = 1700;
     return new Promise(res => {
@@ -940,7 +940,7 @@ details.cta[open] > summary { margin-bottom: 10px; }
           if (t < 0) { p.h.setAttribute("opacity", 0); alive = true; continue; }
           if (t > 1) { p.h.setAttribute("opacity", 0); continue; }
           alive = true;
-          const yy = y - t * 170, xx = x + p.dx * t + Math.sin(t * 9 + p.dx) * 10;
+          const yy = y - t * 170, xx = x + p.x0 + p.dx * t + Math.sin(t * 9 + p.dx) * 10;
           p.h.setAttribute("transform", `translate(${xx} ${yy}) rotate(${p.rot}) scale(${p.sc * (0.6 + t * 0.6)})`);
           p.h.setAttribute("opacity", t < 0.2 ? t / 0.2 : 1 - (t - 0.2) / 0.8);
         }
@@ -953,7 +953,7 @@ details.cta[open] > summary { margin-bottom: 10px; }
     const w1 = walkers.f1; if (walking || !w1) return;
     const w2 = walkers.f2;
     walking = true; w1.hint.setAttribute("opacity", 0);
-    const SPEED = 150, dIn = pathLen(WALK, 2);
+    const SPEED = 150, dIn = pathLen(WALK, 5); // figur 2 dukker opp når figur 1 er nesten fremme
     let shown = false;
     await walkPath(w1, WALK, SPEED, d => { if (w2 && !shown && d >= dIn) { shown = true; fade(w2, 1); } });
     if (w2 && !shown) await fade(w2, 1);
@@ -962,9 +962,18 @@ details.cta[open] > summary { margin-bottom: 10px; }
     if (w2) w2.bub.setAttribute("opacity", 1);
     const ws = [w1, w2].filter(Boolean);
     const hx = w2 ? (w1.x + w2.x) / 2 : w1.x, hy = Math.min(w1.y, w2?.y ?? w1.y) - w1.h / 2 - 20;
-    const hp = w2 ? hearts(hx, hy) : null;
-    await hopAll(ws, w2 ? 3 : 2);
-    await hp; await sleep(900);
+    let hp = null;
+    if (w2) { // mange små hjerter rundt begge, i flere bølger mens de hopper
+      const bursts = [];
+      for (let k = 0; k < 6; k++) bursts.push(sleep(k * 550).then(() => Promise.all([
+        hearts(hx, hy, 6, 150, 0.55),
+        hearts(w1.x, w1.y - w1.h / 2 + 10, 4, 120, 0.45),
+        hearts(w2.x, w2.y - w2.h / 2 + 10, 4, 120, 0.45),
+      ])));
+      hp = Promise.all(bursts);
+    }
+    await hopAll(ws, w2 ? 7 : 2);
+    await hp; await sleep(700);
     ws.forEach(w => w.bub.setAttribute("opacity", 0));
     const rev = [...WALK].reverse(), dOut = pathLen(WALK) - pathLen(WALK, 1);
     let hidden = false;
@@ -1647,6 +1656,36 @@ details.cta[open] > summary { margin-bottom: 10px; }
     adminEl.querySelectorAll("[data-figsave]").forEach(b => b.addEventListener("click", () => saveFig(b.dataset.figsave, null)));
     adminEl.querySelectorAll("[data-figdel]").forEach(b => b.addEventListener("click", () => { const n = b.dataset.figdel; if (confirm(`Fjerne figur ${n} fra kartet?`)) guard(async () => { await db.collection("assets").doc(figDoc(n)).delete(); flash(`Figur ${n} er fjernet.`); }); }));
   }
+  // Fjerner ensfarget bakgrunn (f.eks. hvit) ved å fylle innover fra kantene, så figuren følger omrisset
+  function cutBackground(cx, w, h) {
+    const img = cx.getImageData(0, 0, w, h), d = img.data;
+    const border = []; for (let x = 0; x < w; x++) border.push(x, (h - 1) * w + x); for (let y = 0; y < h; y++) border.push(y * w, y * w + w - 1);
+    const ch = i => [d[i * 4], d[i * 4 + 1], d[i * 4 + 2]];
+    const med = [0, 1, 2].map(k => { const v = border.map(i => d[i * 4 + k]).sort((a, b) => a - b); return v[v.length >> 1]; });
+    const dist = i => { const c = ch(i); return Math.hypot(c[0] - med[0], c[1] - med[1], c[2] - med[2]); };
+    const TOL = 42;
+    if (border.filter(i => dist(i) <= TOL).length < border.length * 0.6) return; // ikke ensfarget bakgrunn – la bildet være
+    const seen = new Uint8Array(w * h), st = border.filter(i => dist(i) <= TOL);
+    while (st.length) {
+      const i = st.pop(); if (seen[i]) continue; seen[i] = 1;
+      if (dist(i) > TOL) continue;
+      d[i * 4 + 3] = 0;
+      const x = i % w, y = (i / w) | 0;
+      if (x > 0) st.push(i - 1); if (x < w - 1) st.push(i + 1); if (y > 0) st.push(i - w); if (y < h - 1) st.push(i + w);
+    }
+    // myk kant: halvgjennomsiktige piksler inntil bakgrunnen
+    for (let i = 0; i < w * h; i++) if (d[i * 4 + 3] && dist(i) <= TOL * 1.6) { const x = i % w, y = (i / w) | 0;
+      if ((x > 0 && !d[(i - 1) * 4 + 3]) || (x < w - 1 && !d[(i + 1) * 4 + 3]) || (y > 0 && !d[(i - w) * 4 + 3]) || (y < h - 1 && !d[(i + w) * 4 + 3])) d[i * 4 + 3] = 120; }
+    cx.putImageData(img, 0, 0);
+  }
+  function trimCanvas(c) {
+    const cx = c.getContext("2d"), { width: w, height: h } = c, d = cx.getImageData(0, 0, w, h).data;
+    let x0 = w, y0 = h, x1 = -1, y1 = -1;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (d[(y * w + x) * 4 + 3] > 8) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 < 0 || (x0 === 0 && y0 === 0 && x1 === w - 1 && y1 === h - 1)) return c;
+    const o = document.createElement("canvas"); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1;
+    o.getContext("2d").drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height); return o;
+  }
   async function toThumb(file) { // beholder gjennomsiktighet, klipper bort tom kant, skalerer ned
     const url = URL.createObjectURL(file);
     try {
@@ -1660,11 +1699,13 @@ details.cta[open] > summary { margin-bottom: 10px; }
       if (maxX < 0) { minX = 0; minY = 0; maxX = W - 1; maxY = H - 1; }
       const cw = maxX - minX + 1, ch = maxY - minY + 1;
       let side = 280, out = "";
+      let hadAlpha = false; for (let i = 3; i < data.length; i += 16) if (data[i] < 245) { hadAlpha = true; break; }
       do {
         const k = Math.min(1, side / Math.max(cw, ch));
         const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(cw * k)); c.height = Math.max(1, Math.round(ch * k));
-        c.getContext("2d").drawImage(c0, minX, minY, cw, ch, 0, 0, c.width, c.height);
-        out = c.toDataURL("image/png"); side = Math.round(side * 0.8);
+        const cx = c.getContext("2d"); cx.drawImage(c0, minX, minY, cw, ch, 0, 0, c.width, c.height);
+        if (!hadAlpha) cutBackground(cx, c.width, c.height);
+        out = trimCanvas(c).toDataURL("image/png"); side = Math.round(side * 0.8);
       } while (out.length > 380000 && side > 60);
       return out;
     } finally { URL.revokeObjectURL(url); }
