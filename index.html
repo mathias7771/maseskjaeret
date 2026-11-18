@@ -461,6 +461,33 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
 .pk-sum b { color: var(--danger); }
 .pk-d.dis.we, .pk-d.dis.hol { opacity: .6; }
 .pk > * { flex-shrink: 0; }
+/* v8: figurer, faste dager, CTA */
+.walker .wimg { filter: drop-shadow(0 3px 3px rgba(0,0,0,.35)); }
+.walker .wshadow { fill: rgba(0,0,0,.18); }
+.walker.f2 { cursor: default; }
+.heart { fill: #ff4f78; stroke: #fff; stroke-width: 2; }
+.figbox { display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+.figbox > b { font-size: 0.88rem; }
+.figprev img { border-radius: 8px; object-fit: contain; width: 56px; height: 56px; background: repeating-conic-gradient(var(--surface2) 0 25%, var(--surface) 0 50%) 0 0 / 12px 12px; }
+details.cta { border: 0; padding: 0; }
+details.cta > summary { list-style: none; display: flex; align-items: center; gap: 12px; border: 2px solid var(--accent); background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; cursor: pointer; }
+details.cta > summary::-webkit-details-marker { display: none; }
+details.cta > summary::after { content: "▾"; margin-left: auto; color: var(--accent); font-size: 1.1rem; }
+details.cta[open] > summary::after { content: "▴"; }
+details.cta > summary:hover { filter: brightness(1.03); box-shadow: 0 2px 10px rgba(14, 110, 120, .15); }
+details.cta[open] > summary { margin-bottom: 10px; }
+.cta-ic { flex: 0 0 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: flex; align-items: center; justify-content: center; }
+.cta-t { display: flex; flex-direction: column; }
+.cta-t b { font-size: 0.98rem; }
+.cta-t small { color: var(--muted); font-size: 0.8rem; font-weight: 400; }
+.md-chip.fxc { border-color: color-mix(in srgb, var(--fixed) 60%, var(--line)); }
+.pk-d.mk.fx { background: var(--fixed); color: #0d1b2c; }
+.pk-d.mk.freed { background: var(--surface); color: var(--muted); box-shadow: inset 0 0 0 2px var(--line); }
+.pk-d.mk.freed .mk-n { text-decoration: line-through; }
+.pk-d.mk.back { background: var(--free-soft); color: var(--ink); box-shadow: inset 0 0 0 2px var(--free); }
+.pk-d.mk.taken { background: var(--booked-soft); color: var(--muted); cursor: default; }
+.pk-legend .lg-fx { background: var(--fixed); border-radius: 3px; }
+.pk-legend .lg-freed { background: transparent; border: 2px solid var(--line); border-radius: 3px; width: 6px; height: 6px; }
 </style>
 </head>
 <body>
@@ -804,78 +831,148 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
     }
   }
 
-  // ---------- Nils ----------
-  let walker = null, walking = false;
-  function setupWalker() {
-    const has = !!S.figure?.img;
-    if (!has) { if (walker) { walker.g.remove(); walker = null; } return; }
-    if (walker && walker.src === S.figure.img) return;
-    if (walker) walker.g.remove();
-    const R = 46;
-    const g = el("g", { class: "walker", tabindex: "0", role: "button", "aria-label": `${S.figure.name || "Figur"} – trykk for å sende ham til pult 10` }, svg);
-    const body = el("g", {}, g);
-    let defs = svg.querySelector("defs") || el("defs", {}, svg);
-    if (!svg.querySelector("#wclip")) { const cp = el("clipPath", { id: "wclip" }, defs); el("circle", { cx: 0, cy: 0, r: R }, cp); }
-    el("circle", { cx: 0, cy: 0, r: R, fill: "#ddd" }, body);
-    const img = el("image", { x: -R, y: -R, width: 2 * R, height: 2 * R, "clip-path": "url(#wclip)", preserveAspectRatio: "xMidYMid slice" }, body);
-    img.setAttribute("href", S.figure.img);
-    el("circle", { cx: 0, cy: 0, r: R, class: "ring" }, body);
-    const name = el("text", { x: 0, y: R + 26, "text-anchor": "middle", class: "wname" }, g); name.textContent = S.figure.name || "";
-    const hint = el("text", { x: 0, y: R + 48, "text-anchor": "middle", class: "whint" }, g); hint.textContent = "trykk på meg";
-    const bub = el("g", { class: "bubble", opacity: 0, "pointer-events": "none" }, g);
-    el("rect", { x: 30, y: -150, width: 180, height: 76, rx: 22 }, bub);
-    el("path", { d: "M70 -76 L52 -50 L95 -76 Z", fill: "#fff", stroke: "none" }, bub);
-    const bt = el("text", { x: 52, y: -101 }, bub); bt.textContent = "Hei!";
-    el("circle", { cx: 172, cy: -112, r: 22, fill: "#ffd84d", stroke: "#14202a", "stroke-width": 3 }, bub);
-    el("circle", { cx: 164, cy: -118, r: 3, fill: "#14202a" }, bub); el("circle", { cx: 180, cy: -118, r: 3, fill: "#14202a" }, bub);
-    el("path", { d: "M161 -107 Q172 -96 183 -107", class: "sm" }, bub);
-    walker = { g, body, name, hint, bub, src: S.figure.img, x: WALK[0][0], y: WALK[0][1] };
-    placeWalker(WALK[0][0], WALK[0][1], 0, 0);
-    const go = () => startWalk();
-    g.addEventListener("click", go);
-    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  // ---------- figurer på kartet ----------
+  // Figur 1 står ute oppe til venstre og går til pult 10. Figur 2 dukker opp ved pult 10–11 når figur 1 kommer inn.
+  const walkers = { f1: null, f2: null };
+  let walking = false, figKey = null, figPending = false, figToken = 0;
+  const F2_POS = [34.2 * CW, 47.6 * CH];
+  const FIG_H = 118, FIG_WMAX = 150;
+  const loadSize = src => new Promise(res => { const i = new Image(); i.onload = () => res([i.naturalWidth || 1, i.naturalHeight || 1]); i.onerror = () => res([1, 1]); i.src = src; });
+  function bubbleEl(parent, side, top) {
+    const b = el("g", { class: "bubble", opacity: 0, "pointer-events": "none", transform: `translate(0 ${top})` }, parent);
+    const x0 = side < 0 ? -200 : 20;
+    el("rect", { x: x0, y: -78, width: 180, height: 70, rx: 22 }, b);
+    el("path", { d: side < 0 ? "M-48 -9 L-22 14 L-74 -9 Z" : "M48 -9 L22 14 L74 -9 Z", fill: "#fff", stroke: "none" }, b);
+    const t = el("text", { x: x0 + 20, y: -33 }, b); t.textContent = "Hei!";
+    const cx = x0 + 142;
+    el("circle", { cx, cy: -43, r: 21, fill: "#ffd84d", stroke: "#14202a", "stroke-width": 3 }, b);
+    el("circle", { cx: cx - 8, cy: -49, r: 3, fill: "#14202a" }, b); el("circle", { cx: cx + 8, cy: -49, r: 3, fill: "#14202a" }, b);
+    el("path", { d: `M${cx - 11} -38 Q${cx} -27 ${cx + 11} -38`, class: "sm" }, b);
+    return b;
   }
-  function placeWalker(x, y, rot, bob) {
-    walker.x = x; walker.y = y;
-    walker.g.setAttribute("transform", `translate(${x} ${y})`);
-    walker.body.setAttribute("transform", `translate(0 ${bob}) rotate(${rot})`);
+  async function makeFig(fig, main) {
+    const [nw, nh] = await loadSize(fig.img);
+    let h = FIG_H, w = h * nw / nh; if (w > FIG_WMAX) { w = FIG_WMAX; h = w * nh / nw; }
+    const g = el("g", { class: "walker" + (main ? "" : " f2"), tabindex: main ? "0" : "-1", role: main ? "button" : "img", "aria-label": main ? `${fig.name || "Figur"} – trykk for å sende ham til pult 10` : (fig.name || "Figur") });
+    el("ellipse", { cx: 0, cy: h / 2 + 2, rx: w * 0.36, ry: 8, class: "wshadow" }, g);
+    const body = el("g", {}, g);
+    const img = el("image", { x: -w / 2, y: -h / 2, width: w, height: h, preserveAspectRatio: "xMidYMid meet", class: "wimg" }, body);
+    img.setAttribute("href", fig.img);
+    const name = el("text", { x: 0, y: h / 2 + 28, "text-anchor": "middle", class: "wname" }, g); name.textContent = fig.name || "";
+    const hint = el("text", { x: 0, y: h / 2 + 50, "text-anchor": "middle", class: "whint" }, g); hint.textContent = main ? "trykk på meg" : "";
+    const bub = bubbleEl(body, main ? -1 : 1, -h / 2 + 6);
+    return { g, body, name, hint, bub, x: 0, y: 0, h };
+  }
+  function place(w, x, y, rot = 0, bob = 0) {
+    w.x = x; w.y = y;
+    w.g.setAttribute("transform", `translate(${x} ${y})`);
+    w.body.setAttribute("transform", `translate(0 ${bob}) rotate(${rot})`);
+  }
+  async function setupWalker() {
+    const f1 = S.figure?.img ? S.figure : null, f2 = S.figure2?.img ? S.figure2 : null;
+    const key = JSON.stringify([f1?.at, f1?.name, f1?.img?.length, f2?.at, f2?.name, f2?.img?.length]);
+    if (key === figKey) return;
+    if (walking) { figPending = true; return; }
+    figKey = key; const t = ++figToken;
+    for (const k of ["f1", "f2"]) { walkers[k]?.g.remove(); walkers[k] = null; }
+    if (!f1) return;
+    const w1 = await makeFig(f1, true);
+    const w2 = f2 ? await makeFig(f2, false) : null;
+    if (t !== figToken) return;
+    if (w2) { svg.appendChild(w2.g); place(w2, F2_POS[0], F2_POS[1]); w2.g.setAttribute("opacity", 0); w2.g.style.display = "none"; walkers.f2 = w2; }
+    svg.appendChild(w1.g); place(w1, WALK[0][0], WALK[0][1]); walkers.f1 = w1;
+    const go = () => startWalk();
+    w1.g.addEventListener("click", go);
+    w1.g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   }
   const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function walkPath(pts, speed) {
+  const pathLen = (pts, upto = pts.length - 1) => { let L = 0; for (let i = 1; i <= upto; i++) L += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); return L; };
+  function walkPath(w, pts, speed, onDist) {
     return new Promise(res => {
       const segs = []; let total = 0;
       for (let i = 1; i < pts.length; i++) { const L = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push([pts[i - 1], pts[i], L]); total += L; }
       const t0 = performance.now();
       const frame = now => {
-        if (!walker) return res();
-        let d = Math.min(total, (now - t0) / 1000 * speed), rest = d;
+        if (!w.g.isConnected) return res();
+        const d = Math.min(total, (now - t0) / 1000 * speed); let rest = d;
         let x = pts[pts.length - 1][0], y = pts[pts.length - 1][1];
         for (const [a, b, L] of segs) { if (rest <= L) { const f = L ? rest / L : 1; x = a[0] + (b[0] - a[0]) * f; y = a[1] + (b[1] - a[1]) * f; break; } rest -= L; }
-        const ph = d / 16;
-        const rot = reduceMotion() ? 0 : Math.sin(ph) * 10, bob = reduceMotion() ? 0 : -Math.abs(Math.sin(ph)) * 9;
-        placeWalker(x, y, rot, bob);
-        if (d < total) requestAnimationFrame(frame); else { placeWalker(x, y, 0, 0); res(); }
+        const ph = d / 16, rm = reduceMotion();
+        place(w, x, y, rm ? 0 : Math.sin(ph) * 10, rm ? 0 : -Math.abs(Math.sin(ph)) * 9);
+        onDist?.(d);
+        if (d < total) requestAnimationFrame(frame); else { place(w, x, y); res(); }
       };
       requestAnimationFrame(frame);
     });
   }
   const sleep = ms => new Promise(r => setTimeout(r, ms));
-  async function hop(n) {
-    for (let i = 0; i < n && walker; i++) {
-      const t0 = performance.now();
-      await new Promise(res => { const f = now => { if (!walker) return res(); const p = Math.min(1, (now - t0) / 380); placeWalker(walker.x, walker.y, 0, -Math.sin(p * Math.PI) * 26); p < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
+  function fade(w, to, ms = 600) {
+    if (to > 0) w.g.style.display = "";
+    return new Promise(res => {
+      const from = Number(w.g.getAttribute("opacity") || 0), t0 = performance.now();
+      const f = now => { const p = Math.min(1, (now - t0) / ms); w.g.setAttribute("opacity", from + (to - from) * p);
+        if (!to) place(w, w.x, w.y, 0, 0); else place(w, w.x, w.y, 0, -Math.sin(p * Math.PI) * 14);
+        if (p < 1) requestAnimationFrame(f); else { if (!to) w.g.style.display = "none"; res(); } };
+      requestAnimationFrame(f);
+    });
+  }
+  function hopAll(ws, n) {
+    return Promise.all(ws.map(async w => {
+      for (let i = 0; i < n; i++) {
+        const t0 = performance.now();
+        await new Promise(res => { const f = now => { if (!w.g.isConnected) return res(); const p = Math.min(1, (now - t0) / 420); place(w, w.x, w.y, 0, -Math.sin(p * Math.PI) * 30); p < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
+      }
+    }));
+  }
+  function hearts(x, y, n = 9) {
+    const g = el("g", { "pointer-events": "none" }, svg);
+    const parts = [];
+    for (let i = 0; i < n; i++) {
+      const h = el("path", { d: "M0 6 C0 -3 -12 -3 -12 6 C-12 13 0 19 0 24 C0 19 12 13 12 6 C12 -3 0 -3 0 6 Z", class: "heart" }, g);
+      parts.push({ h, dx: (Math.random() - 0.5) * 160, delay: i * 140, sc: 0.9 + Math.random() * 0.9, rot: (Math.random() - 0.5) * 40 });
     }
+    const t0 = performance.now(), dur = 1700;
+    return new Promise(res => {
+      const f = now => {
+        let alive = false;
+        for (const p of parts) {
+          const t = (now - t0 - p.delay) / dur;
+          if (t < 0) { p.h.setAttribute("opacity", 0); alive = true; continue; }
+          if (t > 1) { p.h.setAttribute("opacity", 0); continue; }
+          alive = true;
+          const yy = y - t * 170, xx = x + p.dx * t + Math.sin(t * 9 + p.dx) * 10;
+          p.h.setAttribute("transform", `translate(${xx} ${yy}) rotate(${p.rot}) scale(${p.sc * (0.6 + t * 0.6)})`);
+          p.h.setAttribute("opacity", t < 0.2 ? t / 0.2 : 1 - (t - 0.2) / 0.8);
+        }
+        if (alive) requestAnimationFrame(f); else { g.remove(); res(); }
+      };
+      requestAnimationFrame(f);
+    });
   }
   async function startWalk() {
-    if (walking || !walker) return;
-    walking = true; walker.hint.setAttribute("opacity", 0);
-    await walkPath(WALK, 150);
-    if (walker) walker.bub.setAttribute("opacity", 1);
-    await hop(2); await sleep(1800);
-    if (walker) walker.bub.setAttribute("opacity", 0);
-    await walkPath([...WALK].reverse(), 150);
-    if (walker) walker.hint.setAttribute("opacity", 1);
+    const w1 = walkers.f1; if (walking || !w1) return;
+    const w2 = walkers.f2;
+    walking = true; w1.hint.setAttribute("opacity", 0);
+    const SPEED = 150, dIn = pathLen(WALK, 2);
+    let shown = false;
+    await walkPath(w1, WALK, SPEED, d => { if (w2 && !shown && d >= dIn) { shown = true; fade(w2, 1); } });
+    if (w2 && !shown) await fade(w2, 1);
+    w1.bub.setAttribute("opacity", 1);
+    await sleep(w2 ? 600 : 200);
+    if (w2) w2.bub.setAttribute("opacity", 1);
+    const ws = [w1, w2].filter(Boolean);
+    const hx = w2 ? (w1.x + w2.x) / 2 : w1.x, hy = Math.min(w1.y, w2?.y ?? w1.y) - w1.h / 2 - 20;
+    const hp = w2 ? hearts(hx, hy) : null;
+    await hopAll(ws, w2 ? 3 : 2);
+    await hp; await sleep(900);
+    ws.forEach(w => w.bub.setAttribute("opacity", 0));
+    const rev = [...WALK].reverse(), dOut = pathLen(WALK) - pathLen(WALK, 1);
+    let hidden = false;
+    await walkPath(w1, rev, SPEED, d => { if (w2 && !hidden && d >= dOut) { hidden = true; fade(w2, 0); } });
+    if (w2 && !hidden) await fade(w2, 0);
+    w1.hint.setAttribute("opacity", 1);
     walking = false;
+    if (figPending) { figPending = false; setupWalker(); }
   }
 
   // ---------- dagstripe ----------
@@ -1132,17 +1229,38 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
     if (PK.start && !PK.end && !PK.fresh && h !== PK.hover) { PK.hover = h; renderPicker(); }
   });
 
-  // ---------- mine bookinger på én plass: kalender der du huker vekk dager ----------
-  const MK = { desk: null, view: null, removed: new Set() };
+  // ---------- mine dager på én plass: kalender der du huker vekk dager (bookinger og fast plass) ----------
+  const MK = { desk: null, view: null, rmB: new Set(), free: new Set(), restore: new Set() };
   const mkEl = document.createElement("div"); mkEl.className = "pk-overlay"; mkEl.hidden = true;
-  mkEl.setAttribute("role", "dialog"); mkEl.setAttribute("aria-modal", "true"); mkEl.setAttribute("aria-label", "Mine bookinger på plassen");
+  mkEl.setAttribute("role", "dialog"); mkEl.setAttribute("aria-modal", "true"); mkEl.setAttribute("aria-label", "Mine dager på plassen");
   document.body.appendChild(mkEl);
   const myOnDesk = desk => S.myBookings.filter(b => b.desk === desk).sort((a, b) => a.date.localeCompare(b.date) || a.s - b.s);
   const byDate = list => { const m = new Map(); for (const b of list) { if (!m.has(b.date)) m.set(b.date, []); m.get(b.date).push(b); } return m; };
+  const myHolderOn = desk => holdersOf(desk).find(h => h.uid === S.me) || null;
+  function mkData(desk) {
+    const map = new Map();
+    for (const b of myOnDesk(desk)) { if (!map.has(b.date)) map.set(b.date, { bks: [], fx: null }); map.get(b.date).bks.push(b); }
+    const h = myHolderOn(desk);
+    if (h) {
+      const end = addMonths(monthOf(TODAY), 12) + "-01";
+      for (let d = TODAY; d < end; d = addDays(d, 1)) {
+        if (isWeekend(d) || holiday(d)) continue;
+        const sp = hSpan(h, dow(d)); if (!sp) continue;
+        const aw = S.myAway.filter(a => a.desk === desk && a.date === d);
+        const leftMin = subtract(sp, aw.map(a => [a.s, a.e])).reduce((t, [a, b]) => t + b - a, 0);
+        const taken = aw.find(a => a.by && a.by !== S.me);
+        if (!map.has(d)) map.set(d, { bks: [], fx: null });
+        map.get(d).fx = { s: sp[0], e: sp[1], state: leftMin === 0 ? (taken ? "taken" : "freed") : "on", by: taken?.by, aw };
+      }
+    }
+    return { map: new Map([...map].sort((a, b) => a[0].localeCompare(b[0]))), h };
+  }
+  const isActive = (d, v) => v.bks.length ? !MK.rmB.has(d) : v.fx ? (v.fx.state === "on" ? !MK.free.has(d) : v.fx.state === "freed" && MK.restore.has(d)) : false;
   const mkKey = e => { if (e.key === "Escape") closeMine(); };
   function openMine(desk) {
-    const list = myOnDesk(desk); if (!list.length) return;
-    Object.assign(MK, { desk, view: monthOf(list[0].date), removed: new Set() });
+    const { map } = mkData(desk); if (!map.size) return;
+    const first = [...map.keys()][0];
+    Object.assign(MK, { desk, view: monthOf(first), rmB: new Set(), free: new Set(), restore: new Set() });
     mkEl.hidden = false; document.body.classList.add("pk-lock"); document.addEventListener("keydown", mkKey); renderMine2();
   }
   function closeMine() { mkEl.hidden = true; document.body.classList.remove("pk-lock"); document.removeEventListener("keydown", mkKey); }
@@ -1151,62 +1269,81 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
     let html = `<div class="pk-month"><div class="pk-mtitle">${esc(fmtMonth(m))}</div><div class="pk-grid">${wd.map((w, i) => `<span class="pk-wd${i >= 5 ? " we" : ""}">${w}</span>`).join("")}`;
     for (let d = monday(m + "-01"), end = addDays(monday(monthEnd(m)), 6); d <= end; d = addDays(d, 1)) {
       if (monthOf(d) !== m) { html += `<span></span>`; continue; }
-      const bs = map.get(d);
+      const v = map.get(d);
       const base = ["pk-d", isWeekend(d) ? "we" : "", holiday(d) ? "hol" : "", d === TODAY ? "today" : ""];
-      if (bs) {
-        const off = MK.removed.has(d);
-        const t = bs.length > 1 ? `${bs.length}×` : `${shortT(bs[0].s)}–${shortT(bs[0].e)}`;
-        const tip = `${fmtShort(d)}: ${bs.map(b => span(b.s, b.e) + (b.guest ? " (" + b.guest + ")" : "")).join(", ")} – ${off ? "trykk for å beholde" : "trykk for å fjerne"}`;
-        html += `<button type="button" class="${[...base, "mk", off ? "off" : "on"].join(" ")}" data-md="${d}" title="${esc(tip)}" aria-pressed="${!off}"><span class="mk-n">${parse(d).getDate()}</span><span class="mk-t">${esc(t)}</span></button>`;
+      const n = `<span class="mk-n">${parse(d).getDate()}</span>`;
+      if (v && v.bks.length) {
+        const off = MK.rmB.has(d);
+        const t = v.bks.length > 1 ? `${v.bks.length}×` : `${shortT(v.bks[0].s)}–${shortT(v.bks[0].e)}`;
+        html += `<button type="button" class="${[...base, "mk", off ? "off" : "on"].join(" ")}" data-md="${d}" title="${esc(`${fmtShort(d)}: booking ${v.bks.map(b => span(b.s, b.e) + (b.guest ? " (" + b.guest + ")" : "")).join(", ")} – ${off ? "trykk for å beholde" : "trykk for å fjerne"}`)}" aria-pressed="${!off}">${n}<span class="mk-t">${esc(t)}</span></button>`;
+      } else if (v && v.fx) {
+        const f = v.fx, t = `${shortT(f.s)}–${shortT(f.e)}`;
+        if (f.state === "taken") html += `<span class="${[...base, "mk", "taken"].join(" ")}" title="${esc(`${fmtShort(d)}: overtatt av ${fullName(f.by)}`)}">${n}<span class="mk-t">overtatt</span></span>`;
+        else if (f.state === "freed") { const back = MK.restore.has(d);
+          html += `<button type="button" class="${[...base, "mk", back ? "back" : "freed"].join(" ")}" data-md="${d}" title="${esc(`${fmtShort(d)}: ${back ? "du tar plassen tilbake" : "frigitt – trykk for å ta plassen tilbake"}`)}">${n}<span class="mk-t">${back ? "tilbake" : "frigitt"}</span></button>`; }
+        else { const off = MK.free.has(d);
+          html += `<button type="button" class="${[...base, "mk", off ? "off" : "fx"].join(" ")}" data-md="${d}" title="${esc(`${fmtShort(d)}: fast plass ${t} – ${off ? "trykk for å beholde" : "trykk hvis du ikke kommer"}`)}" aria-pressed="${!off}">${n}<span class="mk-t">${esc(t)}</span></button>`; }
       } else html += `<span class="${[...base, "dis"].join(" ")}">${parse(d).getDate()}</span>`;
     }
     return html + `</div></div>`;
   }
   function renderMine2() {
-    const list = myOnDesk(MK.desk), map = byDate(list);
-    if (!list.length) { closeMine(); return; }
-    const months = [...new Set(list.map(b => monthOf(b.date)))].sort();
-    if (!months.includes(MK.view) && !months.includes(addMonths(MK.view, -1))) MK.view = months[0];
+    const { map, h } = mkData(MK.desk);
+    if (!map.size) { closeMine(); return; }
+    const all = [...map.keys()];
+    const months = h ? Array.from({ length: 12 }, (_, i) => addMonths(monthOf(TODAY), i)) : [...new Set(all.map(monthOf))].sort();
+    if (!months.includes(MK.view)) MK.view = months[0];
     const shown = [MK.view, addMonths(MK.view, 1)];
-    const nDays = map.size, nOff = [...MK.removed].filter(d => map.has(d)).length;
-    const counts = Object.fromEntries(months.map(m => [m, list.filter(b => monthOf(b.date) === m).length]));
+    const cnt = m => all.filter(d => monthOf(d) === m && isActive(d, map.get(d))).length;
+    const nB = [...MK.rmB].filter(d => map.get(d)?.bks.length).length, nF = MK.free.size, nR = MK.restore.size;
+    const parts = [nB && `${nB} ${nB === 1 ? "booking" : "bookinger"} fjernes`, nF && `${nF} ${nF === 1 ? "fast dag" : "faste dager"} frigis`, nR && `${nR} ${nR === 1 ? "dag" : "dager"} tas tilbake`].filter(Boolean);
+    const nBook = all.filter(d => map.get(d).bks.length).length;
     mkEl.innerHTML = `<div class="pk mkp">
       <div class="pk-head">
-        <div><div class="eyebrow">Mine bookinger</div><h3 class="mk-title">Plass ${DESK[MK.desk].num} <small>${esc(DESK[MK.desk].room)}</small></h3>
-          <p class="hint" style="margin:2px 0 0">Du har denne plassen <b>${nDays} ${nDays === 1 ? "dag" : "dager"}</b> fremover. Trykk på en dag for å huke den vekk, og trykk igjen for å angre.</p></div>
+        <div><div class="eyebrow">Mine dager</div><h3 class="mk-title">Plass ${DESK[MK.desk].num} <small>${esc(DESK[MK.desk].room)}</small></h3>
+          <p class="hint" style="margin:2px 0 0">${h ? `Fast plass: <b>${esc(fmtSched(h))}</b>. ` : ""}${nBook ? `${nBook} ${nBook === 1 ? "booking" : "bookinger"} fremover. ` : ""}Trykk på en dag du ikke kommer, så blir plassen ledig for andre. Trykk igjen for å angre.</p></div>
         <button type="button" class="pk-x" data-mk="close" aria-label="Lukk">×</button>
       </div>
-      <div class="pk-strip">${months.map(m => `<button type="button" data-mm="${m}" class="${shown.includes(m) ? "on" : ""}">${esc(parse(m + "-01").toLocaleDateString("nb-NO", { month: "short" }).replace(".", ""))}${m.slice(0, 4) !== TODAY.slice(0, 4) ? ` <small>${m.slice(0, 4)}</small>` : ""} <span class="mk-cnt">${counts[m]}</span></button>`).join("")}</div>
+      <div class="pk-strip">${months.map(m => { const c = cnt(m); return `<button type="button" data-mm="${m}" class="${shown.includes(m) ? "on" : ""}">${esc(parse(m + "-01").toLocaleDateString("nb-NO", { month: "short" }).replace(".", ""))}${m.slice(0, 4) !== TODAY.slice(0, 4) ? ` <small>${m.slice(0, 4)}</small>` : ""}${c ? ` <span class="mk-cnt">${c}</span>` : ""}</button>`; }).join("")}</div>
       <div class="pk-body">
         <button type="button" class="pk-nav" data-mn="-1" aria-label="Forrige måned" ${MK.view <= months[0] ? "disabled" : ""}>‹</button>
         <div class="pk-months">${shown.map(m => mkMonth(m, map)).join("")}</div>
         <button type="button" class="pk-nav" data-mn="1" aria-label="Neste måned" ${addMonths(MK.view, 1) >= months[months.length - 1] ? "disabled" : ""}>›</button>
       </div>
       <div class="pk-foot">
-        <div class="pk-legend"><span><i class="lg-on"></i>Booket</span><span><i class="lg-off"></i>Hukes vekk</span></div>
-        <div class="pk-sum">${nOff ? `<b>${nOff} ${nOff === 1 ? "dag" : "dager"}</b> blir fjernet` : "Ingen endringer ennå"}</div>
+        <div class="pk-legend">${nBook ? `<span><i class="lg-on"></i>Booket</span>` : ""}${h ? `<span><i class="lg-fx"></i>Fast plass</span><span><i class="lg-freed"></i>Frigitt</span>` : ""}<span><i class="lg-off"></i>Hukes vekk</span></div>
+        <div class="pk-sum">${parts.length ? parts.map(p => `<b>${esc(p)}</b>`).join(" · ") : "Ingen endringer ennå"}</div>
         <div class="pk-btns">
-          <button type="button" class="btn ghost small" data-mk="all">${nOff === nDays ? "Behold alle" : "Huk vekk alle"}</button>
+          ${h ? "" : `<button type="button" class="btn ghost small" data-mk="all">${nB === nBook ? "Behold alle" : "Huk vekk alle"}</button>`}
           <button type="button" class="btn ghost small" data-mk="close">Lukk</button>
-          <button type="button" class="btn danger-solid pk-done" data-mk="save" ${nOff ? "" : "disabled"}>Fjern ${nOff || ""} ${nOff === 1 ? "booking" : "bookinger"}</button>
+          <button type="button" class="btn ${nB + nF && !nR ? "danger-solid" : ""} pk-done" data-mk="save" ${parts.length ? "" : "disabled"}>Lagre endringer</button>
         </div>
       </div></div>`;
   }
   mkEl.addEventListener("click", e => {
     if (e.target === mkEl) return closeMine();
     const t = e.target.closest("[data-md],[data-mm],[data-mn],[data-mk]"); if (!t) return;
-    const map = byDate(myOnDesk(MK.desk));
-    if (t.dataset.md) { const d = t.dataset.md; MK.removed.has(d) ? MK.removed.delete(d) : MK.removed.add(d); }
+    const { map } = mkData(MK.desk);
+    if (t.dataset.md) {
+      const d = t.dataset.md, v = map.get(d); if (!v) return;
+      const tog = set => set.has(d) ? set.delete(d) : set.add(d);
+      if (v.bks.length) tog(MK.rmB); else if (v.fx?.state === "on") tog(MK.free); else if (v.fx?.state === "freed") tog(MK.restore);
+    }
     else if (t.dataset.mm) MK.view = t.dataset.mm;
     else if (t.dataset.mn) MK.view = addMonths(MK.view, Number(t.dataset.mn));
     else if (t.dataset.mk === "close") return closeMine();
-    else if (t.dataset.mk === "all") { const all = [...map.keys()]; if (all.every(d => MK.removed.has(d))) MK.removed.clear(); else all.forEach(d => MK.removed.add(d)); }
+    else if (t.dataset.mk === "all") { const bd = [...map.keys()].filter(d => map.get(d).bks.length); if (bd.every(d => MK.rmB.has(d))) MK.rmB.clear(); else bd.forEach(d => MK.rmB.add(d)); }
     else if (t.dataset.mk === "save") {
-      const ids = [...MK.removed].flatMap(d => (map.get(d) || []).map(b => b.id)), n = [...MK.removed].filter(d => map.has(d)).length, desk = MK.desk;
+      const desk = MK.desk, rmB = [...MK.rmB], free = [...MK.free], restore = [...MK.restore];
       closeMine();
       guard(async () => {
-        for (const id of ids) await db.collection("bookings").doc(id).delete();
-        flash(`Fjernet ${n === 1 ? "1 dag" : `${n} dager`} fra bookingene dine på plass ${DESK[desk].num}.`);
+        let nb = 0;
+        for (const d of rmB) for (const b of map.get(d)?.bks || []) { await db.collection("bookings").doc(b.id).delete(); nb++; }
+        for (const d of free) { const f = map.get(d)?.fx; if (!f) continue;
+          await db.collection("away").add({ desk, date: d, start: toHHMM(f.s), end: toHHMM(f.e), uid: S.me, by: S.me, note: "Kommer ikke", at: Date.now() }); }
+        for (const d of restore) for (const a of map.get(d)?.fx?.aw || []) if (!a.by || a.by === S.me) await db.collection("away").doc(a.id).delete();
+        const msg = [rmB.length && `fjernet ${rmB.length} ${rmB.length === 1 ? "booking" : "bookinger"}`, free.length && `frigitt ${free.length} ${free.length === 1 ? "fast dag" : "faste dager"}`, restore.length && `tatt tilbake ${restore.length} ${restore.length === 1 ? "dag" : "dager"}`].filter(Boolean).join(", ");
+        flash(`Plass ${DESK[desk].num}: ${msg}.`);
       });
       return;
     }
@@ -1240,7 +1377,7 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
   function renderPanel() {
     const sel = S.selected;
     const info = sel ? dayInfo(S.date, sel) : null;
-    const sig = JSON.stringify([sel, S.date, S.me, S.admin, S.dbOk, S.msg, S.busy, info && [info.kind, info.ints, info.holders, info.aways], sel ? myOnDesk(sel) : null, S.loaded, sel ? null : DESKS.map(d => dayInfo(S.date, d.id).ints).flat(), S.names, S.members]);
+    const sig = JSON.stringify([sel, S.date, S.me, S.admin, S.dbOk, S.msg, S.busy, info && [info.kind, info.ints, info.holders, info.aways], sel ? [myOnDesk(sel), S.myAway.filter(a => a.desk === sel)] : null, S.loaded, sel ? null : DESKS.map(d => dayInfo(S.date, d.id).ints).flat(), S.names, S.members]);
     if (sig === panelSig) return;
     const sameSel = panelSig && JSON.parse(panelSig)[0] === sel && JSON.parse(panelSig)[1] === S.date;
     panelSig = sig;
@@ -1276,20 +1413,25 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
             <span class="who">${i.src === "fixed" ? "Fast: " : ""}${esc(who(i))}${i.src === "booking" && i.by && i.by !== i.uid ? `<span class="note">booket av ${esc(nameOf(i.by))}</span>` : i.src === "booking" && i.guest ? `<span class="note">booket av ${esc(nameOf(i.uid))}</span>` : ""}${i.note ? `<span class="note">«${esc(i.note)}»</span>` : ""}</span>
             <span>${can && i.src === "booking" && (i.uid === S.me || i.by === S.me || S.admin) ? `<button class="btn small danger" data-cancel="${i.id}">${i.uid === S.me || i.by === S.me ? "Avbestill" : "Fjern"}</button>` : ""}</span></li>`).join("")}</ul>`}
         ${msg}`;
-      const mineHere = myOnDesk(sel);
-      if (mineHere.length) {
-        const dm = byDate(mineHere), dates = [...dm.keys()];
+      const mk = mkData(sel);
+      if (mk.map.size) {
+        const act = [...mk.map].filter(([, v]) => v.bks.length || v.fx?.state === "on");
+        const freed = [...mk.map].filter(([, v]) => !v.bks.length && v.fx && v.fx.state !== "on").length;
+        const nb = [...mk.map].filter(([, v]) => v.bks.length).length;
+        const chip = ([d, v]) => `<span class="md-chip${v.bks.length ? "" : " fxc"}">${esc(fmtShort(d))} · ${v.bks.length ? v.bks.map(b => span(b.s, b.e)).join(", ") : span(v.fx.s, v.fx.e)}</span>`;
         html += `<div class="mybox">
-          <div class="mybox-h"><span class="mybox-ic" aria-hidden="true">★</span><div><b>Du har denne plassen ${dates.length} ${dates.length === 1 ? "dag" : "dager"} fremover</b><small>${dates.length > 1 ? `${esc(fmtShort(dates[0]))} – ${esc(fmtShort(dates[dates.length - 1]))}` : esc(fmtShort(dates[0]))}</small></div></div>
-          <div class="mybox-chips">${dates.slice(0, 4).map(d => `<span class="md-chip">${esc(fmtShort(d))} · ${dm.get(d).map(b => span(b.s, b.e)).join(", ")}</span>`).join("")}${dates.length > 4 ? `<span class="md-chip more">+${dates.length - 4} til</span>` : ""}</div>
-          <button type="button" class="btn small" id="openMine">Se og endre dagene i kalender</button>
+          <div class="mybox-h"><span class="mybox-ic" aria-hidden="true">★</span><div>${mk.h
+            ? `<b>Dette er din faste plass</b><small>${esc(fmtSched(mk.h))}${nb ? ` · pluss ${nb} ${nb === 1 ? "booking" : "bookinger"}` : ""}${freed ? ` · ${freed} ${freed === 1 ? "dag" : "dager"} frigitt` : ""}</small>`
+            : `<b>Du har denne plassen ${nb} ${nb === 1 ? "dag" : "dager"} fremover</b><small>${act.length ? `${esc(fmtShort(act[0][0]))}${act.length > 1 ? ` – ${esc(fmtShort(act[act.length - 1][0]))}` : ""}` : ""}</small>`}</div></div>
+          ${act.length ? `<div class="mybox-chips">${act.slice(0, 4).map(chip).join("")}${act.length > 4 && !mk.h ? `<span class="md-chip more">+${act.length - 4} til</span>` : ""}</div>` : ""}
+          <button type="button" class="btn small" id="openMine">${mk.h ? "Kommer du ikke en dag? Se og endre dagene" : "Se og endre dagene i kalender"}</button>
         </div>`;
       }
       if (can && info.kind !== "closed" && info.kind !== "unknown") {
         const [ds, de] = STD;
-        html += `<form id="bookForm">
-          <div class="eyebrow">Book plassen</div>
-          ${info.kind === "booked" || info.kind === "fixed" ? `<p class="warnbox">Plassen er opptatt. Booker du likevel, får du spørsmål om å overta den.</p>` : ""}
+        html += `${myH ? `<details id="bkWrap"><summary>Book plassen for noen andre eller andre tider</summary>` : ""}<form id="bookForm">
+          ${myH ? "" : `<div class="eyebrow">Book plassen</div>`}
+          ${(info.kind === "booked" || info.kind === "fixed") && info.ints.some(i => i.uid !== S.me) ? `<p class="warnbox">Plassen er opptatt. Booker du likevel, får du spørsmål om å overta den.</p>` : ""}
           ${rangeFieldHTML("bk", "Når?")}
           <div class="field" id="bkDaysWrap" hidden>Hvilke ukedager?${togglesHTML("bkD", ALL_DAYS)}</div>
           <label class="field">For hvem?<select id="bkFor">${memberOptions()}</select></label>
@@ -1300,7 +1442,13 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
           </div>
           <label class="field">Notat (valgfritt)<input type="text" id="bkNote" maxlength="120" placeholder="F.eks. «Teams 10–11»"></label>
           <button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Book plass ${d.num}</button>
-        </form>`;
+        </form>${myH ? "</details>" : ""}`;
+      }
+      if (can && !myH) {
+        html += `<details id="fxNew" class="cta"><summary><span class="cta-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 3l6 6-3 1-4 4 1 4-2 2-4-4-5 5-1-1 5-5-4-4 2-2 4 1 4-4z" fill="currentColor"/></svg></span><span class="cta-t"><b>Gjør til min faste plass</b><small>Reserver plassen fast på ukedagene du velger</small></span></summary>
+          <form id="fxForm"><p class="hint">Velg hvilke dager du sitter her fast, og eventuelt bare fra et klokkeslett til et annet. Plassen er da reservert til deg disse tidene hver uke, og ledig for andre resten av tiden.</p>
+          ${others.length ? `<p class="hint">Plassen deles allerede (se under). Overlapper du med noen, får du spørsmål før noe endres.</p>` : ""}
+          ${schedHTML("fx", null)}<button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Gjør til min faste plass</button></form></details>`;
       }
       // faste plasser
       if (others.length || myH) html += `<div class="fixedbox"><div class="eyebrow">Faste innehavere</div><ul class="holders">${info.holders.map(h => `<li><b>${esc(h.uid === S.me ? "Deg" : fullName(h.uid))}</b> · ${esc(fmtSched(h))}${h.note ? ` – «${esc(h.note)}»` : ""}</li>`).join("")}</ul></div>`;
@@ -1321,11 +1469,6 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
           </form></details>
           ${info.aways.filter(a => a.uid === S.me).length ? `<div class="actions">${info.aways.filter(a => a.uid === S.me).map(a => `<button class="btn small ghost" data-undoaway="${a.id}">Angre frigitt ${span(a.s, a.e)}</button>`).join("")}</div>` : ""}
           <div class="actions"><button class="btn danger small" type="button" id="releaseFixed" data-hid="${esc(myH.id)}">Gi fra meg fast plass</button></div>`;
-      } else if (can) {
-        html += `<details id="fxNew"><summary>Gjør til min faste plass</summary>
-          <form id="fxForm"><p class="hint">Velg hvilke dager du sitter her fast, og eventuelt bare fra et klokkeslett til et annet. Plassen er da reservert til deg disse tidene hver uke, og ledig for andre resten av tiden.</p>
-          ${others.length ? `<p class="hint">Plassen deles allerede (se over). Overlapper du med noen, får du spørsmål før noe endres.</p>` : ""}
-          ${schedHTML("fx", null)}<button class="btn" type="submit" ${S.busy ? "disabled" : ""}>Gjør til min faste plass</button></form></details>`;
       }
       html += `<div class="actions"><button class="btn small ghost" type="button" id="closeSel">Lukk</button></div>`;
     }
@@ -1380,7 +1523,7 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
     const myIni = S.inits[S.me] || iniFrom(S.names[S.me]);
     const html = `<h3>Mine plasser</h3>
       ${S.notices.map(n => `<div class="notice"><span>${esc(n.text)}</span><button class="btn small ghost" data-dismiss="${esc(n.id)}">OK</button></div>`).join("")}
-      ${myFixed.length ? myFixed.map(h => `<div class="fixedbox mine"><span>Fast plass: <b>Plass ${DESK[h.desk]?.num}</b> · ${esc(DESK[h.desk]?.room || "")}<br>${esc(fmtSched(h))}</span><div class="actions"><button class="btn small ghost" data-pick="${h.desk}">Vis / endre</button></div></div>`).join("") : `<p class="muted">Du har ingen fast plass.</p>`}
+      ${myFixed.length ? myFixed.map(h => `<div class="fixedbox mine"><span>Fast plass: <b>Plass ${DESK[h.desk]?.num}</b> · ${esc(DESK[h.desk]?.room || "")}<br>${esc(fmtSched(h))}</span><div class="actions"><button class="btn small" data-mydesk="${h.desk}">Kommer ikke en dag?</button><button class="btn small ghost" data-pick="${h.desk}">Vis / endre</button></div></div>`).join("") : `<p class="muted">Du har ingen fast plass.</p>`}
       <p class="muted" style="margin:0">${next ? `Neste booking: <b>${esc(fmtShort(next.date))}</b> · plass ${DESK[next.desk]?.num} · ${span(next.s, next.e)}${next.guest ? ` (for ${esc(next.guest)})` : ""}` : "Ingen bookinger fremover."}</p>
       ${bk.length ? `<details class="mybk" id="myBk"><summary>Mine bookinger (${bk.length})</summary>
         <ul class="list">${bk.slice(0, 120).map(b => `<li><span class="lt"><b>${esc(fmtShort(b.date))}</b> · Plass ${DESK[b.desk]?.num} · ${span(b.s, b.e)}${b.guest ? `<span class="note">for ${esc(b.guest)}</span>` : ""}${b.by && b.by !== S.me ? `<span class="note">booket av ${esc(nameOf(b.by))}</span>` : ""}${b.note ? `<span class="note">«${esc(b.note)}»</span>` : ""}</span><button class="btn small danger" data-cancel="${b.id}">Avbestill</button></li>`).join("")}</ul>
@@ -1421,7 +1564,7 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
   const CODE_RE = /^[a-z0-9-]{4,40}$/;
   async function copy(text) { try { await navigator.clipboard.writeText(text); flash(`Kopiert: ${text}`); } catch (e) { prompt("Kopier koden:", text); } }
   function renderAdmin() {
-    const sig = JSON.stringify([S.admin, S.codes, S.code, S.figure?.at, S.figure?.name]);
+    const sig = JSON.stringify([S.admin, S.codes, S.code, S.figure?.at, S.figure?.name, S.figure2?.at, S.figure2?.name]);
     if (sig === adminSig) return; adminSig = sig;
     adminEl.hidden = !S.admin;
     if (!S.admin) return;
@@ -1435,13 +1578,16 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
       </form>
       ${S.codes.length ? `<ul class="list admlist">${S.codes.map(c => `<li><span class="lt">${esc(c.name || "Uten navn")}${c.admin ? `<span class="badge">admin</span>` : ""}<span class="note" style="font-family:var(--f-mono);font-style:normal">${esc(c.code)}</span></span>
         <span class="actions"><button class="btn small ghost" data-copy="${esc(c.code)}">Kopier</button>${c.code === S.code ? "" : `<button class="btn small ghost" data-adm="${esc(c.code)}">${c.admin ? "Fjern admin" : "Gjør til admin"}</button><button class="btn small ghost" data-renew="${esc(c.code)}">Ny kode</button><button class="btn small danger" data-revoke="${esc(c.code)}">Slett</button>`}</span></li>`).join("")}</ul>` : `<p class="muted">Ingen brukere ennå.</p>`}
-      <details id="figDet"><summary>Figur på kartet</summary>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <p class="hint">Last opp et bilde (f.eks. et ansikt). Figuren står ute oppe til venstre på kartet og går til pult 10 når noen trykker på den. Bildet lagres i databasen bak innloggingen, ikke i den offentlige koden.</p>
-          ${S.figure?.img ? `<div class="figprev"><img src="${esc(S.figure.img)}" alt=""><span>${esc(S.figure.name || "")}</span></div>` : ""}
-          <label class="field">Navn under figuren<input type="text" id="figName" maxlength="30" value="${esc(S.figure?.name || "Nils")}"></label>
-          <label class="field">Velg bilde (lagres med en gang)<input type="file" id="figFile" accept="image/*"></label>
-          <div class="actions"><button class="btn small" type="button" id="figSave">Lagre navn</button>${S.figure?.img ? `<button class="btn small danger" type="button" id="figDel">Fjern figur</button>` : ""}</div>
+      <details id="figDet"><summary>Figurer på kartet</summary>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <p class="hint">Bruk helst et bilde med gjennomsiktig bakgrunn (PNG), så følger figuren omrisset av personen. Et vanlig bilde vises som et rektangel. Bildene lagres bak innloggingen, ikke i den offentlige koden.</p>
+          ${[["1", S.figure, "Figur 1 – står ute og går til pult 10 når noen trykker på den", "Nils"], ["2", S.figure2, "Figur 2 – dukker opp ved pult 10–11 når figur 1 kommer inn", ""]].map(([n, f, label, def]) => `
+          <div class="figbox"><b>${label}</b>
+            ${f?.img ? `<div class="figprev"><img src="${esc(f.img)}" alt=""><span>${esc(f.name || "")}</span></div>` : `<span class="hint">Ingen figur lastet opp.</span>`}
+            <label class="field">Navn under figuren<input type="text" id="fig${n}Name" maxlength="30" value="${esc(f?.name ?? def)}"></label>
+            <label class="field">Velg bilde (lagres med en gang)<input type="file" id="fig${n}File" accept="image/*"></label>
+            <div class="actions"><button class="btn small" type="button" data-figsave="${n}">Lagre navn</button>${f?.img ? `<button class="btn small danger" type="button" data-figdel="${n}">Fjern</button>` : ""}</div>
+          </div>`).join("")}
         </div></details>`;
     withKeep(adminEl, html);
     const q = s => adminEl.querySelector(s);
@@ -1485,28 +1631,42 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
       if (!confirm(`Slette brukeren til ${c.name}? De mister tilgangen med en gang. Bookingene deres blir liggende.`)) return;
       guard(async () => { await db.collection("codes").doc(c.code).delete(); flash(`${c.name} har ikke lenger tilgang.`); });
     }));
-    const saveFig = file => {
-      const name = q("#figName").value.trim().slice(0, 30);
+    const figDoc = n => n === "2" ? "figure2" : "figure";
+    const figCur = n => n === "2" ? S.figure2 : S.figure;
+    const saveFig = (n, file) => {
+      const name = q(`#fig${n}Name`).value.trim().slice(0, 30);
       guard(async () => {
-        let img = S.figure?.img || "";
+        let img = figCur(n)?.img || "";
         if (file) img = await toThumb(file);
         if (!img) { flash("Velg et bilde først.", true); return; }
-        await db.collection("assets").doc("figure").set({ img, name, at: Date.now() });
-        flash(file ? "Figuren er lagret og står nå på kartet." : "Navnet er lagret.");
+        await db.collection("assets").doc(figDoc(n)).set({ img, name, at: Date.now() });
+        flash(file ? `Figur ${n} er lagret og står nå på kartet.` : "Navnet er lagret.");
       });
     };
-    q("#figFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) saveFig(f); });
-    q("#figSave").addEventListener("click", () => saveFig(null));
-    q("#figDel")?.addEventListener("click", () => { if (confirm("Fjerne figuren fra kartet?")) guard(async () => { await db.collection("assets").doc("figure").delete(); flash("Figuren er fjernet."); }); });
+    ["1", "2"].forEach(n => q(`#fig${n}File`).addEventListener("change", e => { const f = e.target.files?.[0]; if (f) saveFig(n, f); }));
+    adminEl.querySelectorAll("[data-figsave]").forEach(b => b.addEventListener("click", () => saveFig(b.dataset.figsave, null)));
+    adminEl.querySelectorAll("[data-figdel]").forEach(b => b.addEventListener("click", () => { const n = b.dataset.figdel; if (confirm(`Fjerne figur ${n} fra kartet?`)) guard(async () => { await db.collection("assets").doc(figDoc(n)).delete(); flash(`Figur ${n} er fjernet.`); }); }));
   }
-  async function toThumb(file) {
+  async function toThumb(file) { // beholder gjennomsiktighet, klipper bort tom kant, skalerer ned
     const url = URL.createObjectURL(file);
     try {
       const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
-      const side = Math.min(im.naturalWidth, im.naturalHeight), sx = (im.naturalWidth - side) / 2, sy = (im.naturalHeight - side) / 2;
-      const c = document.createElement("canvas"); c.width = c.height = 200;
-      c.getContext("2d").drawImage(im, sx, sy, side, side, 0, 0, 200, 200);
-      return c.toDataURL("image/jpeg", 0.85);
+      const W = im.naturalWidth, H = im.naturalHeight;
+      const c0 = document.createElement("canvas"); c0.width = W; c0.height = H;
+      const x0 = c0.getContext("2d"); x0.drawImage(im, 0, 0);
+      let minX = W, minY = H, maxX = -1, maxY = -1;
+      const data = x0.getImageData(0, 0, W, H).data;
+      for (let y = 0; y < H; y += 2) for (let x = 0; x < W; x += 2) if (data[(y * W + x) * 4 + 3] > 8) { if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+      if (maxX < 0) { minX = 0; minY = 0; maxX = W - 1; maxY = H - 1; }
+      const cw = maxX - minX + 1, ch = maxY - minY + 1;
+      let side = 280, out = "";
+      do {
+        const k = Math.min(1, side / Math.max(cw, ch));
+        const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(cw * k)); c.height = Math.max(1, Math.round(ch * k));
+        c.getContext("2d").drawImage(c0, minX, minY, cw, ch, 0, 0, c.width, c.height);
+        out = c.toDataURL("image/png"); side = Math.round(side * 0.8);
+      } while (out.length > 380000 && side > 60);
+      return out;
     } finally { URL.revokeObjectURL(url); }
   }
 
@@ -1775,7 +1935,7 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
   function stopAll() {
     subs.forEach(u => u()); subs = [];
     rangeUnsubs.forEach(u => u()); rangeUnsubs = []; rangeKey = null;
-    S.holders = new Map(); S.bIdx = new Map(); S.aIdx = new Map(); S.myBookings = []; S.myAway = []; S.codes = []; S.notices = []; S.members = {}; S.figure = null;
+    S.holders = new Map(); S.bIdx = new Map(); S.aIdx = new Map(); S.myBookings = []; S.myAway = []; S.codes = []; S.notices = []; S.members = {}; S.figure = null; S.figure2 = null;
     S.loaded = { fixed: false, bookings: false, away: false }; S.me = null; S.admin = false; S.dbOk = null; S.selected = null; S.code = "";
     fresh = false; panelSig = ""; mineSig = ""; adminSig = "";
     setupWalker();
@@ -1822,6 +1982,7 @@ button.pk-d.mk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
     subs.push(db.collection("away").where("uid", "==", S.me).onSnapshot(snap => { S.myAway = snap.docs.map(d => norm(d.id, d.data())).filter(b => b.date >= TODAY); render(); }, () => {}));
     subs.push(db.collection("notices").where("to", "==", S.me).onSnapshot(snap => { S.notices = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.at || 0) - (a.at || 0)); render(); }, () => {}));
     subs.push(db.collection("assets").doc("figure").onSnapshot(d => { S.figure = d.exists ? d.data() : null; setupWalker(); render(); }, () => {}));
+    subs.push(db.collection("assets").doc("figure2").onSnapshot(d => { S.figure2 = d.exists ? d.data() : null; setupWalker(); render(); }, () => {}));
     if (S.admin) subs.push(db.collection("codes").onSnapshot(snap => {
       S.codes = snap.docs.map(d => ({ code: d.id, ...d.data() })).sort((a, b) => String(a.name).localeCompare(String(b.name), "nb"));
       render();
